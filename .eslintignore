@@ -1,0 +1,16 @@
+# Dependency directories
+node_modules/
+
+# Built/TS FILES
+build/
+dist/
+
+# Web
+public/
+views/
+
+# Markdown
+*.md
+
+# JSON
+*.json
