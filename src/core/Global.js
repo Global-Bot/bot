@@ -21,11 +21,11 @@ class Global {
 
         this._client = new Client(this.options);
 
-		this.client.once('ready', this.ready.bind(this));
+        this.client.once('ready', this.ready.bind(this));
     }
 
     ready() {
-		this.isReady = true;
+        this.isReady = true;
     }
 }
 
