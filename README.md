@@ -1,2 +1,2 @@
-# @global-bot/bot
+# global-bot
 Global - Bot
