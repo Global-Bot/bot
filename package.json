@@ -20,6 +20,9 @@
     "eslint": "^7.32.0"
   },
   "dependencies": {
-    "discord.js": "^13.1.0"
+    "@global-bot/database": "^1.0.0",
+    "@global-bot/logger": "^1.0.0",
+    "discord.js": "^13.1.0",
+    "dotenv": "^10.0.0"
   }
 }
