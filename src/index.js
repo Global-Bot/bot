@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const Global = require('./core/Global');
 const options = {};
 
