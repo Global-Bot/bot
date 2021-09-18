@@ -1,11 +1,11 @@
 const { Client } = require('discord.js');
-const path = require('path');
-const fs = require('fs');
 
 const config = require('./config');
 const db = require('./database')
 const utils = require('./utils');
 const logger = require('./logger');
+const EventManager = require('./classes/managers/EventManager');
+const GlobalGuildManager = require('../modules/GlobalGuildManager');
 
 class Global {
     constructor() {
@@ -58,12 +58,17 @@ class Global {
 			DJSLogger.debug(msg);
 		});
 
+        this.dispatcher = new EventManager(this);
+        this.guildManager = new GlobalGuildManager(this);
+
         this.client.once('ready', this.ready.bind(this));
 
         this.login();
     }
 
     ready() {
+        this.dispatcher.bindListeners();
+        
         this.isReady = true;
 
         logger.get('Client').info(`${this.client.user.username} is online with ${this.client.guilds.cache.size} guilds & ${this.client.users.cache.size} users`, 'Ready')
@@ -85,12 +90,13 @@ class Global {
 
     handleException(err) {
 		const time = (new Date()).toISOString();
-		let report = `Crash Report ${time}:\n\n${err.stack}`;
+        const report = [
+            `Crash Report ${time}:`,
+            err.stack,
+            `Client Options: ${JSON.stringify(this.config.clientOptions)}`
+        ].join('\n\n');
 
-		report += `\n\nClient Options: ${JSON.stringify(this.config.clientOptions)}`;
-
-		const file = path.join(__dirname, `crashreport_${time}.txt`);
-		fs.writeFileSync(file, report);
+        logger.get('CrashReport').error(report)
 	}
 }
 
