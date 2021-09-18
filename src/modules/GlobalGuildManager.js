@@ -4,13 +4,14 @@ const config = require('../core/config');
 class GlobalGuildManager extends Module {
     constructor(global) {
         super(global);
-        this.logger = this.global.logger.get('guildManager');
-
+        
         this.module      = 'GlobalGuildManager';
         this.description = 'Removes the bot from unauthorized guilds';
         this.core        = true;
         this.enabled     = true;
-
+        
+        this.logger = this.global.logger.get('guildManager');
+        
         this.global.dispatcher.registerHandler('messageCreate', this.messageCreate.bind(this));
         this.global.dispatcher.registerHandler('guildCreate', this.guildCreate.bind(this));
     }
@@ -19,39 +20,60 @@ class GlobalGuildManager extends Module {
         return 'GlobalGuildManager';
     }
 
-    messageCreate({ message, guild }) {
-        if (!message || !guild) return;
+    async messageCreate({ message, guild }) {
+        if (!message || this.global.utils.isWebhook(message) || !guild) return;
 
         if (!config.allowedGuilds.has(guild.id)) {
             this.leaveGuild(guild);
         }
     }
     
-    guildCreate(guild) {
+    async guildCreate(guild) {
         if (!guild) return;
 
         if (!config.allowedGuilds.has(guild.id)) {
             this.leaveGuild(guild);
         } else {
-            this.logger.info(`Joined authorized guild ${guild.name} (${guild.id})`, 'guildCreate');
+            this.global.logger.logWebhook(`Joined authorized guild ${guild.name} (${guild.id})`, await this.guildFields(guild), {
+                uniqueMarker: 'guildCreate',
+                webhook: 'guildManager',
+                username: 'Guild Manager',
+                text: this.guildText(guild)
+            });
         }
     }
 
-    async leaveGuild(guild) {
-        const guildInfo = [
-            `ID:   ${guild.id}`,
-            `Name: ${guild.name}`,
-        ];
-
-        const owner = await guild.fetchOwner();
-        const ownerInfo = [
-            `ID:   ${owner.user.id}`,
-            `Name: ${owner.user.tag}`,
-        ];
+    async leaveGuild(guild) {        
+        this.global.logger.logWebhook(`Left unauthorized guild ${guild.name} (${guild.id})`, await this.guildFields(guild), {
+            uniqueMarker: 'unauthorizedGuild',
+            webhook: 'guildManager',
+            username: 'Guild Manager',
+            text: this.guildText(guild)
+        });
         
         guild.leave()
-            .then(() => this.logger.warn(`Unrecognised guild\nLeft disallowed guild\n\tGuild:\n\t\t${guildInfo.join('\n\t\t')}\n\tOwner:\n\t\t${ownerInfo.join('\n\t\t')}`, 'disallowedGuild'))
             .catch(console.error);
+    }
+
+    async guildFields(guild) {
+        const owner = await guild.fetchOwner();
+        return [
+            { name: 'ID',         value: guild.id,       inline: true },
+            { name: 'Name',       value: guild.id,       inline: true },
+            { name: '\u200b',     value: '\u200b',       inline: true},
+            { name: 'Owner ID',   value: owner.user.id,  inline: true },
+            { name: 'Owner Name', value: owner.user.tag, inline: true},
+            { name: '\u200b',     value: '\u200b',       inline: true},
+        ]
+    }
+
+    guildText(guild) {
+        return [
+            `${guild.memberCount        } Members`,
+            `${guild.channels.cache.size} Channels`,
+            `${guild.roles.cache.size   } Roles`,
+            `${guild.bans.cache.size    } Bans`
+        ].join(' | ')
     }
 }
 
