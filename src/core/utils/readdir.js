@@ -3,7 +3,7 @@ const path = require('path');
 
 async function readdir(dir) {
     let list = [];
-    let files = await fs.readdirAsync(dir).catch(() => []);
+    let files = await fs.readdirSync(dir)
     let dirs;
 
     function isDir(fname) {
@@ -18,7 +18,7 @@ async function readdir(dir) {
     list = list.concat(files);
 
     while (dirs.length) {
-        const l = await this.readdirRecursive(path.join(dir, dirs.shift()));
+        const l = await readdir(path.join(dir, dirs.shift()));
         list = list.concat(l);
     }
 
