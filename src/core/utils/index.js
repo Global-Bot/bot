@@ -1,3 +1,5 @@
 const utils = module.exports;
 
-utils.readdir = require('./readdir');
+utils.readdir     = require('./readdir');
+utils.populateMap = require('./populateMap');
+utils.isWebhook   = require('./isWebhook');
