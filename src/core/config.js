@@ -13,6 +13,11 @@ config.allowedGuilds = populateMap([
     '888478366540365835', // Global | Lzz Testing
 ])
 
+config.webhooks = populateMap([
+    { key: 'errors',       value: 'https://discord.com/api/webhooks/888801681926651925/gdwNCdkPtkfc5rOEkNnxUZ8qIZvoEKe-CjaZbKWUO5LIBCQLagieu8MUbsLE555g8CDT' },
+    { key: 'guildManager', value: 'https://discord.com/api/webhooks/888801759114428446/hkaDngEeNl5bB6Gy2RiEmZwCs5TZIKy3Q4K9hqQcvzC1o9na7xgaTXRAKrOhNWZSGPTo' },
+])
+
 config.clientOptions = {
     shards: 'auto',
     shardCount: 1,

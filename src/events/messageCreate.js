@@ -1,11 +1,11 @@
 
 module.exports = function messageCreate(dispatcher, message) {
-	if (!dispatcher.global.isReady || !message) return Promise.reject();
+    if (!dispatcher.global.isReady || !message) return Promise.reject();
     
     return new Promise((resolve) => {
-		resolve({
+        resolve({
             message,
             guild: message.guild
         })
-	});
+    });
 }
