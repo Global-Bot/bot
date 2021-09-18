@@ -14,7 +14,13 @@ config.allowedGuilds = populateMap([
 ])
 
 config.webhooks = populateMap([
+    // Loggers
     { key: 'errors',       value: 'https://discord.com/api/webhooks/888801681926651925/gdwNCdkPtkfc5rOEkNnxUZ8qIZvoEKe-CjaZbKWUO5LIBCQLagieu8MUbsLE555g8CDT' },
+    { key: 'warns',        value: 'https://discord.com/api/webhooks/888883632293416970/uvj5at3I22E10-vtwBjJxpKRWE4ZHFI8VEuCn333N0HXQuynCzkCorQdt96dgfM33wmX' },
+    // Errors
+    { key: 'rejections',   value: 'https://discord.com/api/webhooks/888884936130572288/Ml369brO44sNl_qvXhXDQJFEcRGdvf-TFzbbSrTc5sVhy4-JJ7oTAcGV9xzzL_EjbSuB' },
+    { key: 'exceptions',   value: 'https://discord.com/api/webhooks/888885008138395679/VNqMzt45DDBD8oRGiinTTpii9XaiTFl6orKTOaK8BLY_MRffGF1nBhwXxYZAMR8Vxhnh' },
+    // Modules
     { key: 'guildManager', value: 'https://discord.com/api/webhooks/888801759114428446/hkaDngEeNl5bB6Gy2RiEmZwCs5TZIKy3Q4K9hqQcvzC1o9na7xgaTXRAKrOhNWZSGPTo' },
 ])
 
