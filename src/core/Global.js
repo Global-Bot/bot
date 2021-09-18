@@ -46,10 +46,26 @@ class Global {
 
         this._client = new Client(this.options);
 
-        const DJSLogger = logger.get('D.JS');
+        const DJSLogger = this.logger.get('D.JS');
 
-        this.client.on('error', err => DJSLogger.error(err));
-		this.client.on('warn', err => DJSLogger.error(err));
+        this.client.on('error', err => {
+            DJSLogger.error(err);
+            this.logger.logWebhook(`Client Error`, null, {
+                webhook: 'errors',
+                username: 'Client Error',
+                text: `Client encountered an error: ${err.message}`,
+                suppress: true
+            });
+        });
+		this.client.on('warn', err => {
+            DJSLogger.error(err);
+            this.logger.logWebhook(`Client Warn`, null, {
+                webhook: 'warns',
+                username: 'Client Warn',
+                text: `Client encountered an warning: ${err.message}`,
+                suppress: true
+            });
+        });
 		this.client.on('debug', msg => {
 			if (typeof msg === 'string') {
 				msg = msg.replace(config.token, 'token');
@@ -58,7 +74,10 @@ class Global {
 			DJSLogger.debug(msg);
 		});
 
+        // Managers
         this.dispatcher = new EventManager(this);
+
+        // Modules
         this.guildManager = new GlobalGuildManager(this);
 
         this.client.once('ready', this.ready.bind(this));
@@ -71,21 +90,23 @@ class Global {
         
         this.isReady = true;
 
-        logger.get('Client').info(`${this.client.user.username} is online with ${this.client.guilds.cache.size} guilds & ${this.client.users.cache.size} users`, 'Ready')
+        this.logger.get('Client').info(`${this.client.user.username} is online with ${this.client.guilds.cache.size} guilds & ${this.client.users.cache.size} users`, 'Ready')
     }
 
     login() {
         this.client.login(this.config.token);
-
+        
         return true;
     }
 
     handleRejection(reason, p) {
-		try {
-			console.error('Unhandled rejection at: Promise', p, 'reason:', reason);
-		} catch (err) {
-			console.error(reason);
-		}
+        console.error('Unhandled rejection at: Promise', p, 'reason:', reason);
+        this.logger.logWebhook(`Rejection Error`, null, {
+            webhook: 'rejections',
+            username: 'Rejection Error',
+            text: reason.message,
+            suppress: true
+        });
 	}
 
     handleException(err) {
@@ -95,8 +116,14 @@ class Global {
             err.stack,
             `Client Options: ${JSON.stringify(this.config.clientOptions)}`
         ].join('\n\n');
-
-        logger.get('CrashReport').error(report)
+        
+        this.logger.get('CrashReport').error(report);
+        this.logger.logWebhook(`Exception Error`, null, {
+            webhook: 'exceptions',
+            username: 'Exception Error',
+            text: err.message,
+            suppress: true
+        });
 	}
 }
 
