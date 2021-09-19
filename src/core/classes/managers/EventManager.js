@@ -1,12 +1,9 @@
-const utils = require('../../utils');
-const logger = require('../../logger').get('EventManager');
 const { Constants } = require('discord.js');
+const Base = require('../Base');
 
-class EventManager {
+class EventManager extends Base {
 	constructor(global) {
-		this.global = global;
-		this._client = global.client;
-		this._config = global.config;
+		super(global);
 
 		this._handlers = new Map();
 		this._listeners = new Map();
@@ -14,26 +11,18 @@ class EventManager {
 
 		this.registerListeners();
 	}
-
-	get client() {
-		return this._client;
-	}
-
-	get config() {
-		return this._config;
-	}
     
 	async registerListeners() {
-		const listeners = await utils.readdir(this._config.paths.events);
+		const listeners = await this.utils.readdir(this.config.paths.events);
 		listeners.forEach(file => {
 			const listener = require(file);
-			if (!listener || !listener.name) return logger.warn(`Invalid listener`, file);
+			if (!listener || !listener.name) return this.logger.warn(`Invalid listener`, file);
 			
 			this._listeners.set(listener.name, listener);
-			logger.debug(`Registered ${listener.name} listener`);
+			this.logger.debug(`Registered ${listener.name} listener`);
 		});
 		
-		logger.info(`Registered ${this._listeners.size} listeners`)
+		this.logger.info(`Registered ${this._listeners.size} listeners`)
 	}
 	
 	bindListeners() {
@@ -43,7 +32,7 @@ class EventManager {
 			bounded++;
 		}
 		
-		logger.info(`Bound ${bounded} listeners`);
+		this.logger.info(`Bound ${bounded} listeners`);
 	}
 
 	createListener(event, ...args) {
@@ -58,7 +47,7 @@ class EventManager {
 					if (!eventHandlers) return;
 					eventHandlers.forEach(handler => handler(data));
 				})
-				.catch(err => logger.error(err, `${event}Handler`));
+				.catch(err => this.logger.error(err, `${event}Handler`));
 		} else {
 			if (!eventHandlers) return;
 			eventHandlers.forEach(handler => handler(...args));
@@ -75,7 +64,7 @@ class EventManager {
 		eventHandlers.push(handler);
 		
 		this._handlers.set(event, eventHandlers);
-		logger.debug(`Registered ${event} handler`);
+		this.logger.debug(`Registered ${event} handler`);
 	}
 }
 

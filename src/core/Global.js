@@ -1,14 +1,12 @@
 const { Client } = require('discord.js');
-
-const config = require('./config');
-const db = require('./database')
-const utils = require('./utils');
-const logger = require('./logger');
+const Base = require('./classes/Base');
 const EventManager = require('./classes/managers/EventManager');
 const GlobalGuildManager = require('../modules/GlobalGuildManager');
 
-class Global {
+class Global extends Base {
     constructor() {
+        super();
+        
         this.isReady = false;
 
         process.on('unhandledRejection', this.handleRejection.bind(this));
@@ -19,38 +17,17 @@ class Global {
         return this._client;
     }
 
-    get config() {
-        return config;
-    }
-
-    get db() {
-        return db;
-    }
-
-    get models() {
-        return db.models;
-    }
-
-    get utils() {
-        return utils;
-    }
-
-    get logger() {
-        return logger;
-    }
-
     async init(options) {
         options = options || {};
         
-        this.options = Object.assign(config.clientOptions || {}, options);
+        this.options = Object.assign(this.config.clientOptions || {}, options);
 
         this._client = new Client(this.options);
 
-        const DJSLogger = this.logger.get('D.JS');
 
         this.client.on('error', err => {
-            DJSLogger.error(err);
-            this.logger.logWebhook(`Client Error`, null, {
+            this.logger.error(err, 'D.JS');
+            this.logWebhook(`Client Error`, null, {
                 webhook: 'errors',
                 username: 'Client Error',
                 text: `Client encountered an error: ${err.message}`,
@@ -58,8 +35,8 @@ class Global {
             });
         });
 		this.client.on('warn', err => {
-            DJSLogger.error(err);
-            this.logger.logWebhook(`Client Warn`, null, {
+            this.logger.error(err, 'D.JS');
+            this.logWebhook(`Client Warn`, null, {
                 webhook: 'warns',
                 username: 'Client Warn',
                 text: `Client encountered an warning: ${err.message}`,
@@ -68,10 +45,10 @@ class Global {
         });
 		this.client.on('debug', msg => {
 			if (typeof msg === 'string') {
-				msg = msg.replace(config.token, 'token');
+				msg = msg.replace(this.config.token, 'token');
 			}
 
-			DJSLogger.debug(msg);
+            this.logger.debug(msg, 'D.JS');
 		});
 
         // Managers
@@ -90,7 +67,7 @@ class Global {
         
         this.isReady = true;
 
-        this.logger.get('Client').info(`${this.client.user.username} is online with ${this.client.guilds.cache.size} guilds & ${this.client.users.cache.size} users`, 'Ready')
+        this.logger.info(`${this.client.user.username} is online with ${this.client.guilds.cache.size} guilds & ${this.client.users.cache.size} users`, 'Ready')
     }
 
     login() {
@@ -101,7 +78,7 @@ class Global {
 
     handleRejection(reason, p) {
         console.error('Unhandled rejection at: Promise', p, 'reason:', reason);
-        this.logger.logWebhook(`Rejection Error`, null, {
+        this.logWebhook(`Rejection Error`, null, {
             webhook: 'rejections',
             username: 'Rejection Error',
             text: reason.message,
@@ -117,8 +94,8 @@ class Global {
             `Client Options: ${JSON.stringify(this.config.clientOptions)}`
         ].join('\n\n');
         
-        this.logger.get('CrashReport').error(report);
-        this.logger.logWebhook(`Exception Error`, null, {
+        this.logger.error(report, 'CrashReport');
+        this.logWebhook(`Exception Error`, null, {
             webhook: 'exceptions',
             username: 'Exception Error',
             text: err.message,

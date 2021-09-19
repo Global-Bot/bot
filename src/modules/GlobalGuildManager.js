@@ -10,10 +10,8 @@ class GlobalGuildManager extends Module {
         this.core        = true;
         this.enabled     = true;
         
-        this.logger = this.global.logger.get('guildManager');
-        
-        this.global.dispatcher.registerHandler('messageCreate', this.messageCreate.bind(this));
-        this.global.dispatcher.registerHandler('guildCreate', this.guildCreate.bind(this));
+        global.dispatcher.registerHandler('messageCreate', this.messageCreate.bind(this));
+        global.dispatcher.registerHandler('guildCreate', this.guildCreate.bind(this));
     }
 
     static get name() {
@@ -21,7 +19,7 @@ class GlobalGuildManager extends Module {
     }
 
     async messageCreate({ message, guild }) {
-        if (!message || this.global.utils.isWebhook(message) || !guild) return;
+        if (!message || this.utils.isWebhook(message) || !guild) return;
 
         if (!config.allowedGuilds.has(guild.id)) {
             this.leaveGuild(guild);
@@ -34,7 +32,7 @@ class GlobalGuildManager extends Module {
         if (!config.allowedGuilds.has(guild.id)) {
             this.leaveGuild(guild);
         } else {
-            this.global.logger.logWebhook(`Joined authorized guild ${guild.name} (${guild.id})`, await this.guildFields(guild), {
+            this.logWebhook(`Joined authorized guild ${guild.name} (${guild.id})`, await this.guildFields(guild), {
                 uniqueMarker: 'guildCreate',
                 webhook: 'guildManager',
                 username: 'Guild Manager',
@@ -44,8 +42,9 @@ class GlobalGuildManager extends Module {
     }
 
     async leaveGuild(guild) {        
-        this.global.logger.logWebhook(`Left unauthorized guild ${guild.name} (${guild.id})`, await this.guildFields(guild), {
+        this.logWebhook(`Left unauthorized guild ${guild.name} (${guild.id})`, await this.guildFields(guild), {
             uniqueMarker: 'unauthorizedGuild',
+            logMethod: 'debug',
             webhook: 'guildManager',
             username: 'Guild Manager',
             text: this.guildText(guild)
@@ -60,10 +59,10 @@ class GlobalGuildManager extends Module {
         return [
             { name: 'ID',         value: guild.id,       inline: true },
             { name: 'Name',       value: guild.id,       inline: true },
-            { name: '\u200b',     value: '\u200b',       inline: true},
+            { name: '\u200b',     value: '\u200b',       inline: true },
             { name: 'Owner ID',   value: owner.user.id,  inline: true },
-            { name: 'Owner Name', value: owner.user.tag, inline: true},
-            { name: '\u200b',     value: '\u200b',       inline: true},
+            { name: 'Owner Name', value: owner.user.tag, inline: true },
+            { name: '\u200b',     value: '\u200b',       inline: true },
         ]
     }
 

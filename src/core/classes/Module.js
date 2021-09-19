@@ -1,11 +1,10 @@
-class Module {
+const Base = require('./Base');
+
+class Module extends Base {
     constructor(global) {
-        this._global = global;
+        super(global);
     }
 
-    get global() {
-        return this._global
-    }
 }
 
 module.exports = Module;
