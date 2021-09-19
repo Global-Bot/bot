@@ -7,7 +7,7 @@ function isWebhook(message) {
         if (message.author.id == id) return true;
     }
 
-    return false
+    return false;
 }
 
 module.exports = isWebhook;

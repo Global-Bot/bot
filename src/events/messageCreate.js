@@ -1,4 +1,3 @@
-
 module.exports = function messageCreate(dispatcher, message) {
     if (!dispatcher.global.isReady || !message) return Promise.reject();
     
