@@ -4,7 +4,8 @@ module.exports = function messageCreate(dispatcher, message) {
     return new Promise((resolve) => {
         resolve({
             message,
-            guild: message.guild
+            guild: message.guild,
+            isAdmin: dispatcher.global.permissions.isAdmin(message.author)
         })
     });
 }
