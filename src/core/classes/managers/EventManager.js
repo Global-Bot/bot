@@ -7,7 +7,7 @@ class EventManager extends Base {
 
 		this._handlers = new Map();
 		this._listeners = new Map();
-		this._events = Object.values(Constants.Events);
+		this.events = Object.values(Constants.Events);
 
 		this.registerListeners();
 	}
@@ -27,7 +27,7 @@ class EventManager extends Base {
 	
 	bindListeners() {
 		let bounded = 0;
-		for (const event of this._events) {
+		for (const event of this.events) {
 			this.client.on(event, this.createListener.bind(this, event));
 			bounded++;
 		}
