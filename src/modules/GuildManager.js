@@ -1,11 +1,10 @@
 const Module = require('../core/classes/Module');
-const config = require('../core/config');
 
-class GlobalGuildManager extends Module {
+class GuildManager extends Module {
     constructor(global) {
         super(global);
         
-        this.module      = 'GlobalGuildManager';
+        this.module      = 'GuildManager';
         this.description = 'Removes the bot from unauthorized guilds';
         this.core        = true;
         this.enabled     = true;
@@ -15,13 +14,13 @@ class GlobalGuildManager extends Module {
     }
 
     static get name() {
-        return 'GlobalGuildManager';
+        return 'GuildManager';
     }
 
     async messageCreate({ message, guild }) {
         if (!message || this.utils.isWebhook(message) || !guild) return;
 
-        if (!config.allowedGuilds.has(guild.id)) {
+        if (!this.config.allowedGuilds.has(guild.id)) {
             this.leaveGuild(guild);
         }
     }
@@ -29,7 +28,7 @@ class GlobalGuildManager extends Module {
     async guildCreate(guild) {
         if (!guild) return;
 
-        if (!config.allowedGuilds.has(guild.id)) {
+        if (!this.config.allowedGuilds.has(guild.id)) {
             this.leaveGuild(guild);
         } else {
             this.logWebhook(`Joined authorized guild ${guild.name} (${guild.id})`, await this.guildFields(guild), {
@@ -76,4 +75,4 @@ class GlobalGuildManager extends Module {
     }
 }
 
-module.exports = GlobalGuildManager;
+module.exports = GuildManager;
