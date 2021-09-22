@@ -11,8 +11,6 @@ class CommandHandler extends Module {
 
         this.helpCommands = [ 'help', 'commands' ];
         
-        global.dispatcher.registerHandler('messageCreate', this.messageCreate.bind(this));
-
         this.global.commands.on('command', this.onCommand);
         this.global.commands.on('error', this.onCommandFail);
         

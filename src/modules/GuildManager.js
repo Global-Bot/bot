@@ -8,9 +8,6 @@ class GuildManager extends Module {
         this.description = 'Removes the bot from unauthorized guilds';
         this.core        = true;
         this.enabled     = true;
-        
-        global.dispatcher.registerHandler('messageCreate', this.messageCreate.bind(this));
-        global.dispatcher.registerHandler('guildCreate', this.guildCreate.bind(this));
     }
 
     static get name() {

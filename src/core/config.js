@@ -22,17 +22,18 @@ config.admins = populateMap([
 
 config.webhooks = populateMap([
     // Roles
-    { key: 'logPingRole',    value: '889193688310382642'                                                                                                       },
+    { key: 'logPingRole',       value: '889193688310382642'                                                                                                       },
     // Loggers
-    { key: 'errors',         value: 'https://discord.com/api/webhooks/888801681926651925/gdwNCdkPtkfc5rOEkNnxUZ8qIZvoEKe-CjaZbKWUO5LIBCQLagieu8MUbsLE555g8CDT' },
-    { key: 'warns',          value: 'https://discord.com/api/webhooks/888883632293416970/uvj5at3I22E10-vtwBjJxpKRWE4ZHFI8VEuCn333N0HXQuynCzkCorQdt96dgfM33wmX' },
+    { key: 'errors',            value: 'https://discord.com/api/webhooks/888801681926651925/gdwNCdkPtkfc5rOEkNnxUZ8qIZvoEKe-CjaZbKWUO5LIBCQLagieu8MUbsLE555g8CDT' },
+    { key: 'warns',             value: 'https://discord.com/api/webhooks/888883632293416970/uvj5at3I22E10-vtwBjJxpKRWE4ZHFI8VEuCn333N0HXQuynCzkCorQdt96dgfM33wmX' },
     // Errors
-    { key: 'rejections',     value: 'https://discord.com/api/webhooks/888884936130572288/Ml369brO44sNl_qvXhXDQJFEcRGdvf-TFzbbSrTc5sVhy4-JJ7oTAcGV9xzzL_EjbSuB' },
-    { key: 'exceptions',     value: 'https://discord.com/api/webhooks/888885008138395679/VNqMzt45DDBD8oRGiinTTpii9XaiTFl6orKTOaK8BLY_MRffGF1nBhwXxYZAMR8Vxhnh' },
+    { key: 'rejections',        value: 'https://discord.com/api/webhooks/888884936130572288/Ml369brO44sNl_qvXhXDQJFEcRGdvf-TFzbbSrTc5sVhy4-JJ7oTAcGV9xzzL_EjbSuB' },
+    { key: 'exceptions',        value: 'https://discord.com/api/webhooks/888885008138395679/VNqMzt45DDBD8oRGiinTTpii9XaiTFl6orKTOaK8BLY_MRffGF1nBhwXxYZAMR8Vxhnh' },
     // Modules
-    { key: 'guildManager',   value: 'https://discord.com/api/webhooks/888801759114428446/hkaDngEeNl5bB6Gy2RiEmZwCs5TZIKy3Q4K9hqQcvzC1o9na7xgaTXRAKrOhNWZSGPTo' },
+    { key: 'guildManager',      value: 'https://discord.com/api/webhooks/888801759114428446/hkaDngEeNl5bB6Gy2RiEmZwCs5TZIKy3Q4K9hqQcvzC1o9na7xgaTXRAKrOhNWZSGPTo' },
     // Collections
-    { key: 'commandCollection',   value: 'https://discord.com/api/webhooks/889079325440233483/bHldPzbtayMasfLiIpVZycAFCsof0383r33vcKL131FF1PyGB74XuJyLTyvcBHIFniZq' },
+    { key: 'commandCollection', value: 'https://discord.com/api/webhooks/889079325440233483/bHldPzbtayMasfLiIpVZycAFCsof0383r33vcKL131FF1PyGB74XuJyLTyvcBHIFniZq' },
+    { key: 'moduleCollection',  value: 'https://discord.com/api/webhooks/890286155147395122/_zEF-DHq-CuWhi3tlrwQHJ5jlsQcw7gyGdne6w7I6o8T_S_nLJOcl2RJDhPbWV4QYXQl' },
 ])
 
 config.clientOptions = {
@@ -55,6 +56,10 @@ config.clientOptions = {
         Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
         Intents.FLAGS.DIRECT_MESSAGES,
         Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+    ],
+    modules: [
+        'GuildManager',
+        'CommandHandler'
     ]
 }
 
@@ -79,7 +84,8 @@ const basePath = path.resolve(path.join(__dirname, '..'));
 config.paths = {
     basePath,
     events:   path.join(basePath, 'events'),
-    commands: path.join(basePath, 'commands')
+    commands: path.join(basePath, 'commands'),
+    modules: path.join(basePath, 'modules')
 }
 
 

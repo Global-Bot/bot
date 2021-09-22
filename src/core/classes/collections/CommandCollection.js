@@ -33,7 +33,6 @@ class CommandCollection extends EventCollection {
         });
 
 		this.logger.info(`Registered ${registered} commands`);
-
     }
 
     register(Command) {

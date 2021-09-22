@@ -4,9 +4,8 @@ const Structures = require('../structures');
 const EventManager = require('./classes/managers/EventManager');
 const EventEmitter = require('events');
 const CommandCollection = require('./classes/collections/CommandCollection');
+const ModuleCollection = require('./classes/collections/ModuleCollection');
 const PermissionsManager = require('./classes/managers/PermissionsManager');
-const GuildManager = require('../modules/GuildManager');
-const CommandHandler = require('../modules/CommandHandler');
 
 
 class Global extends Base {
@@ -64,13 +63,10 @@ class Global extends Base {
 
         // Collections
         this.commands = new CommandCollection(this);
+        this.modules = new ModuleCollection(this);
 
         // Managers
         this.permissions = new PermissionsManager(this);
-        
-        // Modules
-        this.guildManager = new GuildManager(this);
-        this.commandHandler = new CommandHandler(this);
 
         // Listeners
         this.client.once('ready', this.ready.bind(this));
@@ -95,6 +91,7 @@ class Global extends Base {
 
     handleRejection(reason, p) {
         console.error('Unhandled rejection at: Promise', p, 'reason:', reason);
+        
         this.logWebhook(`Rejection Error`, null, {
             webhook: 'rejections',
             username: 'Rejection Error',
