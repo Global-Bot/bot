@@ -13,6 +13,13 @@ config.allowedGuilds = populateMap([
     '888478366540365835', // Global | Lzz Testing
 ])
 
+config.admins = populateMap([
+    '199109802281009152', // Not_Chris
+    '394594679221518336', // IXZ
+    '373965085283975171', // Lzz
+    '140790683341422592', // Sam*
+])
+
 config.webhooks = populateMap([
     // Roles
     { key: 'logPingRole',    value: '889193688310382642'                                                                                                       },
@@ -24,6 +31,8 @@ config.webhooks = populateMap([
     { key: 'exceptions',     value: 'https://discord.com/api/webhooks/888885008138395679/VNqMzt45DDBD8oRGiinTTpii9XaiTFl6orKTOaK8BLY_MRffGF1nBhwXxYZAMR8Vxhnh' },
     // Modules
     { key: 'guildManager',   value: 'https://discord.com/api/webhooks/888801759114428446/hkaDngEeNl5bB6Gy2RiEmZwCs5TZIKy3Q4K9hqQcvzC1o9na7xgaTXRAKrOhNWZSGPTo' },
+    // Collections
+    { key: 'commandCollection',   value: 'https://discord.com/api/webhooks/889079325440233483/bHldPzbtayMasfLiIpVZycAFCsof0383r33vcKL131FF1PyGB74XuJyLTyvcBHIFniZq' },
 ])
 
 config.clientOptions = {
@@ -51,6 +60,8 @@ config.clientOptions = {
 
 config.token = process.env.BOT_TOKEN;
 
+config.prefix = '-';
+
 config.logger = {
     logLevel: 'INFO'
 }
@@ -67,7 +78,8 @@ config.db = {
 const basePath = path.resolve(path.join(__dirname, '..'));
 config.paths = {
     basePath,
-    events: path.join(basePath, 'events')
+    events:   path.join(basePath, 'events'),
+    commands: path.join(basePath, 'commands')
 }
 
 
