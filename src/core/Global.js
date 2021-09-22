@@ -1,14 +1,20 @@
 const { Client } = require('discord.js');
 const Base = require('./classes/Base');
+const Structures = require('../structures');
 const EventManager = require('./classes/managers/EventManager');
-const GlobalGuildManager = require('../modules/GlobalGuildManager');
+const EventEmitter = require('events');
+const CommandCollection = require('./classes/collections/CommandCollection');
+const PermissionsManager = require('./classes/managers/PermissionsManager');
+const GuildManager = require('../modules/GuildManager');
+const CommandHandler = require('../modules/CommandHandler');
+
 
 class Global extends Base {
     constructor() {
         super();
         
         this.isReady = false;
-
+        
         process.on('unhandledRejection', this.handleRejection.bind(this));
 		process.on('uncaughtException', this.handleException.bind(this));
     }
@@ -21,10 +27,12 @@ class Global extends Base {
         options = options || {};
         
         this.options = Object.assign(this.config.clientOptions || {}, options);
-
+        
+        Structures.load();
+        
         this._client = new Client(this.options);
-
-
+        
+        
         this.client.on('error', err => {
             this.logger.error(err, 'D.JS');
             this.logWebhook(`Client Error`, null, {
@@ -51,14 +59,23 @@ class Global extends Base {
             this.logger.debug(msg, 'D.JS');
 		});
 
-        // Managers
         this.dispatcher = new EventManager(this);
+        this.globalEvents = new EventEmitter();
 
+        // Collections
+        this.commands = new CommandCollection(this);
+
+        // Managers
+        this.permissions = new PermissionsManager(this);
+        
         // Modules
-        this.guildManager = new GlobalGuildManager(this);
+        this.guildManager = new GuildManager(this);
+        this.commandHandler = new CommandHandler(this);
 
+        // Listeners
         this.client.once('ready', this.ready.bind(this));
 
+        // Login
         this.login();
     }
 
