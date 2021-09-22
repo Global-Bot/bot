@@ -13,6 +13,8 @@ function sendMessage(channel, message, options) {
     message.disableEveryone = options.disableEveryone != undefined ? options.disableEveryone : true;
 
     if (message.embed) {
+        if (!message.embed.color) message.embed.color = 'PURPLE';
+        
         message.embeds = [ message.embed ];
         delete message.embed;
     }
