@@ -138,10 +138,6 @@ class Base {
         return this.executeWebhook(id, token, webhook, payload);
     }
     
-    get sendMessage() {
-        return this.utils.sendMessage;
-    }
-    
     isAdmin(user) {
         return this.global.permissions.isAdmin(user);
     }
@@ -153,7 +149,36 @@ class Base {
     isServerMod(member, channel) {
         return this.global.permissions.isServerMod(member, channel)
     }
+
+    get sendMessage() {
+        return this.utils.sendMessage;
+    }
     
+    reply(message, content, options) {
+        return this.sendMessage(message.channel, `${message.author.mention}, ${content}`, options);
+    }
+
+    success(channel, content, options) {
+        const embed = {
+            color: 'GREEN',
+            description: `${this.config.emojis.get('success')} ${content}`
+        };
+
+        return this.sendMessage(channel, { embed }, options);
+    }
+
+    error(channel, content, err) {
+        const embed = {
+            color: 'RED',
+            description: `${this.config.emojis.get('error')} ${content}`
+        };
+
+        return new Promise((resolve, reject) => {
+            return this.sendMessage(channel, { embed })
+            .catch(e => e)
+            .then(() => reject(err || content));
+        });
+    }
 }
 
 module.exports = Base;
