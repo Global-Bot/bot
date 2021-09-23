@@ -24,10 +24,8 @@ class CommandHandler extends Module {
     init() {
         this.cooldowns = new Map();
 		this.cooldown = 1000;
-        this.cooldowns.set('373965085283975171', Date.now() + 1000)
 
 		this.schedule('*/1 * * * * *', this.clearCooldowns.bind(this));
-        
     }
 
     clearCooldowns() {
