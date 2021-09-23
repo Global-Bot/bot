@@ -4,7 +4,9 @@ const path = require('path');
 const populateMap = require('./utils/populateMap');
 
 
-const config = {};
+const config = {
+    name: 'Global'
+};
 
 config.allowedGuilds = populateMap([
     '719706716962422806', // Global
@@ -85,8 +87,13 @@ config.paths = {
     basePath,
     events:   path.join(basePath, 'events'),
     commands: path.join(basePath, 'commands'),
-    modules: path.join(basePath, 'modules')
+    modules:  path.join(basePath, 'modules')
 }
+
+config.emojis = populateMap([
+    { key: 'success', value: '<:GlobalTick:748713755348697191>'  },
+    { key: 'error',   value: '<:GlobalCross:748712663626022940>' },
+])
 
 
 module.exports = config;
