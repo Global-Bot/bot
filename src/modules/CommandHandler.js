@@ -114,6 +114,8 @@ class CommandHandler extends Module {
         if (this.helpCommands.includes(command)) {
             if (args.length && commands.has(args[0])) {
                 const cmd = commands.get(args[0]);
+                if (cmd.permissions == 'admin' && !event.isAdmin) return;
+
                 return cmd.help(message);
             }
 
@@ -122,7 +124,11 @@ class CommandHandler extends Module {
 
         const cmd = commands.get(command);
 
-        if (!this.canExecute(cmd, event)) return this.sendMessage(message.channel, 'author no perms');
+        if (!this.canExecute(cmd, event)) {
+            if (cmd.permissions == 'admin' && !event.isAdmin) return;
+
+            return this.sendMessage(message.channel, 'author no perms');
+        }
 
         const executeStart = Date.now();
         
