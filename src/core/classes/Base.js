@@ -79,6 +79,10 @@ class Base {
     
     logWebhook(title, fields, options) {
         options = options || {};
+
+        if (!options.avatar && this.global.isReady) {
+            options.avatar = `https://cdn.discordapp.com/avatars/${this.global.user.id}/${this.global.user.avatar}.png`;
+        }
         
         if (!options.suppress) {
             if (typeof this.logger[options.logMethod] == 'function') {
@@ -98,7 +102,7 @@ class Base {
         
         const payload = {
             username,
-            avatar_url: `${this.config.avatar}`,
+            avatarURL: options.avatar,
             content: '',
             embeds: [],
             tts: false,

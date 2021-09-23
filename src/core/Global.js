@@ -76,11 +76,14 @@ class Global extends Base {
     }
 
     ready() {
+		this.logger.info(`${this.config.name} ready with ${this.client.guilds.cache.size} guilds`);
+        
         this.dispatcher.bindListeners();
+
+        this.user = this._client.user;
+        this.userID = this._client.user.id;
         
         this.isReady = true;
-
-        this.logger.info(`${this.client.user.username} is online with ${this.client.guilds.cache.size} guilds & ${this.client.users.cache.size} users`, 'Ready')
     }
 
     login() {
