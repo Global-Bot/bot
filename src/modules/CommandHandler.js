@@ -50,7 +50,7 @@ class CommandHandler extends Module {
     }
 
     onCommandFail({ message, args, command, time, summary, err }) {
-		this.logger.error(`${summary({ message, args, command, time })} Failed to run: "${err.message}"`, 'Failure');
+		this.logger.error(`${summary({ message, args, command, time })} Failed to run: "${err.message || err}"`, 'Failure');
     }
     
     canExecute(command, event) {
