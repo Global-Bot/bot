@@ -17,19 +17,19 @@ class Rob extends Command {
     
     async execute({ message, args }) {
         let getUser = this.resolveUser(message.guild, args[0]);
-        if(!getUser) return this.sendMessage(message.channel, "No valid user found")
+        if(!getUser) return this.error(message.channel, "No valid user found")
         if(getUser.id == message.author.id) return this.error(message.channel, "You cannot rob yourself!")
         
         let targetEconomyData = await getUser.economy;
         let userEconomyData = await message.member.economy;
-        if(targetEconomyData.errored) return this.sendMessage(message.channel, "A system error has occured");
-        if(userEconomyData.errored ) return this.sendMessage(message.channel, "A system error has occured");
+        if(targetEconomyData.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
+        if(userEconomyData.errored ) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
 
         let robAmount = parseInt(args[1]);
         
-        if(isNaN(robAmount) || robAmount < 0) return this.sendMessage(message.channel, "Invalid bet!")
-        if(robAmount > targetEconomyData.stars) return this.sendMessage(message.channel, "The user you are trying to rob has insufficient funds!") 
-        if(robAmount > userEconomyData.stars) return this.sendMessage(message.channel, "You don't have enough stars!") 
+        if(isNaN(robAmount) || robAmount < 0) return this.error(message.channel, "Invalid bet!")
+        if(robAmount > targetEconomyData.stars) return this.error(message.channel, "The user you are trying to rob has insufficient funds!") 
+        if(robAmount > userEconomyData.stars) return this.error(message.channel, "You don't have enough stars!") 
         
         userEconomyData.remove(robAmount);
         

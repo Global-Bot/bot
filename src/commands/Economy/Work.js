@@ -16,7 +16,7 @@ class Work extends Command {
 
     async execute({ message }) {
         let economyData = await message.member.economy;
-        if(economyData.errored) return this.sendMessage(message.channel, "A system error has occured");
+        if(economyData.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
 
         let starRange = this.config.economySettings.workStarRange;
 

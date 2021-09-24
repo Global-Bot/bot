@@ -17,7 +17,7 @@ class Balance extends Command {
         let userGet = this.resolveUser(message.guild, args[0]) || message.member;
         let economyData = await userGet.economy;
 
-        if(economyData.errored) return this.sendMessage(message.channel, "A system error has occured");
+        if(economyData.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
 
         const embed = {
             title: `${userGet.user.username}`,
