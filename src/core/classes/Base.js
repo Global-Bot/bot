@@ -33,16 +33,16 @@ class Base {
     get logger() {
         const _logger = _.cloneDeep(logger.get(this.constructor.name));
         const _logWebhook = this.logWebhook.bind(this);
-
+        
         const overrideHandler = {
             get: function(target, prop) {
                 function overrideLogger(method, webhook) {
                     webhook = webhook || `${method}s`;
-
+                    
                     if (!config.webhooks.has(webhook)) {
                         return target[prop];
                     }
-
+                    
                     return function (log, uniqueMarker, extra) {
                         _logWebhook(null, null, {
                             webhook,
@@ -50,11 +50,11 @@ class Base {
                             text: log,
                             suppress: true
                         });
-
+                        
                         return target[method](log, uniqueMarker, extra);
                     }
                 }
-
+                
                 const overrides = [ 'error', 'warn', 'info', 'debug', 'trace' ];
                 for (const override of overrides) {
                     if (prop == override) {
@@ -79,7 +79,7 @@ class Base {
     
     logWebhook(title, fields, options) {
         options = options || {};
-
+        
         if (!options.avatar && (this?.global && this?.global?.isReady)) {
             options.avatar = `https://cdn.discordapp.com/avatars/${this.global.user.id}/${this.global.user.avatar}.png`;
         }
@@ -91,7 +91,7 @@ class Base {
                 this.logger.info(title, options.uniqueMarker);
             }
         }
-
+        
         if (!this.config.webhooks.has(options.webhook)) {
             return this.logger.warn(`Invalid webhook ${options.webhook}`, 'postWebhook');
         }
@@ -141,15 +141,15 @@ class Base {
     isAdmin(user) {
         return this.global.permissions.isAdmin(user);
     }
-
+    
     isServerAdmin(member, channel) {
         return this.global.permissions.isServerAdmin(member, channel)
     }
-
+    
     isServerMod(member, channel) {
         return this.global.permissions.isServerMod(member, channel)
     }
-
+    
     get sendMessage() {
         return this.utils.sendMessage;
     }
@@ -157,22 +157,22 @@ class Base {
     reply(message, content, options) {
         return this.sendMessage(message.channel, `${message.author.mention}, ${content}`, options);
     }
-
+    
     success(channel, content, options) {
         const embed = {
             color: 'GREEN',
             description: `${this.config.emojis.get('success')} ${content}`
         };
-
+        
         return this.sendMessage(channel, { embed }, options);
     }
-
+    
     error(channel, content, err) {
         const embed = {
             color: 'RED',
             description: `${this.config.emojis.get('error')} ${content}`
         };
-
+        
         return new Promise((resolve, reject) => {
             return this.sendMessage(channel, { embed })
             .catch(e => e)
@@ -185,22 +185,22 @@ class Base {
     }
     
     get resolveUser() {
-		return this.Resolver.user;
-	}
+        return this.Resolver.user;
+    }
     
     get resolveRole() {
-		return this.Resolver.role;
-	}
+        return this.Resolver.role;
+    }
     
     get resolveChannel() {
-		return this.Resolver.channel;
-	}
-
-   async createMessageCollector(channel,{filter, time = 60000, max = 0}) {
-       if(!channel || !filter) return;
+        return this.Resolver.channel;
+    }
+    
+    async createMessageCollector(channel,{filter, time = 60000, max = 0}) {
+        if(!channel || !filter) return;
         return new Promise((res,rej) => {
             let messageCollector = channel.createMessageCollector({filter, time, max});
-
+            
             messageCollector.on('end', collected => {
                 return res(max == 1 ? collected[0] : collected);
             })
