@@ -23,6 +23,7 @@
     "@global-bot/database": "^1.0.0",
     "@global-bot/logger": "^1.0.0",
     "axios": "^0.21.4",
+    "chance": "^1.1.8",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "lodash": "^4.17.21",
