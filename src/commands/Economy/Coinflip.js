@@ -3,7 +3,7 @@ const randomInt = require('../../core/utils/randomInt');
 const sideChoices = ["h", "t"];
 const expandedSideChoices = ["heads", "tails"]
 
-class Ping extends Command {
+class Coinflip extends Command {
     constructor(global, ...args) {
         super(global, ...args);
 
@@ -47,4 +47,4 @@ class Ping extends Command {
 
 }
 
-module.exports = Ping;
+module.exports = Coinflip;

@@ -1,9 +1,8 @@
 const Command = require('../../core/classes/Command');
 const ChancePkg = require("chance")
 const Chance = new ChancePkg();
-const randomFloat = require('../../core/utils/randomFloat');
 
-class Ping extends Command {
+class Rob extends Command {
     constructor(global, ...args) {
         super(global, ...args);
         
@@ -59,4 +58,4 @@ class Ping extends Command {
     
 }
 
-module.exports = Ping;
+module.exports = Rob;

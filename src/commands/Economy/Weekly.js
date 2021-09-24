@@ -1,7 +1,7 @@
 const Command = require('../../core/classes/Command');
 const randomInt = require('../../core/utils/randomInt');
 
-class Ping extends Command {
+class Weekly extends Command {
     constructor(global, ...args) {
         super(global, ...args);
 
@@ -34,4 +34,4 @@ class Ping extends Command {
 
 }
 
-module.exports = Ping;
+module.exports = Weekly;

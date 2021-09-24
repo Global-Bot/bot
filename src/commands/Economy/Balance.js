@@ -1,6 +1,6 @@
 const Command = require('../../core/classes/Command');
 
-class Ping extends Command {
+class Balance extends Command {
     constructor(global, ...args) {
         super(global, ...args);
 
@@ -32,4 +32,4 @@ class Ping extends Command {
 
 }
 
-module.exports = Ping;
+module.exports = Balance;
