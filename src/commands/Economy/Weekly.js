@@ -1,5 +1,4 @@
 const Command = require('../../core/classes/Command');
-const randomInt = require('../../core/utils/randomInt');
 
 class Weekly extends Command {
     constructor(global, ...args) {

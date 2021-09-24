@@ -44,7 +44,7 @@ class Rob extends Command {
             targetEconomyData.remove(robAmount)
         } else {
             targetEconomyData.add(robAmount)
-        };
+        }
         
         const embed = {
             title: "Robbery Overview",
