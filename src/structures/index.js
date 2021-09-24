@@ -1,7 +1,9 @@
 class Structures {
     static load() {
         require('./User');
-        require("./GuildMember")
+        require('./Array');
+        require("./GuildMember");
+        
         return true;
     }
 }
