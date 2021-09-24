@@ -18,4 +18,3 @@ dist/
 
 # dotenv environment variables file
 .env
-.eslintrc.json
