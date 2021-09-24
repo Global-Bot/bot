@@ -195,6 +195,17 @@ class Base {
     get resolveChannel() {
 		return this.Resolver.channel;
 	}
+
+   async createMessageCollector(channel,{filter, time = 60000, max = 0}) {
+       if(!channel || !filter) return;
+        return new Promise((res,rej) => {
+            let messageCollector = channel.createMessageCollector({filter, time, max});
+
+            messageCollector.on('end', collected => {
+                return res(max == 1 ? collected[0] : collected);
+            })
+        })
+    }
 }
 
 module.exports = Base;

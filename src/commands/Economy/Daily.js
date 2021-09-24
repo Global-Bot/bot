@@ -23,7 +23,7 @@ class Daily extends Command {
 
         const embed = {
             title: "Daily Bonus Added",
-            description: `You have received **${starAmount}** ${this.config.emojis.star}`,
+            description: `You have received **${starAmount}** ${this.config.emojis.get("star")}`,
             footer: {
                 text: `You can run this command daily`
             }

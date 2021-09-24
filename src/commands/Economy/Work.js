@@ -26,7 +26,7 @@ class Work extends Command {
 
         const embed = {
             title: "Work Complete",
-            description: `You have earned **${starAmount}** ${this.config.emojis.star}`,
+            description: `You have earned **${starAmount}** ${this.config.emojis.get("star")}`,
             footer: {
                 text: `You can work again in 20 minutes`
             }

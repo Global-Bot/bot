@@ -20,8 +20,8 @@ class Balance extends Command {
         if(economyData.errored) return this.sendMessage(message.channel, "A system error has occured");
 
         const embed = {
-            title: `${userGet.user.username} - Balance`,
-            description: `**${economyData.stars}** ${this.config.emojis.star}`,
+            title: `${userGet.user.username}`,
+            description: `**${economyData.stars}** ${this.config.emojis.get("star")}`,
             thumbnail: {
                 url: userGet.user.avatarURL()
             }

@@ -23,7 +23,7 @@ class Weekly extends Command {
 
         const embed = {
             title: "Weekly Bonus Added",
-            description: `You have received **${starAmount}** ${this.config.emojis.star}`,
+            description: `You have received **${starAmount}** ${this.config.emojis.get("star")}`,
             footer: {
                 text: `You can run this command weekly`
             }

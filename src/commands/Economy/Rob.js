@@ -18,6 +18,7 @@ class Rob extends Command {
     async execute({ message, args }) {
         let getUser = this.resolveUser(message.guild, args[0]);
         if(!getUser) return this.sendMessage(message.channel, "No valid user found")
+        if(getUser.id == message.author.id) return this.error(message.channel, "You cannot rob yourself!")
         
         let targetEconomyData = await getUser.economy;
         let userEconomyData = await message.member.economy;
@@ -48,7 +49,7 @@ class Rob extends Command {
         
         const embed = {
             title: "Robbery Overview",
-            description: `You have ${isSuccessful ? "successfully" : "unsuccessfully"} robbed ${getUser.toString()} and have ${isSuccessful ? "won" : "lost"} ${robAmount} ${this.config.emojis.star}`,
+            description: `You have ${isSuccessful ? "successfully" : "unsuccessfully"} robbed ${getUser.toString()} and have ${isSuccessful ? "won" : "lost"} ${robAmount} ${this.config.emojis.get("star")}`,
             color: isSuccessful ? "00ff00" : "ff0000",
             footer: {
                 text: `Chance: ${winUnderNumber}\nTicket: ${randomFloatNumber}`

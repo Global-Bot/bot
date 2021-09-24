@@ -93,6 +93,7 @@ config.paths = {
 config.emojis = populateMap([
     { key: 'success', value: '<:GlobalTick:748713755348697191>'  },
     { key: 'error',   value: '<:GlobalCross:748712663626022940>' },
+    { key: 'star', value: '<:TestingGStar:890759402133544993>'}
 ])
 
 config.economySettings = {
@@ -100,10 +101,6 @@ config.economySettings = {
     weeklyBonus: 175,
     dailyBonus: 25,
     coinflipWinningPercentage: 49
-}
-
-config.emojis = {
-    star: "<:TestingGStar:890759402133544993>"
 }
 
 
