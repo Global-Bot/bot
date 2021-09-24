@@ -135,6 +135,7 @@ class CommandHandler extends Module {
                 message,
                 args,
                 command,
+                guild,
                 isAdmin
             })
             .then(() => {
