@@ -153,6 +153,10 @@ class Base {
     get sendMessage() {
         return this.utils.sendMessage;
     }
+
+    get firstUpperCase() {
+        return this.utils.firstUppercase;
+    }
     
     reply(message, content, options) {
         return this.sendMessage(message.channel, `${message.author.mention}, ${content}`, options);
