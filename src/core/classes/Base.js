@@ -196,13 +196,24 @@ class Base {
         return this.Resolver.channel;
     }
     
-    async createMessageCollector(channel,{filter, time = 60000, max = 0}) {
+    createMessageCollector(channel,{filter, time = 60000, max = 0}) {
         if(!channel || !filter) return;
-        return new Promise((res,rej) => {
+        return new Promise(res => {
             let messageCollector = channel.createMessageCollector({filter, time, max});
             
             messageCollector.on('end', collected => {
                 return res(max == 1 ? collected[0] : collected);
+            })
+        })
+    }
+
+    createInteractionCollector(message,{filter, time = 60000, max = 0}) {
+        if(!message || !filter) return;
+        return new Promise(res => {
+            let interactionCollector = message.createMessageComponentCollector({filter, time, max});
+            
+            interactionCollector.on('end', collected => {
+                return res(max == 1 ? collected.first() : collected);
             })
         })
     }
