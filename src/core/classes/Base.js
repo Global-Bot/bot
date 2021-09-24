@@ -80,7 +80,7 @@ class Base {
     logWebhook(title, fields, options) {
         options = options || {};
 
-        if (!options.avatar && this.global.isReady) {
+        if (!options.avatar && (this?.global && this?.global?.isReady)) {
             options.avatar = `https://cdn.discordapp.com/avatars/${this.global.user.id}/${this.global.user.avatar}.png`;
         }
         
