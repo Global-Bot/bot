@@ -95,5 +95,16 @@ config.emojis = populateMap([
     { key: 'error',   value: '<:GlobalCross:748712663626022940>' },
 ])
 
+config.economySettings = {
+    workStarRange: [7, 32],
+    weeklyBonus: 175,
+    dailyBonus: 25,
+    coinflipWinningPercentage: 49
+}
+
+config.emojis = {
+    star: "<:TestingGStar:890759402133544993>"
+}
+
 
 module.exports = config;
