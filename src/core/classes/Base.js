@@ -179,6 +179,22 @@ class Base {
             .then(() => reject(err || content));
         });
     }
+    
+    get Resolver() {
+        return this.utils.Resolver;
+    }
+    
+    get resolveUser() {
+		return this.Resolver.user;
+	}
+    
+    get resolveRole() {
+		return this.Resolver.role;
+	}
+    
+    get resolveChannel() {
+		return this.Resolver.channel;
+	}
 }
 
 module.exports = Base;
