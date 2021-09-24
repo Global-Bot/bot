@@ -21,7 +21,9 @@ class Rob extends Command {
         
         let targetEconomyData = await getUser.economy;
         let userEconomyData = await message.member.economy;
-        
+        if(targetEconomyData.errored) return this.sendMessage(message.channel, "A system error has occured");
+        if(userEconomyData.errored ) return this.sendMessage(message.channel, "A system error has occured");
+
         let robAmount = parseInt(args[1]);
         
         if(isNaN(robAmount) || robAmount < 0) return this.sendMessage(message.channel, "Invalid bet!")

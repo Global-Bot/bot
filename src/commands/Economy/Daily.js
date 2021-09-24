@@ -15,6 +15,7 @@ class Daily extends Command {
 
     async execute({ message }) {
         let economyData = await message.member.economy;
+        if(economyData.errored) return this.sendMessage(message.channel, "A system error has occured");
 
         let starAmount = this.config.economySettings.dailyBonus;
 

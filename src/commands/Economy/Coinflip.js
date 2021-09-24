@@ -18,6 +18,7 @@ class Coinflip extends Command {
 
     async execute({ message, args }) {
         let economyData = await message.member.economy;
+        if(economyData.errored) return this.sendMessage(message.channel, "A system error has occured");
 
         let sideChoice = args[0];
         if(!sideChoices.includes(sideChoice)) return this.sendMessage(message.channel, "You must pick **h/t**")
