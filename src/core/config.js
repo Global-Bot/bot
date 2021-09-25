@@ -15,6 +15,8 @@ config.allowedGuilds = populateMap([
     '888478366540365835', // Global | Lzz Testing
 ])
 
+config.base_guild = "878759943661027408" // Global | Bot Rework
+
 config.admins = populateMap([
     '199109802281009152', // Not_Chris
     '394594679221518336', // IXZ
