@@ -129,8 +129,8 @@ class Command extends Base {
         return this.sendMessage(message.channel, { embed });
     }
     
-    makeButton(name, user_id, emoji) {
-        return super.makeButton(name, user_id, this.name, emoji)
+    makeButton({name, user_id, emoji, type}) {
+        return super.makeButton(name, user_id, this.name, emoji, type)
     }
     
     ensure() {    

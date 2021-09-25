@@ -223,11 +223,11 @@ class Base {
         })
     }
 
-    makeButton(name, user_id, cmd, emoji) {
+    makeButton(name, user_id, cmd, emoji, type = "PRIMARY") {
         return new Discord.MessageButton()
         .setCustomId(`${cmd}-${name.toLowerCase()}-${user_id}`)
         .setLabel(name)
-        .setStyle('PRIMARY')
+        .setStyle(type)
         .setEmoji(emoji ? emoji : undefined)
         .setDisabled(false);
     }
