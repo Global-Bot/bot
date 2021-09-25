@@ -81,7 +81,6 @@ class Command extends Base {
             const cooldown = await this.shouldCooldown(message);
             
             if (cooldown) {
-                console.log(cooldown)
                 return this.sendMessage(message.channel, `${message.author.mention}, you're on cooldown! You can do this **${this.moment(cooldown).fromNow()}**`, { deleteAfter: 10000 })
             }
         }
