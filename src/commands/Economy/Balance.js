@@ -20,8 +20,8 @@ class Balance extends Command {
         if(economyData.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
 
         const embed = {
-            title: `${userGet.user.username}`,
-            description: `**${economyData.stars}** ${this.config.emojis.get("star")}`,
+            title: `${userGet.user.username} | Server Data`,
+            description: `Star Balance: **${economyData.stars}** ${this.config.emojis.get("star")}`,
             thumbnail: {
                 url: userGet.user.avatarURL()
             }

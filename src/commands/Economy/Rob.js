@@ -23,11 +23,11 @@ class Rob extends Command {
         let targetEconomyData = await getUser.economy;
         let userEconomyData = await message.member.economy;
         if(targetEconomyData.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
-        if(userEconomyData.errored ) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
+        if(userEconomyData.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
 
         let robAmount = parseInt(args[1]);
         
-        if(isNaN(robAmount) || robAmount < 0) return this.error(message.channel, "Invalid bet!")
+        if(isNaN(robAmount) || robAmount <= 0) return this.error(message.channel, "Invalid bet!")
         if(robAmount > targetEconomyData.stars) return this.error(message.channel, "The user you are trying to rob has insufficient funds!") 
         if(robAmount > userEconomyData.stars) return this.error(message.channel, "You don't have enough stars!") 
         

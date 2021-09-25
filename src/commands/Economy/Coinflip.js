@@ -25,7 +25,7 @@ class Coinflip extends Command {
 
         let bet = parseInt(args[1]);
 
-        if(isNaN(bet) || bet < 0) return this.error(message.channel, "Invalid bet!")
+        if(isNaN(bet) || bet <= 0) return this.error(message.channel, "Invalid bet!")
         if(bet > economyData.stars) return this.error(message.channel, "Insufficient funds!")
 
         economyData.remove(bet);
