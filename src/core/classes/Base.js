@@ -158,6 +158,10 @@ class Base {
     get moment() {
         return require("moment")
     }
+
+    get ms() {
+        return require("ms");
+    }
     
     get firstUpperCase() {
         return this.utils.firstUppercase;
