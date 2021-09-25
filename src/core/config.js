@@ -63,7 +63,8 @@ config.clientOptions = {
     ],
     modules: [
         'GuildManager',
-        'CommandHandler'
+        'CommandHandler',
+        'ButtonHandler'
     ]
 }
 

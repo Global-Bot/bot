@@ -4,6 +4,7 @@ const config = require('../config');
 const db = require('../database');
 const Discord = require('discord.js');
 const _ = require('lodash');
+const InteractionData = require('./InteractionData');
 
 class Base {
     constructor(global) {
@@ -153,11 +154,11 @@ class Base {
     get sendMessage() {
         return this.utils.sendMessage;
     }
-
+    
     get moment() {
         return require("moment")
     }
-
+    
     get firstUpperCase() {
         return this.utils.firstUppercase;
     }
@@ -214,7 +215,7 @@ class Base {
             })
         })
     }
-
+    
     createInteractionCollector(message,{filter, time = 60000, max = 0}) {
         if(!message || !filter) return;
         return new Promise(res => {
@@ -226,7 +227,7 @@ class Base {
             })
         })
     }
-
+    
     makeButton(name, user_id, cmd, emoji, type = "PRIMARY") {
         return new Discord.MessageButton()
         .setCustomId(`${cmd}-${name.toLowerCase()}-${user_id}`)
@@ -235,10 +236,52 @@ class Base {
         .setEmoji(emoji ? emoji : undefined)
         .setDisabled(false);
     }
-
+    
     cleanInteraction(id) {
         if(!id) return false;
         return id.split("-")[1];
+    }
+    
+    customID(identifier, command) {
+        let randomID         = '';
+        let length           = 10;
+        let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let charactersLength = characters.length;
+        for (let i = 0; i < length; i++) {
+            randomID += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        
+        return [
+            command,
+            randomID,
+            identifier
+        ].join('-');
+    }
+    
+    button(identifier, command, label, data = null, emoji, style = 'PRIMARY') {
+        const customID = this.customID(identifier, command);
+        this.setData(customID, data);
+        
+        return new Discord.MessageButton()
+        .setCustomId(customID)
+        .setLabel(label)
+        .setEmoji(emoji)
+        .setStyle(style);
+    }    
+    
+    async getData(id) {
+        const interactionData = new InteractionData(this, id);
+        return await interactionData.get();
+    }
+    
+    async hasData(id) {
+        const interactionData = new InteractionData(this, id);
+        return await interactionData.has();
+    }
+    
+    async setData(id, data) {
+        const interactionData = new InteractionData(this, id);
+        return await interactionData.set(data);
     }
 }
 

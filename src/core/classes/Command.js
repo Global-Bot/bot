@@ -132,8 +132,12 @@ class Command extends Base {
     makeButton({name, user_id, emoji, type}) {
         return super.makeButton(name, user_id, this.name, emoji, type)
     }
+
+    button(identifier, label, data = null, emoji, style = 'PRIMARY') {
+        return super.button(identifier, this.name, label, data, emoji, style);
+    }
     
-    ensure() {    
+    ensure() {
         function ensureError(err, prop, exists, type, received) {
             return JSON.stringify({ err, prop, exists, type, received });
         }
@@ -151,7 +155,5 @@ class Command extends Base {
         return true;
     }
     
-    
 }
-
 module.exports = Command;
