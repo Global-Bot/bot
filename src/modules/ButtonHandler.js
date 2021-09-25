@@ -17,9 +17,6 @@ class ButtonHandler extends Module {
     async interactionCreate({ interaction, isAdmin }) {
         if (!interaction) return;
         
-        let commandName = null;
-        let interactionIdentifier = null;
-
         // Check the customID is legitimate and comes from the bot
         const customId = interaction.customId;
         if (!customId) return;
@@ -27,8 +24,7 @@ class ButtonHandler extends Module {
         // Check the format of the customId and break it up into parts
         const idParts = customId.split('-');
         if (!idParts || idParts.length != 3) return;
-        commandName = idParts[0];
-        interactionIdentifier = idParts[2];
+        let interactionIdentifier = idParts[2];
 
         // Check if there is any saved data on the interaction customID
         let data = null;
@@ -47,7 +43,7 @@ class ButtonHandler extends Module {
         }
 
         // Find the command and check if it has a buttonClick method
-        const command = this.global.commands.get(commandName);
+        const command = this.global.commands.get(idParts[0]);
         if (!command) return;
 
         return command.buttonClick({ interaction, identifier, data, isAdmin });
