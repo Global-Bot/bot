@@ -154,6 +154,10 @@ class Base {
         return this.utils.sendMessage;
     }
 
+    get moment() {
+        return require("moment")
+    }
+
     get firstUpperCase() {
         return this.utils.firstUppercase;
     }
