@@ -8,3 +8,4 @@ utils.Resolver    = require('./Resolver');
 utils.randomInt  = require("./randomInt")
 utils.randomFloat = require("./randomFloat")
 utils.firstUppercase = require("./firstUppercase")
+utils.groupArray = require('./groupArray')
