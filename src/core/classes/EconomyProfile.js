@@ -28,9 +28,11 @@ class EconomyProfile extends Base {
 
     async remove(amount) {
         if(!amount || isNaN(amount) || !Number.isInteger(amount) || amount < 0 || amount > 1000000) return false;
-        this.stars = this.stars - amount;
-        if(this.stars < 0) {this.stars = 0}
-        return this.save();
+        let newStarBalance = this.stars - amount;
+        if(newStarBalance < 0) return false;
+        this.stars = newStarBalance;
+        this.save();
+        return true;
     }
 }
 
