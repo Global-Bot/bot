@@ -100,7 +100,23 @@ config.economySettings = {
     workStarRange: [7, 32],
     weeklyBonus: 175,
     dailyBonus: 25,
-    coinflipWinningPercentage: 49
+    coinflipWinningPercentage: 49,
+    rollLowestBet: 10
+}
+
+config.rollMultipliers = {
+    // If above: multiplier
+    0: 0,
+    69: 0,
+    80: 1.1,
+    89: 1.3,
+    99: 1.4,
+    100: 2
+}
+
+config.lottery = {
+    ticketPrice: 250,
+    channel: "880550889256009768"
 }
 
 
