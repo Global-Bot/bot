@@ -217,9 +217,24 @@ class Base {
             let interactionCollector = message.createMessageComponentCollector({filter, time, max});
             
             interactionCollector.on('end', collected => {
+                for(let item of collected.values()) {item.customId = this.cleanInteraction(item.customId); collected.set(item.id, item)}
                 return res(max == 1 ? collected.first() : collected);
             })
         })
+    }
+
+    makeButton(name, user_id, cmd, emoji) {
+        return new Discord.MessageButton()
+        .setCustomId(`${cmd}-${name.toLowerCase()}-${user_id}`)
+        .setLabel(name)
+        .setStyle('PRIMARY')
+        .setEmoji(emoji ? emoji : undefined)
+        .setDisabled(false);
+    }
+
+    cleanInteraction(id) {
+        if(!id) return false;
+        return id.split("-")[1];
     }
 }
 
