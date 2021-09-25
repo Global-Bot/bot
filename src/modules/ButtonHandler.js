@@ -44,7 +44,7 @@ class ButtonHandler extends Module {
 
         // Find the command and check if it has a buttonClick method
         const command = this.global.commands.get(idParts[0]);
-        if (!command) return;
+        if (!command || typeof command.buttonClick != 'function') return;
 
         return command.buttonClick({ interaction, identifier, data, isAdmin });
     }
