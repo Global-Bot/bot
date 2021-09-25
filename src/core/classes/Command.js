@@ -140,31 +140,18 @@ class Command extends Base {
         
         for (const { name, type, optional } of this._commandProps) {
             if (!Object.hasOwnProperty.call(this, name) && typeof this[name] != type && !optional) {
-                throw new Error(ensureError(
-                    `Command "${this.constructor.name}": Required prop "${name}" does not exist`,
-                    name,
-                    false,
-                    type,
-                    typeof this[name]
-                    ));
-                }
-                
-                if (typeof this[name] != type && !(optional && typeof this[name] == 'undefined')) {
-                    throw new Error(ensureError(
-                        `Command "${this.constructor.name}": Required prop "${name}" is the wrong type, should be "${type}", received: "${typeof this[name]}"`,
-                        name,
-                        true,
-                        type,
-                        typeof this[name]
-                        ));
-                    }
-                }
-                
-                return true;
+                throw new Error(ensureError(`Command "${this.constructor.name}": Required prop "${name}" does not exist`, name, false, type, typeof this[name]));
             }
             
-            
+            if (typeof this[name] != type && !(optional && typeof this[name] == 'undefined')) {
+                throw new Error(ensureError(`Command "${this.constructor.name}": Required prop "${name}" is the wrong type, should be "${type}", received: "${typeof this[name]}"`, name, true, type, typeof this[name]));
+            }
         }
         
-        module.exports = Command;
-        
+        return true;
+    }
+    
+    
+}
+
+module.exports = Command;
