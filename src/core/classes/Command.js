@@ -47,7 +47,6 @@ class Command extends Base {
         this.isLongCooldown = typeof this.cooldown == 'object';
 
         const cooldown = this.isLongCooldown ? await this.global.cooldown.get(message.author.id, this.cooldown) : this._cooldowns.get(message.author.id);
-        console.log(cooldown)
         if(this.isLongCooldown && cooldown) return cooldown;
         
         if (!cooldown) {
