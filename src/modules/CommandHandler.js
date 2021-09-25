@@ -131,7 +131,7 @@ class CommandHandler extends Module {
         const executeStart = Date.now();
         
         try {
-            cmd._execute({
+            await cmd._execute({
                 message,
                 args,
                 command,
