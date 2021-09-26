@@ -334,6 +334,26 @@ class Base {
         const interactionData = new InteractionData(this, id);
         return await interactionData.set(data);
     }
+
+    codeBlock(content, language = '', options = {}) {
+        let code = [ '```' + language, content, '```' ].join('\n');
+
+        if (options.header) {
+            code = `${options.header}\n${code}`;
+        }
+        
+        if (options.footer) {
+            code = `${code}\n${options.footer}`;
+        }
+
+        return code;
+    }
+
+    sendCode(channel, content, ...args) {
+        const code = this.codeBlock(content, ...args);
+
+        return this.sendMessage(channel, code);
+    }
 }
 
 module.exports = Base;
