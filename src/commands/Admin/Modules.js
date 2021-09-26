@@ -20,10 +20,7 @@ class Modules extends Command {
             [ 'Name', 'Description' ]
         ];
         
-        modules.forEach(module => {
-            console.log(module)
-            table.push([ module.module, module.description ])
-        });
+        modules.forEach(module => table.push([ module.module, module.description ]));
         
         const embed = {
             title: '**Modules**',
