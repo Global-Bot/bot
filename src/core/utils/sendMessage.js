@@ -2,7 +2,6 @@ const config = require('../config');
 
 function sendMessage(channel, message, options) {
     options = options || {};
-
     if (!channel || !message) {
         return Promise.resolve();
     }
@@ -22,7 +21,7 @@ function sendMessage(channel, message, options) {
         delete message.embed;
     }
 
-    return channel.send(message).then(msg => {
+    return send(Array.from(arguments)).then(msg => {
         if (options.pin) {
             msg.pin();
         }
@@ -35,6 +34,13 @@ function sendMessage(channel, message, options) {
 
         return msg;
     }).catch(err => err)
+}
+
+function send() {
+    let [channel,message,options] = Array.from(arguments)[0]
+    options = options || {};
+    let msg = options.replyTo ? options.replyTo.reply(message) : channel.send(message)
+    return msg;
 }
 
 module.exports = sendMessage;
