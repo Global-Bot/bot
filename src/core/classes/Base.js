@@ -401,6 +401,10 @@ class Base {
 
 		return `${username}#${discriminator}`;
     }
+
+    get removeDuplicates() {
+        return _.uniq;
+    }
 }
 
 module.exports = Base;
