@@ -15,10 +15,7 @@ class Topic extends Command {
 
     async execute({ message }) {
         let question = this.config.topics.questions.random();
-        const embed = {
-            title: question
-        }
-        return this.sendMessage(message.channel, {embed})
+        return this.sendMessage(message.channel, question)
     }
 
 }

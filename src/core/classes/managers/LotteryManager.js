@@ -84,11 +84,11 @@ class LotteryManager extends Base {
         let wantDate = this.moment().set({hour: 18, minute: 0, second: 0, millisecond: 0})
         const dayINeed = 6; // Saturday
         if (today < dayINeed) { 
-            wantDate = this.moment().isoWeekday(dayINeed)
+            wantDate = wantDate.isoWeekday(dayINeed)
         } else if(today > dayINeed || today == dayINeed && today.get("hour") >= 18) {
-            wantDate = this.moment().add(1, 'weeks').isoWeekday(dayINeed);
+            wantDate = wantDate.add(1, 'weeks').isoWeekday(dayINeed);
         }
-        
+
         let distance = wantDate.valueOf() - now.valueOf()
         return distance;
     }
