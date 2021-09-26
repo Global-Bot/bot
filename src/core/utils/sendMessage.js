@@ -1,3 +1,5 @@
+const config = require('../config');
+
 function sendMessage(channel, message, options) {
     options = options || {};
 
@@ -13,6 +15,7 @@ function sendMessage(channel, message, options) {
     message.disableEveryone = options.disableEveryone != undefined ? options.disableEveryone : true;
 
     if (message.embed) {
+        message.embed.title = `[${config.stateName}] ${message.embed.title}`
         if (!message.embed.color) message.embed.color = 'PURPLE';
         
         message.embeds = [ message.embed ];

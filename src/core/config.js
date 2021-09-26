@@ -5,7 +5,8 @@ const populateMap = require('./utils/populateMap');
 
 
 const config = {
-    name: 'Global'
+    name: 'Global',
+    stateName: process.env.STATE_NAME || ''
 };
 
 config.allowedGuilds = populateMap([

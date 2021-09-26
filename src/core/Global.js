@@ -78,7 +78,7 @@ class Global extends Base {
     }
 
     ready() {
-		this.logger.info(`${this.config.name} ready with ${this.client.guilds.cache.size} guilds`);
+		this.logger.info(`[${this.config.stateName}] ${this.config.name} ready with ${this.client.guilds.cache.size} guilds`);
         
         this.dispatcher.bindListeners();
 
