@@ -114,6 +114,7 @@ class CommandHandler extends Module {
             if (args.length && commands.has(args[0])) {
                 const cmd = commands.get(args[0]);
                 if (cmd.permissions == 'admin' && !event.isAdmin) return;
+                if (cmd.hide) return;
 
                 return cmd.help(message);
             }
@@ -165,6 +166,8 @@ class CommandHandler extends Module {
         if (category && category.toLowerCase() == 'admin' && !isAdmin) return;
 
         const categorizedCommands = this.utils.groupArray(Array.from(this.global.commands.values()), 'group');
+        if (category && !categorizedCommands[category]) return;
+        
         Object.keys(categorizedCommands).map(cat => {
             let commands = categorizedCommands[cat];
             commands = commands.filter((item,index) => commands.indexOf(item) == index);

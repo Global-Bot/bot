@@ -72,6 +72,10 @@ class Command extends Base {
             if (this.permissions == 'admin' && !event.isAdmin) {
                 return Promise.resolve();
             }
+
+            if (this.hide) {
+                return Promise.resolve();
+            }
             
             return this.help(message);
         }
@@ -97,6 +101,8 @@ class Command extends Base {
     }
     
     help(message) {
+        if (this.hide) return;
+
         // Wrap a string in backticks
         function bt(str) {
             return '`' + str + '`';
