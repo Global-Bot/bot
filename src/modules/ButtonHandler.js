@@ -12,42 +12,17 @@ class ButtonHandler extends Module {
 
     static get name() {
         return 'ButtonHandler';
-    }
+    }    
 
     async interactionCreate({ interaction, isAdmin }) {
-        if (!interaction) return;
-        if (!interaction.isButton()) return;
-        
-        // Check the customID is legitimate and comes from the bot
-        const customId = interaction.customId;
-        if (!customId) return;
-
-        // Check the format of the customId and break it up into parts
-        const idParts = customId.split('-');
-        if (!idParts || idParts.length != 3) return;
-        let interactionIdentifier = idParts[2];
-
-        // Check if there is any saved data on the interaction customID
-        let data = null;
-        if (await this.hasData(customId)) {
-            // Get the data if it exists
-            const interactionData = await this.getData(customId);
-            if (interactionData) {
-                data = interactionData;
-            }
-        }
-
-        // Check if a button identifier was provided
-        let identifier = null;
-        if (interactionIdentifier) {
-            identifier = interactionIdentifier;
-        }
+        if (!this.validate(interaction)) return;
+        const { identifier, data, command } = await this.resolve(interaction);
 
         // Find the command and check if it has a buttonClick method
-        const command = this.global.commands.get(idParts[0]);
-        if (!command || typeof command.buttonClick != 'function') return;
+        const interactionCommand = this.global.commands.get(command);
+        if (!interactionCommand || typeof interactionCommand.buttonClick != 'function') return;
 
-        return command.buttonClick({ interaction, identifier, data, isAdmin });
+        return interactionCommand.buttonClick({ interaction, identifier, data, isAdmin });
     }
 
 }
