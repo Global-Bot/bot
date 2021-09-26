@@ -36,7 +36,7 @@ class Work extends Command {
             }
         }
 
-        return this.sendMessage(message.channel, {embed})
+        return this.sendMessage(message.channel, {embed}, {replyTo: message})
     }
 
 }

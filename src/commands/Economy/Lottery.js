@@ -60,7 +60,7 @@ class Daily extends Command {
                 title: "Purchase Complete"
             }
 
-            return this.sendMessage(message.channel, {embed});
+            return this.sendMessage(message.channel, {embed}, {replyTo: message});
 
         } else {
             let {totalTickets, totalJackpot, userTickets} = await this.global.lottery.getStats(message.author.id);
@@ -91,7 +91,7 @@ class Daily extends Command {
                 ]
             }
 
-            return this.sendMessage(message.channel, {embed})
+            return this.sendMessage(message.channel, {embed}, {replyTo: message})
         }
     }
     

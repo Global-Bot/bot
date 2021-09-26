@@ -32,7 +32,7 @@ class Daily extends Command {
             }
         }
 
-        return this.sendMessage(message.channel, {embed}, {reply: true, originalMessage: message})
+        return this.sendMessage(message.channel, {embed}, {replyTo: message})
     }
 
 }

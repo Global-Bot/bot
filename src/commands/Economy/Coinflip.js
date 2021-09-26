@@ -43,7 +43,7 @@ class Coinflip extends Command {
             description: `Coin lands on **${botChoice}**\nYou have ${hasWon ? "won" : "lost"} **${bet}** ${this.config.emojis.get("star")}`
         }
 
-        return this.sendMessage(message.channel, {embed})
+        return this.sendMessage(message.channel, {embed}, {replyTo: message})
     }
 
 }

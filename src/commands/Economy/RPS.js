@@ -91,7 +91,7 @@ class RPS extends Command {
             
             embed = {
                 title: `${isDraw ? "Draw!" : `${winnerData.user.user.username} has won!`}`,
-                description: `**${message.member.toString()} chose**: ${this.firstUpperCase(userChoice)}\n**${mentionedUser.toString()} chose**: ${this.firstUpperCase(targetChoice)}`,
+                description: `**${message.member.toString()} chose**: ${this.firstUpperCase(userChoice)}\n\n**${mentionedUser.toString()} chose**: ${this.firstUpperCase(targetChoice)}\n${winnerData.user.toString()} won **${bet * 2}** ${this.config.emojis.get("star")}!`,
             }
             
         } else {
@@ -112,7 +112,7 @@ class RPS extends Command {
             
             embed = {
                 title: `${isDraw ? "Draw!" : userWon ? "Congratulations!" : "Bad Luck!"}`,
-                description: `**You chose**: ${this.firstUpperCase(userChoice)}\n**Bot chose**: ${this.firstUpperCase(botChoice)}`,
+                description: `**You chose**: ${this.firstUpperCase(userChoice)}\n**Bot chose**: ${this.firstUpperCase(botChoice)}\n\n${userWon ? `You've won **${bet * 2}** ${this.config.emojis.get("star")}!` : ""}`,
             }
         }
         return this.sendMessage(message.channel, {embed})

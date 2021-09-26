@@ -44,7 +44,7 @@ class Roll extends Command {
             description: `${message.author.tag}, **\`You rolled ${randomNumber}\`**. ${winnings ? `Congrats, You've won **${winnings}** ${this.config.emojis.get("star")}` : ""}`
         }
 
-        return this.sendMessage(message.channel, {embed})
+        return this.sendMessage(message.channel, {embed}, {replyTo: message})
     }
 
 }
