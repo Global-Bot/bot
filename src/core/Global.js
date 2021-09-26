@@ -6,6 +6,7 @@ const EventEmitter = require('events');
 const CommandCollection = require('./classes/collections/CommandCollection');
 const ModuleCollection = require('./classes/collections/ModuleCollection');
 const PermissionsManager = require('./classes/managers/PermissionsManager');
+const LotteryManager = require('./classes/managers/LotteryManager');
 const CooldownManager = require('./classes/managers/CooldownManager');
 
 
@@ -68,6 +69,7 @@ class Global extends Base {
 
         // Managers
         this.permissions = new PermissionsManager(this);
+        this.lottery = new LotteryManager(this);
         this.cooldown = new CooldownManager(this);
         
         // Listeners
