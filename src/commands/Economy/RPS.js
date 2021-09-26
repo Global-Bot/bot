@@ -78,8 +78,10 @@ class RPS extends Command {
             
             msg.delete();
             
-            economyData.remove(bet);
-            userEconomyData.remove(bet);
+            let removeMemberBet = economyData.remove(bet);
+            let removeUserBet = userEconomyData.remove(bet);
+            if(!removeMemberBet || !removeUserBet) return this.error(message.channel, "Insufficient funds!")
+            
             
             let getWinner = this.calculateWinner(userChoice, targetChoice);
             let winnerData = getWinner == userChoice ? {user: message.member, economy: economyData} : {user: mentionedUser, economy: userEconomyData};
