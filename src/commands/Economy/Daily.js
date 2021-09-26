@@ -18,18 +18,21 @@ class Daily extends Command {
         if(economyData.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
 
         let starAmount = this.config.economySettings.dailyBonus;
+        let multiplier = this.calculateMultiplier(message.member);
+        let starAfterMultiplier = Math.floor((starAmount * multiplier))
+        let difference = starAfterMultiplier - starAmount;
 
-        economyData.add(starAmount);
+        economyData.add(starAfterMultiplier);
 
         const embed = {
             title: "Daily Bonus Added",
-            description: `You have received **${starAmount}** ${this.config.emojis.get("star")}`,
+            description: `You have received **${starAfterMultiplier}** ${this.config.emojis.get("star")} ${multiplier > 1 ? `\nYou have received **${difference} bonus** ${this.config.emojis.get("star")} for boosting!`: "" }`,
             footer: {
                 text: `You can run this command daily`
             }
         }
 
-        return this.sendMessage(message.channel, {embed})
+        return this.sendMessage(message.channel, {embed}, {reply: true, originalMessage: message})
     }
 
 }

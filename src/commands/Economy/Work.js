@@ -22,11 +22,15 @@ class Work extends Command {
 
         let starAmount = randomInt(starRange[0], starRange[1]);
 
-        economyData.add(starAmount);
+        let multiplier = this.calculateMultiplier(message.member);
+        let starAfterMultiplier = Math.floor((starAmount * multiplier))
+        let difference = starAfterMultiplier - starAmount;
+
+        economyData.add(starAfterMultiplier);
 
         const embed = {
             title: "Work Complete",
-            description: `You have earned **${starAmount}** ${this.config.emojis.get("star")}`,
+            description: `You have earned **${starAfterMultiplier}** ${this.config.emojis.get("star")} ${multiplier > 1 ? `\nYou have received **${difference} bonus** ${this.config.emojis.get("star")} for boosting!`: "" }`,
             footer: {
                 text: `You can work again in 20 minutes`
             }
