@@ -1,4 +1,5 @@
 const Module = require('../core/classes/Module');
+const { MessageButton, MessageActionRow } = require('discord.js');
 
 class CommandHandler extends Module {
     constructor(global) {
@@ -150,9 +151,97 @@ class CommandHandler extends Module {
             this.logger.error(err);
         }
     }
-    
+
     helpMenu({ message, isAdmin }) {
-        this.sendMessage(message.channel, 'main help menu here. isadmin=' + isAdmin)
+        this.sendMessage(message.channel, this.helpPage({
+            author: message.author.id,
+            isAdmin
+        }));
+    }
+
+    helpPage({ author, category, isAdmin }) {
+        const help = {};
+
+        if (category && category.toLowerCase() == 'admin' && !isAdmin) return;
+
+        const categorizedCommands = this.utils.groupArray(Array.from(this.global.commands.values()), 'group');
+        Object.keys(categorizedCommands).map(cat => {
+            let commands = categorizedCommands[cat];
+            commands = commands.filter((item,index) => commands.indexOf(item) == index);
+
+            categorizedCommands[cat] = commands;
+        });
+
+        let embed;
+        const prefix = this.config.prefix;
+
+        if (!category) {
+            const mainHelpPage = [];
+
+            for (const [ cat, commands ] of Object.entries(categorizedCommands)) {
+                if (cat && cat.toLowerCase() == 'admin' && !isAdmin) continue;
+
+                mainHelpPage.push({
+                    name: `${cat} [${commands.length}]`,
+                    value: `\`${prefix}help ${cat.toLowerCase()}\``,
+                    inline: true
+                });
+            }
+
+            embed = {
+                title: 'Commands List',
+                fields: mainHelpPage
+            }
+        } else {
+            let categoryPage = 'You can do `.help <cmd>` for more info on how to use them.\n\n**Commands**\n';
+
+            for (const command of Object.values(categorizedCommands[category])) {
+                if (command.permissions == 'admin' && !isAdmin) continue;
+
+                categoryPage += `\`${prefix}${command.name}\` - ${command.description}\n`;
+            }
+
+            embed = {
+                title: `${category} Commands`,
+                description: categoryPage
+            }
+        }
+
+        help.embed  = embed;
+        help.embeds = [ embed ];
+
+        if (!category) {
+            const categoryButtons = Object.keys(categorizedCommands).map(cat => {
+                if (cat && cat.toLowerCase() == 'admin' && !isAdmin) return null;
+    
+                return this.button(cat, 'help', this.utils.firstUppercase(cat), { author })
+            })
+            .filter(button => !!button) // Remove invalid buttons (admin button if user isn't admin)
+    
+            const row = new MessageActionRow()
+            .addComponents(categoryButtons);
+            
+            help.components = [ row ];
+        }
+
+
+        return help;
+    }
+
+    async interactionCreate({ interaction, data, isAdmin }) {
+        if (!this.validate(interaction)) return;
+        const { identifier, command } = await this.resolve(interaction);
+
+        if (command != 'help') return;
+
+        if (interaction.customId.startsWith('help'))
+
+        await interaction.deferUpdate();
+        await interaction.editReply(this.helpPage({
+            category: identifier,
+            author: data.author,
+            isAdmin
+        }));
     }
 }
 
