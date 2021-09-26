@@ -271,7 +271,54 @@ class Base {
         .setLabel(label)
         .setEmoji(emoji)
         .setStyle(style);
-    }    
+    }
+
+    validate(interaction) {
+        if (!interaction) return false;
+        if (!interaction.isButton()) return false;
+        
+        // Check the customID is legitimate and comes from the bot
+        const customId = interaction.customId;
+        if (!customId) return false;
+
+        // Check the format of the customId and break it up into parts
+        const idParts = customId.split('-');
+        if (!idParts || idParts.length != 3) return false;
+
+        return true;
+    }
+
+    async resolve(interaction) {
+        if (!this.validate(interaction)) return null;
+
+        if (!interaction) return;
+        if (!interaction.isButton()) return;
+
+        const customId = interaction.customId;
+        
+        // Check the format of the customId and break it up into parts
+        const idParts = customId.split('-');
+        const command = idParts[0];
+        const interactionIdentifier = idParts[2];
+
+        // Check if there is any saved data on the interaction customID
+        let data = null;
+        if (await this.hasData(customId)) {
+            // Get the data if it's valid
+            const interactionData = await this.getData(customId);
+            if (interactionData) {
+                data = interactionData;
+            }
+        }
+
+        // Check if a button identifier was provided
+        let identifier = null;
+        if (interactionIdentifier) {
+            identifier = interactionIdentifier;
+        }
+
+        return { interaction, identifier, data, command };
+    }
     
     async getData(id) {
         const interactionData = new InteractionData(this, id);
