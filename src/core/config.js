@@ -72,7 +72,7 @@ config.clientOptions = {
 
 config.token = process.env.BOT_TOKEN;
 
-config.prefix = '-';
+config.prefix = '.';
 
 config.logger = {
     logLevel: 'INFO'
