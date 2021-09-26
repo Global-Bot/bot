@@ -27,7 +27,7 @@ class Dab extends Command {
         }
 
         let embed = {
-            title: `${message.member.user.username} dabbed on ${user.user.username}`,
+            title: `${message.member.user.username} dabbed on ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

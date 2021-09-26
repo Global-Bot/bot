@@ -27,7 +27,7 @@ class Cuddle extends Command {
         }
 
         let embed = {
-            title: `${message.member.user.username} cuddled ${user.user.username}`,
+            title: `${message.member.user.username} cuddled ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

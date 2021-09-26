@@ -383,6 +383,24 @@ class Base {
 
         return this.sendMessage(channel, code);
     }
+
+    clean(str) {
+        const cleanRegex = new RegExp('([_\*`])', 'g');
+		return str.replace(cleanRegex, '\\$&');
+    }
+
+    fullName(user, escape = true) {
+        user = user.user || user;
+
+        const discriminator = user.discriminator;
+        let username = this.clean(user.username);
+
+        if (escape) {
+            username = username.replace(/\\/g, '\\\\').replace(/`/g, `\`${String.fromCharCode(8203)}`);
+        }
+
+		return `${username}#${discriminator}`;
+    }
 }
 
 module.exports = Base;

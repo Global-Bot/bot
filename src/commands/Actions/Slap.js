@@ -23,7 +23,7 @@ class Slap extends Command {
         }
 
         let embed = {
-            title: user == message.member ? `${user.user.username} slapped themself... that must of hurt` : `${message.member.user.username} slapped ${user.user.username}`,
+            title: user == message.member ? `${this.fullName(user)} slapped themself... that must of hurt` : `${message.member.user.username} slapped ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

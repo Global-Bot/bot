@@ -27,7 +27,7 @@ class Hug extends Command {
         }
 
         let embed = {
-            title: `${message.member.user.username} hugged ${user.user.username}`,
+            title: `${message.member.user.username} hugged ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

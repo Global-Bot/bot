@@ -23,7 +23,7 @@ class Wave extends Command {
         }
 
         let embed = {
-            title: user == message.member ? `${user.user.username} wove` : `${message.member.user.username} waved at ${user.user.username}`,
+            title: user == message.member ? `${this.fullName(user)} wove` : `${message.member.user.username} waved at ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

@@ -23,7 +23,7 @@ class Cry extends Command {
         }
 
         let embed = {
-            title: user == message.member ? `${user.user.username} cried` : `${message.member.user.username} cried on ${user.user.username}`,
+            title: user == message.member ? `${this.fullName(user)} cried` : `${message.member.user.username} cried on ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

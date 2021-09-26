@@ -23,7 +23,7 @@ class Punch extends Command {
         }
 
         let embed = {
-            title: user == message.member ? `${user.user.username} punched themself... that must of hurt` : `${message.member.user.username} punched ${user.user.username}`,
+            title: user == message.member ? `${this.fullName(user)} punched themself... that must of hurt` : `${message.member.user.username} punched ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 
