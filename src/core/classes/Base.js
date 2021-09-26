@@ -5,6 +5,8 @@ const db = require('../database');
 const Discord = require('discord.js');
 const _ = require('lodash');
 const InteractionData = require('./InteractionData');
+const { table } = require('table');
+
 
 class Base {
     constructor(global) {
@@ -333,6 +335,33 @@ class Base {
     async setData(id, data) {
         const interactionData = new InteractionData(this, id);
         return await interactionData.set(data);
+    }
+
+    table(data) {
+        const tableConfig = {
+            border: {
+                topBody: `─`,
+                topJoin: `┬`,
+                topLeft: `┌`,
+                topRight: `┐`,
+                
+                bottomBody: `─`,
+                bottomJoin: `┴`,
+                bottomLeft: `└`,
+                bottomRight: `┘`,
+                
+                bodyLeft: `│`,
+                bodyRight: `│`,
+                bodyJoin: `│`,
+                
+                joinBody: `─`,
+                joinLeft: `├`,
+                joinRight: `┤`,
+                joinJoin: `┼`
+            }
+        };
+
+        return table(data, tableConfig);
     }
 
     codeBlock(content, language = '', options = {}) {

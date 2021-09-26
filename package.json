@@ -29,6 +29,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "ms": "^3.0.0-canary.1",
-    "node-schedule": "^2.0.0"
+    "node-schedule": "^2.0.0",
+    "table": "^6.7.1"
   }
 }
