@@ -16,6 +16,7 @@ class ButtonHandler extends Module {
 
     async interactionCreate({ interaction, isAdmin }) {
         if (!interaction) return;
+        if (!interaction.isButton()) return;
         
         // Check the customID is legitimate and comes from the bot
         const customId = interaction.customId;
