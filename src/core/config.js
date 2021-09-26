@@ -9,14 +9,15 @@ const config = {
     stateName: process.env.STATE_NAME || ''
 };
 
+config.base_guild = "878759943661027408" // Global | Bot Rework
+
 config.allowedGuilds = populateMap([
+    config.base_guild,
     '719706716962422806', // Global
     '878759943661027408', // Global | Bot Rework
     '888480577550975026', // Global | Logs
     '888478366540365835', // Global | Lzz Testing
 ])
-
-config.base_guild = "878759943661027408" // Global | Bot Rework
 
 config.admins = populateMap([
     '199109802281009152', // Not_Chris
