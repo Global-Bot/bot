@@ -8,7 +8,7 @@ class Cry extends Command {
         this.name         = 'cry';
         this.group        = 'Actions';
         this.aliases      = [];
-        this.description  = 'Cry on a user';
+        this.description  = 'Cry to a user';
         this.usage        = 'cry [user]';
         this.expectedArgs = 0;
         this.cooldown     = 30000;
@@ -23,7 +23,7 @@ class Cry extends Command {
         }
 
         let embed = {
-            title: user == message.member ? `${this.fullName(user)} cried` : `${message.member.user.username} cried on ${this.fullName(user)}`,
+            title: user == message.member ? `${this.fullName(user)} cried` : `${this.fullName(message.member)} cried on ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

@@ -23,7 +23,7 @@ class Pat extends Command {
         }
 
         let embed = {
-            title: user == message.member ? `${this.fullName(user)} patted themself on the back` : `${message.member.user.username} patted ${this.fullName(user)}`,
+            title: user == message.member ? `${this.fullName(user)} patted themself on the back` : `${this.fullName(message.member)} patted ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

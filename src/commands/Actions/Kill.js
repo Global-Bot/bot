@@ -23,7 +23,7 @@ class Kill extends Command {
         }
 
         let embed = {
-            title: user == message.member ? `${this.fullName(user)} killed themself` : `${message.member.user.username} killed ${this.fullName(user)}`,
+            title: user == message.member ? `${this.fullName(user)} killed themself` : `${this.fullName(message.member)} killed ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

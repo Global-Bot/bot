@@ -27,7 +27,7 @@ class Poke extends Command {
         }
 
         let embed = {
-            title: `${message.member.user.username} poked ${this.fullName(user)}`,
+            title: `${this.fullName(message.member)} poked ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 

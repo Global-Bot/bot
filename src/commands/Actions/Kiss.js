@@ -27,7 +27,7 @@ class Kiss extends Command {
         }
 
         let embed = {
-            title: `${message.member.user.username} kissed ${this.fullName(user)}`,
+            title: `${this.fullName(message.member)} kissed ${this.fullName(user)}`,
             image: { url: this._gifs.random() }
         }
 
