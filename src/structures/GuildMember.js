@@ -13,3 +13,9 @@ Object.defineProperty(GuildMember.prototype, 'reputation', {
         return new ReputationProfile(this.id);
     }
 })
+
+Object.defineProperty(GuildMember.prototype, 'isBooster', {
+    get() {
+        return this.premiumSinceTimestamp;
+    }
+})
