@@ -97,44 +97,45 @@ class Command extends Base {
     }
     
     help(message) {
-        const helpArray = [];
+        // Wrap a string in backticks
+        function bt(str) {
+            return '`' + str + '`';
+        }
+
+        const help = [];
         const prefix = this.config.prefix;
         
         if (this.aliases && this.aliases.length) {
-            helpArray.push(`**Aliases:** ${prefix}${this.aliases.join(`, ${prefix}`)}`);
+			help.push({
+                name: 'Aliases',
+                value: bt(prefix + this.aliases.join(`, ${prefix}`)), 
+                inline: true
+            });
         }
-        
-        helpArray.push(`**Description:** ${this.description}`);
-        
+
         if (this.usage) {
-            if (typeof this.usage == 'string') {
-                helpArray.push(`**Usage:** ${prefix + this.usage}`);
-            } else if (typeof this.usage == 'object') {
-                helpArray.push('**Usage:** ');
-                
-                for (const usage of this.usage) {
-                    helpArray.push(`\t${prefix + usage}`);
-                }
-            }
+            help.push({
+                name: 'Usage',
+                value: bt(prefix + this.usage),
+                inline: true
+            });
         }
         
         if (this.example) {
-            if (typeof this.example == 'string') {
-                helpArray.push(`**Example:** ${prefix + this.example}`);
-            } else if (typeof this.example == 'object') {
-                helpArray.push('**Example:** ');
-                
-                for (const example of this.example) {
-                    helpArray.push(`\t${prefix + example}`);
-                }
-            }
+            help.push({
+                name: 'Example',
+                value: bt(prefix + this.example),
+                inline: true
+            });
         }
         
+
         const embed = {
-            title: `**Command:** ${prefix}${this.name}`,
-            description: helpArray.join('\n'),
-        };
-        
+			title: prefix + this.name,
+			description: this.description,
+            fields: help
+		};
+
         return this.sendMessage(message.channel, { embed });
     }
     
