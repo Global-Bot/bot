@@ -104,9 +104,7 @@ class Command extends Base {
         if (this.hide) return;
 
         // Wrap a string in backticks
-        function bt(str) {
-            return '`' + str + '`';
-        }
+        const bt = this.utils.backTick;
 
         const help = [];
         const prefix = this.config.prefix;
