@@ -119,7 +119,7 @@ class CommandHandler extends Module {
                 return cmd.help(message);
             }
 
-            return this.helpMenu({ message, isAdmin });
+            return this.helpMenu(message, args[0] || null);
         }
 
         const cmd = commands.get(command);
@@ -153,85 +153,119 @@ class CommandHandler extends Module {
         }
     }
 
-    helpMenu({ message, isAdmin }) {
-        this.sendMessage(message.channel, this.helpPage({
-            author: message.author.id,
-            isAdmin
-        }));
+    helpMenu(message, category) {
+        const author = message.author.id;
+        let help;
+
+        if (this.isCategory(category, author)) {
+            help = this.helpEmbed(author, category);
+        } else {
+            help = this.helpEmbed(author);
+        }
+        this.sendMessage(message.channel, help);
     }
 
-    helpPage({ author, category, isAdmin }) {
+    isCategory(category, author) {
+        if (!category) return false;
+        return this.categories(author).map(category => category.toLowerCase()).includes(category.toLowerCase());
+    }
+
+    commands(author) {
+        const isAdmin = this.isAdmin({ id: author });
+        
+        let commands = Array.from(this.global.commands.values()) // map to array
+        commands = commands.filter((item, index) => commands.indexOf(item) == index) // Remove alias duplicates
+        .map(command => {
+            if (command.permissions == 'admin' && !isAdmin) return;
+            if (command.hide) return;
+
+            return {
+                name: command.name,
+                group: command.group.toLowerCase(),
+                description: command.description
+            };
+
+        }) // Filter out hidden & admin commands
+        .filter(command => !!command); // Rmove any hidden or admin commands
+
+        return commands
+    }
+
+    commandsFromGroup(author, group) {
+        group = group.toLowerCase();
+        
+        const groupedCommands = this.utils.groupArray(this.commands(author), 'group');
+        return groupedCommands && groupedCommands[group] ? groupedCommands[group] : [];
+    }
+
+    categories(author) {
+        const categories = this.commands(author).map(command => command.group);
+        return this.removeDuplicates(categories).sort();
+    }
+
+    buttons(author) {
+        let buttons = this.categories(author).map(category => this.button(category, 'help', this.utils.firstUppercase(category), { author }));
+        return this.utils.chunkArray(buttons, 5);
+    }
+
+    rows(author) {
+        const buttons = this.buttons(author).map(buttonChunk => new MessageActionRow().addComponents(buttonChunk));
+        return buttons;
+    }
+    
+    helpEmbed(author, category) {
         const help = {};
 
-        if (category && category.toLowerCase() == 'admin' && !isAdmin) return;
-
-        const categorizedCommands = this.utils.groupArray(Array.from(this.global.commands.values()), 'group');
-        if (category && !categorizedCommands[category]) return;
-        
-        Object.keys(categorizedCommands).map(cat => {
-            let commands = categorizedCommands[cat];
-            commands = commands.filter((item,index) => commands.indexOf(item) == index);
-
-            categorizedCommands[cat] = commands;
-        });
-
-        let embed;
-        const prefix = this.config.prefix;
-
+        // Initial help command (not a button press)
         if (!category) {
-            const mainHelpPage = [];
-
-            for (const [ cat, commands ] of Object.entries(categorizedCommands)) {
-                if (cat && cat.toLowerCase() == 'admin' && !isAdmin) continue;
-
-                mainHelpPage.push({
-                    name: `${cat} [${commands.length}]`,
-                    value: `\`${prefix}help ${cat.toLowerCase()}\``,
-                    inline: true
-                });
-            }
-
-            embed = {
-                title: 'Commands List',
-                fields: mainHelpPage
-            }
-        } else {
-            let categoryPage = `You can do \`${prefix}help <cmd>\` for more info on how to use them.\n\n**Commands**\n`;
-
-            for (const command of Object.values(categorizedCommands[category])) {
-                if (command.permissions == 'admin' && !isAdmin) continue;
-
-                categoryPage += `\`${prefix}${command.name}\` - ${command.description}\n`;
-            }
-
-            embed = {
-                title: `${category} Commands`,
-                description: categoryPage
-            }
+            Object.assign(help, this.mainPage(author))
+        } else { // Category provided (button press)
+            Object.assign(help, this.categoryPage(author, this.utils.firstUppercase(category.toLowerCase())));
         }
 
-        help.embed  = embed;
-        help.embeds = [ embed ];
-
-        if (!category) {
-            const categoryButtons = Object.keys(categorizedCommands).map(cat => {
-                if (cat && cat.toLowerCase() == 'admin' && !isAdmin) return null;
-    
-                return this.button(cat, 'help', this.utils.firstUppercase(cat), { author })
-            })
-            .filter(button => !!button) // Remove invalid buttons (admin button if user isn't admin)
-    
-            const row = new MessageActionRow()
-            .addComponents(categoryButtons);
-            
-            help.components = [ row ];
-        }
-
+        help.embeds = [ help.embed ];
 
         return help;
     }
 
-    async interactionCreate({ interaction, data, isAdmin }) {
+    mainPage(author) {
+        const mainPage = {};
+
+        const categories = this.categories(author).map(category => {
+            const categoryCommands = this.commandsFromGroup(author, category);
+
+            return {
+                name  : `${this.utils.firstUppercase(category)} [${categoryCommands.length}]`,
+                value : this.utils.backTick(`${this.config.prefix}help ${category.toLowerCase()}`),
+                inline: true
+            }
+        });
+
+        mainPage.embed = {
+            title: 'Commands List',
+            fields: categories
+        };
+        
+        mainPage.components = this.rows(author);
+        
+        return mainPage;
+    }
+
+    categoryPage(author, category) {
+        const categoryPage = {};
+
+        let categoryInfo = `You can do \`${this.config.prefix}help <cmd>\` for more info on how to use them.\n\n**Commands**\n`;
+        categoryInfo += this.commandsFromGroup(author, category).map(command => `${this.utils.backTick(`${this.config.prefix}${command.name}`)} - ${command.description}`).join('\n')
+
+        categoryPage.embed = {
+            title: `${this.utils.firstUppercase(category)} Commands`,
+            description: categoryInfo
+        };
+
+        return categoryPage;
+    }
+
+    async interactionCreate({ interaction, data }) {
         if (!this.validate(interaction)) return;
         const { identifier, command } = await this.resolve(interaction);
 
@@ -239,11 +273,7 @@ class CommandHandler extends Module {
         if (interaction.user.id != data.author) return;
 
         await interaction.deferUpdate();
-        await interaction.editReply(this.helpPage({
-            category: identifier,
-            author: data.author,
-            isAdmin
-        }));
+        await interaction.editReply(this.helpEmbed(data.author, identifier));
     }
 }
 
