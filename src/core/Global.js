@@ -81,6 +81,7 @@ class Global extends Base {
 
     ready() {
 		this.logger.info(`[${this.config.stateName}] ${this.config.name} ready with ${this.client.guilds.cache.size} guilds`);
+        this.client.guilds.cache.map(guild => this.logger.trace('\tGuild: ' + guild.name));
         
         this.dispatcher.bindListeners();
 
