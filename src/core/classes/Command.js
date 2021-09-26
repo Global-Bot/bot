@@ -150,6 +150,13 @@ class Command extends Base {
     button(identifier, label, data = null, emoji, style = 'PRIMARY') {
         return super.button(identifier, this.name, label, data, emoji, style);
     }
+
+    calculateMultiplier(member) {
+        let multiplier = 1;
+
+        if(member.isBooster) {multiplier = 1.5}
+        return multiplier;
+    }
     
     ensure() {
         function ensureError(err, prop, exists, type, received) {
