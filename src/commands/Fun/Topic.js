@@ -15,7 +15,7 @@ class Topic extends Command {
 
     async execute({ message }) {
         let question = this.config.topics.questions.random();
-        return this.sendMessage(message.channel, question)
+        return this.sendMessage(message.channel, question, {replyTo: message})
     }
 
 }

@@ -24,7 +24,7 @@ class Fact extends Command {
             title: "Fun Fact",
             description: `**${fact}**`
         }
-        return this.sendMessage(message.channel, {embed})
+        return this.sendMessage(message.channel, {embed}, {replyTo: message})
     }
 
 }

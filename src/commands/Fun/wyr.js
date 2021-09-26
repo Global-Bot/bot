@@ -18,7 +18,7 @@ class WYR extends Command {
         const embed = {
             title: question
         }
-        return this.sendMessage(message.channel, {embed})
+        return this.sendMessage(message.channel, {embed}, {replyTo: message})
     }
 
 }
