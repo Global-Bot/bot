@@ -233,8 +233,7 @@ class CommandHandler extends Module {
         const { identifier, command } = await this.resolve(interaction);
 
         if (command != 'help') return;
-
-        if (interaction.customId.startsWith('help'))
+        if (interaction.user.id != data.author) return;
 
         await interaction.deferUpdate();
         await interaction.editReply(this.helpPage({
