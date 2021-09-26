@@ -193,7 +193,7 @@ class CommandHandler extends Module {
                 fields: mainHelpPage
             }
         } else {
-            let categoryPage = 'You can do `.help <cmd>` for more info on how to use them.\n\n**Commands**\n';
+            let categoryPage = `You can do \`${prefix}help <cmd>\` for more info on how to use them.\n\n**Commands**\n`;
 
             for (const command of Object.values(categorizedCommands[category])) {
                 if (command.permissions == 'admin' && !isAdmin) continue;
