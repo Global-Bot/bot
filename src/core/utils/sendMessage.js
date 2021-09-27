@@ -36,10 +36,10 @@ function sendMessage(channel, message, options) {
     }).catch(err => err)
 }
 
-function send(args) {
+async function send(args) {
     let [channel,message,options] = args;
     options = options || {};
-    let msg = options.replyTo ? options.replyTo.reply(message) : channel.send(message)
+    let msg = options.replyTo ? await options.replyTo.reply(message) : await channel.send(message)
     return msg;
 }
 
