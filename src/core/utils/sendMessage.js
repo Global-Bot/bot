@@ -36,8 +36,8 @@ function sendMessage(channel, message, options) {
     }).catch(err => err)
 }
 
-function send() {
-    let [channel,message,options] = Array.from(arguments)[0]
+function send(args) {
+    let [channel,message,options] = args;
     options = options || {};
     let msg = options.replyTo ? options.replyTo.reply(message) : channel.send(message)
     return msg;
