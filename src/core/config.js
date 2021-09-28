@@ -66,7 +66,8 @@ config.clientOptions = {
     modules: [
         'GuildManager',
         'CommandHandler',
-        'ButtonHandler'
+        'ButtonHandler',
+        'BoostReaction'
     ]
 }
 
