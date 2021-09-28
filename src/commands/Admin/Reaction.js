@@ -25,7 +25,7 @@ class Reaction extends Command {
 
         if(!emoji && !isClear) {
             let {isValid, id} = this.validateCustomEmoji(args[1]);
-            if(!isValid) return;
+            if(!isValid) return this.error(message.channel, "No emoji found!")
             let getEmoji = this.client.emojis.cache.get(id);
             if(getEmoji) {emoji = args[1]}
         }
