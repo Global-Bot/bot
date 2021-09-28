@@ -275,9 +275,7 @@ class CommandHandler extends Module {
         try {
             await interaction.deferUpdate();
             await interaction.editReply(this.helpEmbed(data.author, identifier));
-        } catch (err) {
-            this.logger.error(err.message);
-        }
+        } catch (err) {}
     }
 }
 
