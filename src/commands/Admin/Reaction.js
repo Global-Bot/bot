@@ -34,7 +34,7 @@ class Reaction extends Command {
         if(!user.roles.cache.get(this.boostConfig.boosterRole)) return this.error(message.channel, "User must be a 3x booster!")
 
         if(isClear) {
-            this.global.boostReact.clearEmoji(message.author.id);
+            this.global.boostReact.clearEmoji(user.id);
 
             let embed = {
                 title: "Emoji Deleted"
@@ -51,7 +51,7 @@ class Reaction extends Command {
             let checkExists = await this.global.boostReact.includesEmojiTrigger(word);
             if(checkExists) return this.error(message.channel, "Word unavailable!")
 
-            this.global.boostReact.addEmoji(message.author.id, emoji, word);
+            this.global.boostReact.addEmoji(user.id, emoji, word);
 
             let embed = {
                 title: `The bot will now react ${emoji} to ${word}`
