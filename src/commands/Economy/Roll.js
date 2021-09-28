@@ -41,7 +41,7 @@ class Roll extends Command {
 
         let embed = {
             title: `${multiplier ? "Congratulations" : "Hard luck!"}`,
-            description: `${message.author.tag}, **\`You rolled ${randomNumber}\`**. ${winnings ? `Congrats, You've won **${winnings}** ${this.config.emojis.get("star")}` : ""}`
+            description: `${message.author.tag}, **\`You rolled ${randomNumber}\`**. ${winnings ? `Congrats, You've won **${winnings}** ${this.config.emojis.get("star")}` : `You've lost **${bet}** ${this.config.emojis.get("star")}`}`
         }
 
         return this.sendMessage(message.channel, {embed}, {replyTo: message})

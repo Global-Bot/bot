@@ -91,7 +91,7 @@ class RPS extends Command {
             
             embed = {
                 title: `${isDraw ? "Draw!" : `${winnerData.user.user.username} has won!`}`,
-                description: `**${message.member.toString()} chose**: ${this.firstUpperCase(userChoice)}\n\n**${mentionedUser.toString()} chose**: ${this.firstUpperCase(targetChoice)}\n${winnerData.user.toString()} won **${bet * 2}** ${this.config.emojis.get("star")}!`,
+                description: `**${message.member.toString()} chose**: ${this.firstUpperCase(userChoice)}\n**${mentionedUser.toString()} chose**: ${this.firstUpperCase(targetChoice)}\n\n${winnerData.user.toString()} won **${bet * 2}** ${this.config.emojis.get("star")}!`,
             }
             
         } else {
