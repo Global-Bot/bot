@@ -109,6 +109,12 @@ config.economySettings = {
     rollLowestBet: 10
 }
 
+config.boostReactionSettings = {
+    minChars: 4,
+    maxChars: 20,
+    boosterRole: "878760289120706590"
+}
+
 config.rollMultipliers = {
     // If above: multiplier
     0: 0,

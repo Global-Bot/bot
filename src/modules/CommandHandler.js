@@ -91,6 +91,11 @@ class CommandHandler extends Module {
                 `<@!${this.client.user.id}>`
             ],
             startsWithPrefix = prefixes.filter(prefix => message.content.startsWith(prefix));
+
+            let getUserBoostEmoji = await this.global.boostReact.includesEmojiTrigger(message.content);
+            if(getUserBoostEmoji) {
+                message.react(getUserBoostEmoji)
+            }
         
         if (!startsWithPrefix.length) return;
 

@@ -8,6 +8,7 @@ const ModuleCollection = require('./classes/collections/ModuleCollection');
 const PermissionsManager = require('./classes/managers/PermissionsManager');
 const LotteryManager = require('./classes/managers/LotteryManager');
 const CooldownManager = require('./classes/managers/CooldownManager');
+const BoostReactionManager = require('./classes/managers/BoostReactionManager');
 
 
 class Global extends Base {
@@ -71,6 +72,7 @@ class Global extends Base {
         this.permissions = new PermissionsManager(this);
         this.lottery = new LotteryManager(this);
         this.cooldown = new CooldownManager(this);
+        this.boostReact = new BoostReactionManager(this);
         
         // Listeners
         this.client.once('ready', this.ready.bind(this));
