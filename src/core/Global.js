@@ -81,11 +81,20 @@ class Global extends Base {
         this.login();
     }
 
+    cacheMembers() {
+        for (const [ id, guild ] of this.client.guilds.cache) {
+            guild.members.fetch()
+            .catch(this.logger.error);
+        }
+    }
+
     ready() {
 		this.logger.info(`[${this.config.stateName}] ${this.config.name} ready with ${this.client.guilds.cache.size} guilds`);
         this.client.guilds.cache.map(guild => this.logger.trace('\tGuild: ' + guild.name));
         
         this.dispatcher.bindListeners();
+        
+        this.cacheMembers();
 
         this.user = this._client.user;
         this.userID = this._client.user.id;
