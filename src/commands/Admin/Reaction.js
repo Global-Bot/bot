@@ -5,28 +5,33 @@ class Reaction extends Command {
         super(global, ...args);
         
         this.name         = 'reaction';
-        this.group        = 'Booster';
+        this.group        = 'Admin';
         this.aliases      = [ ];
         this.description  = 'Set booster reaction!';
-        this.usage        = 'reaction (clear/emoji) (word)';
-        this.expectedArgs = 1;
+        this.usage        = 'reaction (user) (clear/emoji) (word)';
+        this.expectedArgs = 2;
         this.cooldown     = 5000;
+        this.permissions = 'admin'
 
         this.boostConfig = this.config.boostReactionSettings
     }
     
     async execute({ message, args }) {
-        let isClear = args[0] && args[0] == "clear";
-        let emoji = this.utils.emojiRegex.test(args[0]) ? args[0] : undefined;
+        let isClear = args[1] && args[1] == "clear";
+        let emoji = this.utils.emojiRegex.test(args[1]) ? args[1] : undefined;
+
+        let user = this.resolveUser(message.guild, args[0]);
+        if(!user) return this.error(message.channel, "No valid user detected!")
+
         if(!emoji && !isClear) {
-            let {isValid, id} = this.validateCustomEmoji(args[0]);
+            let {isValid, id} = this.validateCustomEmoji(args[1]);
             if(!isValid) return;
             let getEmoji = this.client.emojis.cache.get(id);
-            if(getEmoji) {emoji = args[0]}
+            if(getEmoji) {emoji = args[1]}
         }
-        let word = args[1];
+        let word = args[2];
 
-        if(!message.member.roles.cache.get(this.boostConfig.boosterRole)) return this.error(message.channel, "You must be a 3x booster!")
+        if(!user.roles.cache.get(this.boostConfig.boosterRole)) return this.error(message.channel, "User must be a 3x booster!")
 
         if(isClear) {
             this.global.boostReact.clearEmoji(message.author.id);
