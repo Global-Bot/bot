@@ -12,6 +12,7 @@ class Modules extends Command {
         this.expectedArgs = 0;
         this.cooldown     = 1000;
         this.permissions  = 'admin';
+        this.hide         = true;
     }
     
     async execute({ message }) {
