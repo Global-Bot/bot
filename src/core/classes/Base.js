@@ -405,6 +405,17 @@ class Base {
     get removeDuplicates() {
         return _.uniq;
     }
+
+    validateCustomEmoji(emoji) {
+        if(!emoji) return false;
+        // <:GlobalStar:867809873420484608>
+        let splitEmoji = emoji.split(":")
+        if(splitEmoji.length < 2) return false;
+        let ID = splitEmoji[2].substr(0, splitEmoji[2].length-1)
+        if(!ID) return false;
+        let isValid = isNaN(parseInt(ID)) ? false : true;
+        return {id: ID, isValid}
+    }
 }
 
 module.exports = Base;
