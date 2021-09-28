@@ -272,8 +272,8 @@ class CommandHandler extends Module {
         if (command != 'help') return;
         if (interaction.user.id != data.author) return;
 
-        await interaction.deferUpdate();
-        await interaction.editReply(this.helpEmbed(data.author, identifier));
+        await interaction.deferUpdate().catch(() => {});
+        await interaction.editReply(this.helpEmbed(data.author, identifier)).catch(() => {})
     }
 }
 
