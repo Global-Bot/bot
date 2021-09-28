@@ -13,7 +13,7 @@ class WYR extends Command {
         this.cooldown     = 5000;
     }
 
-    async execute({ message, args }) {
+    async execute({ message }) {
         let question = this.config.wyr.questions.random();
         const embed = {
             title: question

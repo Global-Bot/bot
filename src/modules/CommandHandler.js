@@ -1,5 +1,5 @@
 const Module = require('../core/classes/Module');
-const { MessageButton, MessageActionRow } = require('discord.js');
+const { MessageActionRow } = require('discord.js');
 
 class CommandHandler extends Module {
     constructor(global) {
