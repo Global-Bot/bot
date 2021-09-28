@@ -1,5 +1,5 @@
 const Command = require('../../core/classes/Command');
-const actionGifs = require('./actionGifs.json');
+const actionGifs = require('../../assets/actionGifs.json');
 
 class Slap extends Command {
     constructor(global, ...args) {
