@@ -6,7 +6,8 @@ const populateMap = require('./utils/populateMap');
 
 const config = {
     name: 'Global',
-    stateName: process.env.STATE_NAME || ''
+    stateName: process.env.STATE_NAME || '',
+    itemTypes: [ 'item', 'role', 'crate', 'star' ]
 };
 
 config.base_guild = "878759943661027408" // Global | Bot Rework
