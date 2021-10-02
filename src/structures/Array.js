@@ -1,4 +1,5 @@
 // Array.random - Returns a random index 
-Array.prototype.random = function() {
-    return this[Math.floor((Math.random() * this.length))];
-};
+Object.defineProperty(Array.prototype, "random", {
+    get() { return () => this[Math.floor((Math.random() * this.length))] },
+    enumerable: false,
+});
