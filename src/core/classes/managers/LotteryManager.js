@@ -85,7 +85,7 @@ class LotteryManager extends Base {
         const dayINeed = 6; // Saturday
         if (today < dayINeed) { 
             wantDate = wantDate.isoWeekday(dayINeed)
-        } else if(today > dayINeed || today == dayINeed && today.get("hour") >= 18) {
+        } else if(today > dayINeed || today == dayINeed && now.get("hour") >= 18) {
             wantDate = wantDate.add(1, 'weeks').isoWeekday(dayINeed);
         }
 
