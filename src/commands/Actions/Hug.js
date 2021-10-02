@@ -9,7 +9,7 @@ class Hug extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Hug a user';
-        this.usage        = 'hug [user]';
+        this.usage        = 'hug <user>';
         this.expectedArgs = 1;
         this.cooldown     = 30000;
 

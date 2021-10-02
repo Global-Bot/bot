@@ -9,7 +9,7 @@ class Slap extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Slap a user';
-        this.usage        = 'slap [user]';
+        this.usage        = 'slap (user)';
         this.expectedArgs = 0;
         this.cooldown     = 30000;
 

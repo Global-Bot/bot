@@ -9,7 +9,7 @@ class Poke extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Poke a user';
-        this.usage        = 'poke [user]';
+        this.usage        = 'poke <user>';
         this.expectedArgs = 1;
         this.cooldown     = 30000;
 

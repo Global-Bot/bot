@@ -9,7 +9,7 @@ class Kill extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Kill a user';
-        this.usage        = 'kill [user]';
+        this.usage        = 'kill (user)';
         this.expectedArgs = 0;
         this.cooldown     = 30000;
 

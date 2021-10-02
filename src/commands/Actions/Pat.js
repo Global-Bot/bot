@@ -9,7 +9,7 @@ class Pat extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Pat a user';
-        this.usage        = 'pat [user]';
+        this.usage        = 'pat (user)';
         this.expectedArgs = 0;
         this.cooldown     = 30000;
 

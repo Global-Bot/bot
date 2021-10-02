@@ -9,7 +9,7 @@ class Cuddle extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Cuddle a user';
-        this.usage        = 'cuddle [user]';
+        this.usage        = 'cuddle <user>';
         this.expectedArgs = 1;
         this.cooldown     = 30000;
 

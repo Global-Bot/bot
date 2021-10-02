@@ -10,7 +10,7 @@ class Cry extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Cry to a user';
-        this.usage        = 'cry [user]';
+        this.usage        = 'cry (user)';
         this.expectedArgs = 0;
         this.cooldown     = 30000;
 

@@ -9,7 +9,7 @@ class Wave extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Wave to a user';
-        this.usage        = 'wave [user]';
+        this.usage        = 'wave (user)';
         this.expectedArgs = 0;
         this.cooldown     = 30000;
 

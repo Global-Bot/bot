@@ -9,7 +9,7 @@ class Kiss extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Kiss a user';
-        this.usage        = 'kiss [user]';
+        this.usage        = 'kiss <user>';
         this.expectedArgs = 1;
         this.cooldown     = 30000;
 

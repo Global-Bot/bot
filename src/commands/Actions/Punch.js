@@ -9,7 +9,7 @@ class Punch extends Command {
         this.group        = 'Actions';
         this.aliases      = [];
         this.description  = 'Punch a user';
-        this.usage        = 'punch [user]';
+        this.usage        = 'punch (user)';
         this.expectedArgs = 0;
         this.cooldown     = 30000;
 
