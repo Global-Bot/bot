@@ -45,7 +45,6 @@ class Eval extends Command {
         }
 
         if (!result) {
-            console.log('result', result)
             return this.error(message.channel, 'RESULT_INVALID', (result?.message || result));
         }
 
