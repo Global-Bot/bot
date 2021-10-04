@@ -15,10 +15,17 @@ function sendMessage(channel, message, options) {
 
     if (message.embed) {
         message.embed.title = `[${config.stateName}] ${message.embed.title || ""}`
-        if (!message.embed.color) message.embed.color = 'PURPLE';
         
-        message.embeds = [ message.embed ];
+        message.embeds = message.embeds || [];
+        message.embeds.push(message.embed);
+
         delete message.embed;
+    }
+
+    if (Array.isArray(message.embeds)) {
+        message.embeds.map(embed => {
+            return Object.assign(embed, { color: !embed.color ? 'PURPLE' : embed.color })
+        });
     }
 
     return send(Array.from(arguments)).then(msg => {
