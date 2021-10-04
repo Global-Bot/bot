@@ -114,7 +114,7 @@ config.economySettings = {
 config.boostReactionSettings = {
     minChars:    4,
     maxChars:    20,
-    boosterRole: "878760289120706590"
+    boosterRole: "878760379587653653" // "Tester" role on "Global | Bot Rework"
 }
 
 config.rollMultipliers = {

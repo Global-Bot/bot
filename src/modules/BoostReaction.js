@@ -8,6 +8,8 @@ class BoostReaction extends Module {
         this.description = 'Works with the BoostReactionManager';
         this.core        = true;
         this.enabled     = true;
+
+        this.boosterRole = this.config.boostReactionSettings.boosterRole;
     }
 
     static get name() {
@@ -25,7 +27,11 @@ class BoostReaction extends Module {
     }
     
     guildMemberUpdate(oldMember, newMember) {
-        // Handle role removal
+        let boosterRoleRemoved = (oldMember.roles.cache.get(this.boosterRole) && !newMember.roles.cache.get(this.boosterRole));
+        
+        if(boosterRoleRemoved) {
+            this.global.boostReact.clearEmoji(newMember.id);
+        }
     }
 }
 
