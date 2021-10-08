@@ -10,7 +10,7 @@ class Daily extends Command {
         this.description  = 'Earn daily star bonus';
         this.usage        = 'daily';
         this.expectedArgs = 0;
-        this.cooldown     = 60000 * 60 * 24;
+        this.cooldown     = this.global.cooldown.CONSTANTS.DAILY;
     }
 
     async execute({ message }) {

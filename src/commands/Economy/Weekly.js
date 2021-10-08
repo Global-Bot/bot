@@ -10,7 +10,7 @@ class Weekly extends Command {
         this.description  = 'Earn weekly star bonus';
         this.usage        = 'weekly';
         this.expectedArgs = 0;
-        this.cooldown     = 60000 * 60 * 24 * 7;
+        this.cooldown     = this.global.cooldown.CONSTANTS.WEEKLY;
     }
 
     async execute({ message }) {

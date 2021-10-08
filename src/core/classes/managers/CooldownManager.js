@@ -38,9 +38,13 @@ class CooldownManager extends Base {
 
     get CONSTANTS() {
         return {
-            REPUTATION: {
+            WEEKLY: {
+                time: 60000 * 60 * 24 * 7,
+                type: "weekly"
+            },
+            DAILY: {
                 time: 60000 * 60 * 24,
-                type: "reputation"
+                type: "daily"
             }
         }
     }
