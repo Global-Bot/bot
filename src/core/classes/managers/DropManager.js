@@ -12,10 +12,13 @@ class DropManager extends Base {
         this.starRange = this.settings.starRange;
         this.failButtonChance = this.settings.chanceOfFailButton
         this.messagesPerDrop = this.settings.messagesPerDrop
+
+        this.failEmoji = "❌"
+        this.starEmoji = this.config.emojis.get("star");
     }
 
     makeButton({name, user_id, emoji, type}) {
-        return super.makeButton(name, user_id, this.name, emoji, type)
+        return super.makeButton(name || "", user_id, this.name, emoji, type)
     }
     
     generateStarAmount() {
@@ -23,9 +26,9 @@ class DropManager extends Base {
     }
 
     get buttons() {
-        let buttons = [this.makeButton({name: "Grab", emoji: this.config.emojis.get("star")})]
+        let buttons = [this.makeButton({emoji: this.starEmoji, type: "SECONDARY"})]
         let randInt = this.randomInt(0, 100);
-        randInt < this.failButtonChance ? buttons = [this.makeButton({name: "Fail", emoji: "❌"})].concat(buttons) : false;
+        randInt < this.failButtonChance ? buttons = [this.makeButton({name: this.failEmoji, type: "SECONDARY"})].concat(buttons) : false;
         return new MessageActionRow().addComponents(buttons);
     }
     
@@ -46,7 +49,7 @@ class DropManager extends Base {
             
             const embed = {
                 title: "Star Drop!",
-                description: `React now for the chance to ${loseStars ? "lose" : "win"} **${starAmount} ${this.config.emojis.get("star")}**!`
+                description: `React now for the chance to ${loseStars ? "lose" : "win"} **${starAmount} ${this.starEmoji}**!`
             }
             
             let row = this.buttons;
@@ -56,7 +59,7 @@ class DropManager extends Base {
             starMessage.delete();
 
             if(!getFirst) return;
-            if(getFirst.customId == "fail") {loseStars = true}
+            if(getFirst.customId == this.failEmoji) {loseStars = true}
 
             let getMember = await message.guild.members.fetch(getFirst.user.id).catch(() => {})
             if(!getMember) return;
@@ -66,7 +69,7 @@ class DropManager extends Base {
             !loseStars ? starAmount = starAmount * getMultiplier : starAmount;
 
             loseStars ? economyProfile.remove(starAmount) : economyProfile.add(starAmount);
-            return message.channel.send(`${getMember.toString()} ${loseStars ? "lost" : "earned"} **${starAmount} ${this.config.emojis.get("star")}**!`);
+            return message.channel.send(`${getMember.toString()} ${loseStars ? "lost" : "earned"} **${starAmount} ${this.starEmoji}**!`);
         }
         return;
     }
