@@ -68,7 +68,8 @@ config.clientOptions = {
         'GuildManager',
         'CommandHandler',
         'ButtonHandler',
-        'BoostReaction'
+        'BoostReaction',
+        'DropHandler'
     ]
 }
 
