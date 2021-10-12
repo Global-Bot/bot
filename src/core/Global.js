@@ -9,6 +9,7 @@ const PermissionsManager = require('./classes/managers/PermissionsManager');
 const LotteryManager = require('./classes/managers/LotteryManager');
 const CooldownManager = require('./classes/managers/CooldownManager');
 const BoostReactionManager = require('./classes/managers/BoostReactionManager');
+const DropManager = require('./classes/managers/DropManager');
 
 
 class Global extends Base {
@@ -71,6 +72,7 @@ class Global extends Base {
         // Managers
         this.permissions = new PermissionsManager(this);
         this.lottery = new LotteryManager(this);
+        this.drop = new DropManager(this);
         this.cooldown = new CooldownManager(this);
         this.boostReact = new BoostReactionManager(this);
         
