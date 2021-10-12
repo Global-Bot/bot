@@ -106,10 +106,10 @@ config.emojis = populateMap([
 
 config.dropSettings = {
     chanceOfDrop: 30, // 30 -> 30%
-    chanceOfFailButton: 25,
+    chanceOfFailButton: 25, // 25 -> 25%
     dropChannel: "878759944135016500",
     starRange: [1,7],
-    messagesPerDrop: 1
+    messagesPerDrop: 30
 }
 
 config.economySettings = {
