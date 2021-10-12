@@ -104,6 +104,14 @@ config.emojis = populateMap([
     { key: 'star',    value: '<:TestingGStar:890759402133544993>' },
 ])
 
+config.dropSettings = {
+    chanceOfDrop: 30, // 30 -> 30%
+    chanceOfFailButton: 25,
+    dropChannel: "878759944135016500",
+    starRange: [1,7],
+    messagesPerDrop: 1
+}
+
 config.economySettings = {
     workStarRange:             [ 7, 32 ],
     weeklyBonus:               175,
