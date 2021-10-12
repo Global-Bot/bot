@@ -160,7 +160,11 @@ class Base {
     get moment() {
         return require("moment")
     }
-
+    
+    get randomInt() {
+        return this.utils.randomInt;
+    }
+    
     get ms() {
         return require("ms");
     }
@@ -223,7 +227,7 @@ class Base {
     }
     
     createInteractionCollector(message,{filter, time = 60000, max = 0}) {
-        if(!message || !filter) return;
+        if(!message) return;
         return new Promise(res => {
             let interactionCollector = message.createMessageComponentCollector({filter, time, max});
             
@@ -232,6 +236,13 @@ class Base {
                 return res(max == 1 ? collected.first() : collected);
             })
         })
+    }
+    
+    calculateMultiplier(member) {
+        let multiplier = 1;
+        
+        if(member.isBooster) {multiplier = 1.5}
+        return multiplier;
     }
     
     makeButton(name, user_id, cmd, emoji, type = "PRIMARY") {
@@ -274,7 +285,7 @@ class Base {
         .setEmoji(emoji)
         .setStyle(style);
     }
-
+    
     validate(interaction) {
         if (!interaction) return false;
         if (!interaction.isButton()) return false;
@@ -282,27 +293,27 @@ class Base {
         // Check the customID is legitimate and comes from the bot
         const customId = interaction.customId;
         if (!customId) return false;
-
+        
         // Check the format of the customId and break it up into parts
         const idParts = customId.split('-');
         if (!idParts || idParts.length != 3) return false;
-
+        
         return true;
     }
-
+    
     async resolve(interaction) {
         if (!this.validate(interaction)) return null;
-
+        
         if (!interaction) return;
         if (!interaction.isButton()) return;
-
+        
         const customId = interaction.customId;
         
         // Check the format of the customId and break it up into parts
         const idParts = customId.split('-');
         const command = idParts[0];
         const interactionIdentifier = idParts[2];
-
+        
         // Check if there is any saved data on the interaction customID
         let data = null;
         if (await this.hasData(customId)) {
@@ -312,13 +323,13 @@ class Base {
                 data = interactionData;
             }
         }
-
+        
         // Check if a button identifier was provided
         let identifier = null;
         if (interactionIdentifier) {
             identifier = interactionIdentifier;
         }
-
+        
         return { interaction, identifier, data, command };
     }
     
@@ -336,7 +347,7 @@ class Base {
         const interactionData = new InteractionData(this, id);
         return await interactionData.set(data);
     }
-
+    
     table(data) {
         const tableConfig = {
             border: {
@@ -360,13 +371,13 @@ class Base {
                 joinJoin: `┼`
             }
         };
-
+        
         return table(data, tableConfig);
     }
-
+    
     codeBlock(content, language = '', options = {}) {
         let code = [ '```' + language, content, '```' ].join('\n');
-
+        
         if (options.header) {
             code = `${options.header}\n${code}`;
         }
@@ -374,38 +385,38 @@ class Base {
         if (options.footer) {
             code = `${code}\n${options.footer}`;
         }
-
+        
         return code;
     }
-
+    
     sendCode(channel, content, ...args) {
         const code = this.codeBlock(content, ...args);
-
+        
         return this.sendMessage(channel, code);
     }
-
+    
     clean(str) {
         const cleanRegex = new RegExp('([_\*`])', 'g');
-		return str.replace(cleanRegex, '\\$&');
+        return str.replace(cleanRegex, '\\$&');
     }
-
+    
     fullName(user, escape = true) {
         user = user.user || user;
-
+        
         const discriminator = user.discriminator;
         let username = this.clean(user.username);
-
+        
         if (escape) {
             username = username.replace(/\\/g, '\\\\').replace(/`/g, `\`${String.fromCharCode(8203)}`);
         }
-
-		return `${username}#${discriminator}`;
+        
+        return `${username}#${discriminator}`;
     }
-
+    
     get removeDuplicates() {
         return _.uniq;
     }
-
+    
     validateCustomEmoji(emoji) {
         if(!emoji) return false;
         // <:GlobalStar:867809873420484608>
