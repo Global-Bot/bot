@@ -11,8 +11,7 @@ class Inventory extends Base {
                 this.errored = true;
             } else {
                 for (const item of getInvData) {
-                    const { name, quantity, type } = item;
-                    this.contents.push({ name, quantity, type });
+                    this.contents.push(item);
                 }
             }
             return this;
@@ -79,6 +78,8 @@ class Inventory extends Base {
         for (const item of addedItems) {
             await this.models.inventory.create({ user: this.id, name: item.name, quantity: item.quantity, type: item.type });
         }
+
+        return true;
     }
     
     async set(name, type, quantity) {
@@ -105,6 +106,11 @@ class Inventory extends Base {
         if (quantity < 0) quantity = 0;
         
         return await this.set(name, type, quantity)
+    }
+
+    async clear() {
+        this.contents = [];
+        return await this.save();
     }
 }
 
