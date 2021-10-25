@@ -1,5 +1,3 @@
-// 
-
 const Command = require('../../core/classes/Command');
 const Fetcher = require('../../core/classes/Fetcher');
 

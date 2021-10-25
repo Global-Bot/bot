@@ -1,5 +1,4 @@
 const Command = require('../../core/classes/Command');
-// const actionGifs = require('../../assets/actionGifs.json');
 const actionGifs = require('../../assets/actionGifs.json');
 
 class Cry extends Command {

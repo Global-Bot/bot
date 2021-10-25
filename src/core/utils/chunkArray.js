@@ -3,7 +3,7 @@ function chunkArray(inputArray, perChunk = 2) {
         const chunkIndex = Math.floor(index/perChunk)
         
         if(!resultArray[chunkIndex]) {
-            resultArray[chunkIndex] = [] // start a new chunk
+            resultArray[chunkIndex] = []
         }
         
         resultArray[chunkIndex].push(item)

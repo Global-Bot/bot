@@ -18,7 +18,6 @@ class ButtonHandler extends Module {
         if (!this.validate(interaction)) return;
         const { identifier, data, command } = await this.resolve(interaction);
 
-        // Find the command and check if it has a buttonClick method
         const interactionCommand = this.global.commands.get(command);
         if (!interactionCommand || typeof interactionCommand.buttonClick != 'function') return;
 

@@ -17,7 +17,6 @@ class Eval extends Command {
     }
     
     async execute({ message, args, command, guild, isAdmin }) {
-        // Variables for use in eval
         let msg      = message,
             global   = this.global,
             client   = this.client,

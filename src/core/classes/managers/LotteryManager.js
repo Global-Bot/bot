@@ -33,7 +33,7 @@ class LotteryManager extends Base {
     }
     
     async processLottery() {
-        let guild = this.client.guilds.cache.get(this.config.base_guild) // [UPDATE]
+        let guild = this.client.guilds.cache.get(this.config.base_guild)
         if(!guild) return this.error(undefined, "Lottery: No guild found!")
         let entries = [];
         let getLotteryEntries = await this.fetch();

@@ -1,12 +1,12 @@
 const regex = {
     escape:      str => str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'),
-    // User
+    
     userMention: '<@!?([0-9]+)>',
     userID:      /^([0-9]+)$/,
-    // Role
+    
     roleMention: '<@&([0-9]+)>',
     roleID:      /^([0-9]+)$/,
-    // Channel
+    
     channelMention: '<#([0-9]+)',
     channelID: /^([0-9]+)$/
 };
@@ -29,7 +29,6 @@ class Resolver {
             return null;
         }
 
-        // Mention
         const mentionID = new RegExp(regex.userMention, 'g').exec(user);
         if (mentionID && mentionID.length > 1) {
             const userIdMention = users.find(u => u.user.id == mentionID[1]);
@@ -38,7 +37,6 @@ class Resolver {
             }
         }
 
-        // Username#123
         if (user.includes('#')) {
             const [ name, discrim ] = user.split('#');
             const nameDiscrimSearch = users.find(u => u.user.username == name && u.user.discriminator == discrim);
@@ -47,19 +45,11 @@ class Resolver {
             }
         }
 
-        // ID
         if (user.match(regex.userID)) {
             const userIdSearch = users.find(u => u.user.id == user);
             if (userIdSearch) {
                 return userIdSearch;
             }
-        }
-
-        // Username
-        const escapedUser = regex.escape(user);
-        const usernameSearch = users.find(u => u.user.username.match(new RegExp(`^${escapedUser}.*`, 'i')));
-        if (usernameSearch) {
-            return usernameSearch;
         }
 
         return null;
@@ -72,7 +62,6 @@ class Resolver {
 
         const roles = guild.roles.cache;
 
-        // Mention
         const mention = new RegExp(regex.roleMention, 'g').exec(role);
         if (mention && mention.length > 1) {
             const roleMention = roles.get(mention[1]);
@@ -81,7 +70,6 @@ class Resolver {
             }
         }
 
-        // ID
         if (role.match(regex.roleID)) {
             const roleIdSearch = roles.get(role);
             if (roleIdSearch) {
@@ -89,7 +77,6 @@ class Resolver {
             }
         }
 
-        // Name
         const escapedRole = regex.escape(role);
         const roleNameSearch = roles.find(r => r.name.match(new RegExp(`^${escapedRole}.*`, 'i')));
         if (roleNameSearch) {
@@ -106,7 +93,6 @@ class Resolver {
 
         const channels = guild.channels.cache;
         
-        // Mention
         const mention = new RegExp(regex.channelMention, 'g').exec(channel);
         if (mention && mention.length > 1) {
             const channelMention = channels.get(mention[1]);
@@ -115,7 +101,6 @@ class Resolver {
             }
         }
 
-        // ID
         if (channel.match(regex.channelID)) {
             const channelIdSearch = channels.get(channel);
             if (channelIdSearch) {
@@ -123,7 +108,6 @@ class Resolver {
             }
         }
 
-        // Name
         const channelNameSearch = channels.find(c => c.name == channel);
         if (channelNameSearch) {
             return channelNameSearch;

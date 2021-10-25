@@ -76,10 +76,11 @@ class Global extends Base {
         this.cooldown = new CooldownManager(this);
         this.boostReact = new BoostReactionManager(this);
         
-        // Listeners
         this.client.once('ready', this.ready.bind(this));
+        this.client.on('messageUpdate', (oldMessage, newMessage) => {
+            this.client.emit('messageCreate', newMessage)
+        })
 
-        // Login
         this.login();
     }
 

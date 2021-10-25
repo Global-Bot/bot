@@ -285,10 +285,15 @@ class Base {
         .setEmoji(emoji)
         .setStyle(style);
     }
-    
-    validate(interaction) {
+
+    validate(interaction, type = 'button') {
         if (!interaction) return false;
-        if (!interaction.isButton()) return false;
+
+        if (type == 'button') {
+            if (!interaction.isButton()) return false;
+        } else if (type == 'dropdown') {
+            if (!interaction.isSelectMenu()) return false;
+        }
         
         // Check the customID is legitimate and comes from the bot
         const customId = interaction.customId;
@@ -298,15 +303,14 @@ class Base {
         const idParts = customId.split('-');
         if (!idParts || idParts.length != 3) return false;
         
+        console.log(6);
         return true;
     }
-    
-    async resolve(interaction) {
-        if (!this.validate(interaction)) return null;
-        
-        if (!interaction) return;
-        if (!interaction.isButton()) return;
-        
+
+    async resolve(interaction, type = 'button') {
+        if (!this.validate(interaction, type)) return {};
+        if (!interaction) return {};
+
         const customId = interaction.customId;
         
         // Check the format of the customId and break it up into parts
@@ -402,7 +406,7 @@ class Base {
     
     fullName(user, escape = true) {
         user = user.user || user;
-        
+
         const discriminator = user.discriminator;
         let username = this.clean(user.username);
         
@@ -419,7 +423,6 @@ class Base {
     
     validateCustomEmoji(emoji) {
         if(!emoji) return false;
-        // <:GlobalStar:867809873420484608>
         let splitEmoji = emoji.split(":")
         if(splitEmoji.length < 2) return false;
         let ID = splitEmoji[2].substr(0, splitEmoji[2].length-1)

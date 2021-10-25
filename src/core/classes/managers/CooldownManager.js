@@ -11,7 +11,6 @@ class CooldownManager extends Base {
     }
 
     async add(user_id, {time, type}) {
-        // Remove any existing case
         await this.database.destroy({where: {id: user_id, type}});
 
         this.database.create({id: user_id, type, expire: this.expiry(time)})
