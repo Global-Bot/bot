@@ -173,7 +173,7 @@ class CommandHandler extends Module {
     commands(author) {
         const isAdmin = this.isAdmin({ id: author });
         
-        let commands = Array.from(this.global.commands.values()) // map to array
+        let commands = Array.from(this.global.commands.values())
         commands = commands.filter((item, index) => commands.indexOf(item) == index) // Remove alias duplicates
         .map(command => {
             if (command.permissions == 'admin' && !isAdmin) return;
@@ -185,8 +185,8 @@ class CommandHandler extends Module {
                 description: command.description
             };
 
-        }) // Filter out hidden & admin commands
-        .filter(command => !!command); // Rmove any hidden or admin commands
+        })
+        .filter(command => !!command);
 
         return commands
     }
@@ -214,18 +214,9 @@ class CommandHandler extends Module {
     }
     
     helpEmbed(author, category) {
-        const help = {};
-
-        // Initial help command (not a button press)
-        if (!category) {
-            Object.assign(help, this.mainPage(author))
-        } else { // Category provided (button press)
-            Object.assign(help, this.categoryPage(author, this.utils.firstUppercase(category.toLowerCase())));
-        }
-
-        help.embeds = [ help.embed ];
-
-        return help;
+        return !category ?
+        this.mainPage(author) :
+        this.categoryPage(author, this.utils.firstUppercase(category.toLowerCase()));
     }
 
     mainPage(author) {
@@ -241,10 +232,13 @@ class CommandHandler extends Module {
             }
         });
 
-        mainPage.embed = {
-            title: 'Commands List',
-            fields: categories
-        };
+        mainPage.embeds = [
+            {
+                title: 'Commands List',
+                fields: categories,
+                color: 'PURPLE'
+            }
+        ]
         
         mainPage.components = this.rows(author);
         
@@ -257,10 +251,13 @@ class CommandHandler extends Module {
         let categoryInfo = `You can do \`${this.config.prefix}help <cmd>\` for more info on how to use them.\n\n**Commands**\n`;
         categoryInfo += this.commandsFromGroup(author, category).map(command => `${this.utils.backTick(`${this.config.prefix}${command.name}`)} - ${command.description}`).join('\n')
 
-        categoryPage.embed = {
-            title: `${this.utils.firstUppercase(category)} Commands`,
-            description: categoryInfo
-        };
+        categoryPage.embeds = [
+            {
+                title: `${this.utils.firstUppercase(category)} Commands`,
+                description: categoryInfo,
+                color: 'PURPLE'
+            }
+        ]
 
         return categoryPage;
     }
