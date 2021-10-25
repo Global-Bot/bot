@@ -24,7 +24,7 @@ function sendMessage(channel, message, options) {
 
     if (Array.isArray(message.embeds)) {
         message.embeds.map(embed => {
-            return Object.assign(embed, { color: !embed.color ? 'PURPLE' : embed.color })
+            return Object.assign(embed || {}, { color: !embed?.color ? 'PURPLE' : embed?.color })
         });
     }
 
