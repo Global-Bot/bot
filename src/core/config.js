@@ -99,8 +99,8 @@ config.paths = {
 }
 
 config.emojis = populateMap([
-    { key: 'success', value: '<:GlobalTick:748713755348697191>'   },
-    { key: 'error',   value: '<:GlobalCross:748712663626022940>'  },
+    { key: 'success', value: '<:GlobalTick:898234247083618365>'   },
+    { key: 'error',   value: '<:GlobalCross:898234247184253008>'  },
     { key: 'star',    value: '<:TestingGStar:890759402133544993>' },
 ])
 
