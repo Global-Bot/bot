@@ -32,6 +32,12 @@ class LeaderboardManager extends Base {
             let format = this.format(type, getLeaderboardData, this.DBS[type]);
 
             getMessage.edit({embeds: [format]});
+
+            if(getData) {
+                this.database.update({channel_id: channel.id, message_id: getMessage.id}, {where: {type}})
+            } else {
+                this.database.create({channel_id: channel.id, message_id: getMessage.id, type})
+            }
             return;
         }
     }
