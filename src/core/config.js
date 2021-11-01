@@ -117,7 +117,12 @@ config.economySettings = {
     weeklyBonus:               175,
     dailyBonus:                25,
     coinflipWinningPercentage: 49,
-    rollLowestBet:             10
+    rollLowestBet:             10,
+    leaderboardChannel: ""
+}
+
+config.leaderboardSettings = {
+    defaultChannel: "902279317906669621"
 }
 
 config.boostReactionSettings = {

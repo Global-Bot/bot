@@ -10,6 +10,7 @@ const LotteryManager = require('./classes/managers/LotteryManager');
 const CooldownManager = require('./classes/managers/CooldownManager');
 const BoostReactionManager = require('./classes/managers/BoostReactionManager');
 const DropManager = require('./classes/managers/DropManager');
+const LeaderboardManager = require('./classes/managers/LeaderboardManager');
 
 
 class Global extends Base {
@@ -75,6 +76,7 @@ class Global extends Base {
         this.drop = new DropManager(this);
         this.cooldown = new CooldownManager(this);
         this.boostReact = new BoostReactionManager(this);
+        this.leaderboard = new LeaderboardManager(this);
         
         this.client.once('ready', this.ready.bind(this));
         this.client.on('messageUpdate', (oldMessage, newMessage) => {
