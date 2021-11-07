@@ -303,7 +303,6 @@ class Base {
         const idParts = customId.split('-');
         if (!idParts || idParts.length != 3) return false;
         
-        console.log(6);
         return true;
     }
 
