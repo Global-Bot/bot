@@ -23,6 +23,7 @@ class EconomyProfile extends Base {
     async add(amount) {
         if(!amount || isNaN(amount) || !Number.isInteger(amount) || amount < 0 || amount > 1000000) return false;
         this.stars = this.stars + amount;
+        this.weeklyStars = this.weeklyStars + amount;
         return this.save();
     }
 
@@ -31,6 +32,7 @@ class EconomyProfile extends Base {
         let newStarBalance = this.stars - amount;
         if(newStarBalance < 0) return false;
         this.stars = newStarBalance;
+        this.weeklyStars = this.weeklyStars - amount;
         this.save();
         return true;
     }
