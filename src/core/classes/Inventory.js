@@ -23,7 +23,7 @@ class Inventory extends Base {
     }
     
     getItemsByName(name) {
-        return this.contents.filter(item => item.name.toLowerCase() == name.toLowerCase());
+        return this.contents.filter(item => item.itemID.toLowerCase() == name.toLowerCase());
     }
     
     getItemsByNameAndType(name, type) {
@@ -61,11 +61,11 @@ class Inventory extends Base {
         if (!Array.isArray(inventory)) { this.errored = true }
         
         for (const item of inventory) {
-            const where = { user: this.id, name: item.name, type: item.type };
+            const where = { user: this.id, itemID: item.itemID, type: item.type };
 
-            if (this.has(item.name, item.type)) {
-                if (this.quantity(item.name, item.type) != item.quantity) {
-                    await this.models.inventory.update(this.get(item.name, item.type), { where, raw: true });
+            if (this.has(item.itemID, item.type)) {
+                if (this.quantity(item.itemID, item.type) != item.quantity) {
+                    await this.models.inventory.update(this.get(item.itemID, item.type), { where, raw: true });
                 } else {
                     continue;
                 }
@@ -74,18 +74,21 @@ class Inventory extends Base {
             }
         }
 
-        const addedItems = this.contents.filter(item => !inventory.some(i => i.name == item.name && i.type == item.type));
+        const addedItems = this.contents.filter(item => !inventory.some(i => i.itemID == item.itemID && i.type == item.type));
         for (const item of addedItems) {
-            await this.models.inventory.create({ user: this.id, name: item.name, quantity: item.quantity, type: item.type });
+            await this.models.inventory.create({ user: this.id, itemID: item.itemID, quantity: item.quantity, type: item.type, inUse: false });
         }
 
         return true;
     }
     
     async set(name, type, quantity) {
-        const items = this.contents.filter(item => !(item.name == name && item.type == type));
+        quantity = parseFloat(quantity);
+        if (isNaN(quantity)) return this.contents;
+
+        const items = this.contents.filter(item => !(item.itemID == name && item.type == type));
         if (quantity >= 1) {
-            items.push({ name, quantity, type });
+            items.push({ itemID: name, quantity, type });
         }
         
         this.contents = items;
@@ -95,6 +98,9 @@ class Inventory extends Base {
     }
     
     async add(name, type, quantity) {
+        quantity = parseFloat(quantity);
+        if (isNaN(quantity)) return this.contents;
+
         quantity = this.quantity(name, type) + quantity;
         if (quantity > Number.MAX_SAFE_INTEGER) quantity = Number.MAX_SAFE_INTEGER;
         
@@ -102,6 +108,9 @@ class Inventory extends Base {
     }
     
     async take(name, type, quantity) {
+        quantity = parseFloat(quantity);
+        if (isNaN(quantity)) return this.contents;
+        
         quantity = this.quantity(name, type) - quantity;
         if (quantity < 0) quantity = 0;
         
