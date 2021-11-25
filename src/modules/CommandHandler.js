@@ -12,8 +12,8 @@ class CommandHandler extends Module {
 
         this.helpCommands = [ 'help', 'commands' ];
         
-        this.global.commands.on('command', this.onCommand);
-        this.global.commands.on('error', this.onCommandFail);
+        this.global.commands.on('command', this.onCommand.bind(this));
+        this.global.commands.on('error', this.onCommandFail.bind(this));
         
         this.init()
     }
