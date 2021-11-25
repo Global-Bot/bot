@@ -69,7 +69,8 @@ config.clientOptions = {
         'CommandHandler',
         'ButtonHandler',
         'BoostReaction',
-        'DropHandler'
+        'DropHandler',
+        'RoleManager'
     ]
 }
 
