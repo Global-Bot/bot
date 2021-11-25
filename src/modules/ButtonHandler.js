@@ -5,14 +5,14 @@ class ButtonHandler extends Module {
         super(global);
         
         this.module      = 'ButtonHandler';
-        this.description = 'Distributes buttons clicks to commands';
+        this.description = 'Distributes button clicks to commands';
         this.core        = true;
         this.enabled     = true;
     }
 
     static get name() {
         return 'ButtonHandler';
-    }    
+    }
 
     async interactionCreate({ interaction, isAdmin }) {
         if (!this.validate(interaction)) return;
