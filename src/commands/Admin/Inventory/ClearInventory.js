@@ -1,4 +1,4 @@
-const Command = require('../../core/classes/Command');
+const Command = require('../../../core/classes/Command');
 
 class ClearInventory extends Command {
     constructor(global, ...args) {
@@ -70,7 +70,7 @@ class ClearInventory extends Command {
                 let msg = collected.first();
                 if (msg) {
                     let answer = msg.content;
-                    if (answer == 'yes') {
+                    if ([ 'yes', 'yh', 'yeah', 'y' ].includes(answer?.toLowerCase())) {
                         return resolve(true);
                     }
                 }
