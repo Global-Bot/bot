@@ -98,7 +98,7 @@ class Inventory extends Base {
         return this.contents;
     }
     
-    async add(name, type, quantity) {
+    async add(name, type, quantity = 1) {
         quantity = parseFloat(quantity);
         if (isNaN(quantity)) return this.contents;
 
@@ -108,12 +108,12 @@ class Inventory extends Base {
         return await this.set(name, type, quantity)
     }
     
-    async take(name, type, quantity) {
+    async take(name, type, quantity = 1) {
         quantity = parseFloat(quantity);
         if (isNaN(quantity)) return this.contents;
         
         quantity = this.quantity(name, type) - quantity;
-        if (quantity < 0) quantity = 0;
+        if (quantity < 0) quantity = 1;
         
         return await this.set(name, type, quantity)
     }

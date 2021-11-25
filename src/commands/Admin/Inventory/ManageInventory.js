@@ -9,7 +9,7 @@ class ManageInventory extends Command {
         this.aliases      = [ 'manageinv', 'invmanage', 'invm' ];
         this.description  = 'Manage a users inventory';
         this.usage        = 'manageinventory (user) (action) (item) (type) (quantity)';
-        this.expectedArgs = 5;
+        this.expectedArgs = 4;
         this.cooldown     = 5000;
         this.permissions = 'admin';
     }
@@ -20,6 +20,8 @@ class ManageInventory extends Command {
         
         let inventory = await user.inventory;
         if (inventory.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve inventory data");
+
+        if (!args[4]) args[4] = 1;
         
         switch (args[1]) {
             case 'add':
