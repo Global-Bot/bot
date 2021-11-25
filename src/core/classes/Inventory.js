@@ -1,4 +1,5 @@
 const Base = require("./Base")
+const EconomyProfile = require("./EconomyProfile");
 
 class Inventory extends Base {
     constructor(user_id) {
@@ -120,6 +121,101 @@ class Inventory extends Base {
     async clear() {
         this.contents = [];
         return await this.save();
+    }
+
+    
+    async isInUse(item) {
+        if (!item || item.itemID == undefined || item.type == undefined) return false;
+
+        const dbItem = await this.models.inventory.findOne({ where: { user: this.id, itemID: item.itemID, type: item.type }, raw: true });
+        if (!dbItem || dbItem.inUse == undefined || dbItem.inUse == null) return false;
+
+        return !!dbItem.inUse;
+    }
+
+    async toggleInUse(item) {
+        if (!item || item.itemID == undefined || item.type == undefined) return false;
+
+        const dbItem = await this.models.inventory.findOne({ where: { user: this.id, itemID: item.itemID, type: item.type }, raw: true });
+        if (!dbItem || dbItem.inUse == undefined || dbItem.inUse == null) return false;
+        
+        const update = await this.models.inventory.update({ inUse: !dbItem.inUse }, { where: { user: this.id, itemID: dbItem.itemID, type: dbItem.type }, raw: true });
+        if (!update) return false;
+
+        return true;
+    }
+    
+    
+    async give(item, receiver) {
+        if (!item || item.itemID == undefined || item.type == undefined) return false;
+
+        const receiverInventory = await receiver.inventory;
+        if (receiverInventory.errored) return false;
+
+        const take = await this.take(item.itemID, item.type, 1);
+        if (!take) return false;
+
+
+        const add = await receiverInventory.add(item.itemID, item.type, 1);
+        if (!add) return false;
+
+        return true;
+    }
+
+    async use(item) {
+        if (!item || item.itemID == undefined || item.type == undefined) return false;
+
+        switch (item.type) {
+            case 'role':
+                const dbItem = await this.models.role.findOne({ where: { id: item.itemID }, raw: true });
+                if (!dbItem || dbItem.role == undefined || dbItem.role == null) return false;
+                
+                const inUse = await this.isInUse(item);
+                globalEvents.emit(!inUse ? 'addRole' : 'removeRole', dbItem.role, this.id);
+
+                const toggleInUse = await this.toggleInUse(item);
+                if (!toggleInUse) return false;
+                break;
+
+            case 'crate':
+                const crateDbItem = await this.models.crate.findOne({ where: { id: item.itemID }, raw: true });
+                if (!crateDbItem) return false;
+                
+                await Promise.all(
+                    crateDbItem.contains.map(crateItem => this.add(crateItem.id, crateItem.type, crateItem.quantity))
+                );
+
+                await this.take(item.itemID, item.type, 1);
+                break;
+        }
+        
+        return true;
+    }
+
+    async sell(item) {
+        if (!item || item.itemID == undefined || item.type == undefined) return false;
+
+        const model = this.models[item.type];
+        if (!model) return false;
+
+        const dbItem = await model.findOne({ where: { id: item.itemID } });
+        if (!dbItem || dbItem.price == undefined || dbItem.price == null) return false;
+
+        const giveback = Math.max(0, dbItem.price * 0.75);
+        if (!isNaN(giveback) && giveback != 0) {
+            const economy = await (new EconomyProfile(this.id));
+            if(economy.errored) return false;
+            
+            await economy.add(giveback)
+        };
+
+        const take = await this.take(item.itemID, item.type, 1);
+        if (!take) return false;
+
+        return {
+            item,
+            price: giveback
+        };
     }
 }
 
