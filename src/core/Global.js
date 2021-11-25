@@ -114,12 +114,13 @@ class Global extends Base {
     }
 
     handleRejection(reason, p) {
-        console.error('Unhandled rejection at: Promise', p, 'reason:', reason);
+        const log = `Unhandled rejection at: Promise ${require('util').inspect(p)} reason: ${reason}`;
+        this.logger.error(log, 'unhandledRejection');
         
         this.logWebhook(`Rejection Error`, null, {
             webhook: 'rejections',
             username: 'Rejection Error',
-            text: reason.message,
+            text: log,
             suppress: true
         });
 	}
