@@ -1,4 +1,4 @@
-const Command = require('../../core/classes/Command');
+const Command = require('../../../core/classes/Command');
 
 class ManageInventory extends Command {
     constructor(global, ...args) {
