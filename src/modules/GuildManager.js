@@ -47,7 +47,7 @@ class GuildManager extends Module {
         });
         
         guild.leave()
-            .catch(console.error);
+            .catch(err => this.logger.error(err));
     }
 
     async guildFields(guild) {
