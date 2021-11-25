@@ -64,7 +64,7 @@ class Global extends Base {
 		});
 
         this.dispatcher = new EventManager(this);
-        this.globalEvents = new EventEmitter();
+        global.globalEvents = new EventEmitter();
 
         // Collections
         this.commands = new CommandCollection(this);
