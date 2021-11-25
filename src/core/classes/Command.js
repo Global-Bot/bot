@@ -118,7 +118,7 @@ class Command extends Base {
         if (this.usage) {
             help.push({
                 name: 'Usage',
-                value: bt(prefix + this.usage),
+                value: Array.isArray(this.usage) ? this.usage.map(usage => bt(prefix + usage)).join(',\n') : bt(prefix + this.usage),
                 inline: true
             });
         }
