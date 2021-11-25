@@ -34,42 +34,30 @@ class Base {
     }
     
     get logger() {
-        const _logger = _.cloneDeep(logger.get(this.constructor.name));
+        const _logger = logger.get(this.constructor.name);
         const _logWebhook = this.logWebhook.bind(this);
-        
-        const overrideHandler = {
-            get: function(target, prop) {
-                function overrideLogger(method, webhook) {
-                    webhook = webhook || `${method}s`;
-                    
-                    if (!config.webhooks.has(webhook)) {
-                        return target[prop];
-                    }
-                    
-                    return function (log, uniqueMarker, extra) {
-                        _logWebhook(null, null, {
-                            webhook,
-                            username: `Logger - ${method}`,
-                            text: log,
-                            suppress: true
-                        });
-                        
-                        return target[method](log, uniqueMarker, extra);
-                    }
-                }
-                
-                const overrides = [ 'error', 'warn', 'info', 'debug', 'trace' ];
-                for (const override of overrides) {
-                    if (prop == override) {
-                        return overrideLogger(override);
-                    }
-                }
-                
-                return target[prop]
-            }
-        };
-        
-        return new Proxy(_logger, overrideHandler);
+
+        function sendWebhookLog(method, log) {
+            let webhook = `${method}s`;
+            
+            if (!config.webhooks.has(webhook)) return;
+            
+            _logWebhook(null, null, {
+                webhook,
+                username: `Logger - ${method}`,
+                text: log,
+                suppress: true
+            });
+        }
+
+        const methods = [ 'error', 'warn', 'info', 'debug', 'trace' ];
+        let loggers = {};
+
+        for (const method of methods) {
+            loggers[method] = eval(`(...args) => { sendWebhookLog('${method}', ...args); _logger.${method}(...args); }`);
+        }
+
+        return loggers;
     }
     
     get utils() {
@@ -119,8 +107,10 @@ class Base {
             }
         };
         
-        if (options.text) {
+        if (typeof options.text == 'string') {
             embed.description = options.text;
+        } else if (options.text instanceof Error) {
+            embed.description = options?.text?.message;
         }
         
         if (fields) embed.fields = fields;
@@ -394,7 +384,6 @@ class Base {
     
     sendCode(channel, content, ...args) {
         const code = this.codeBlock(content, ...args);
-        
         return this.sendMessage(channel, code);
     }
     
