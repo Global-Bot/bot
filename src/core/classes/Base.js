@@ -429,6 +429,23 @@ class Base {
         let isValid = isNaN(parseInt(ID)) ? false : true;
         return {id: ID, isValid}
     }
+
+    async displayName(item) {
+        if (!item) return 'Unknown';
+
+        const id = item?.itemID || item?.id;
+        if (!id) return 'Unknown';
+
+        if (item.type == undefined) return id;
+
+        const model = db.models[item.type];
+        if (!model) return id;
+
+        const dbItem = await model.findOne({ where: { id } });
+        if (!dbItem || dbItem.displayName == undefined || dbItem.displayName == null) return id;
+
+        return dbItem?.displayName || id;
+    }
 }
 
 module.exports = Base;
