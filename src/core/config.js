@@ -149,6 +149,41 @@ config.lottery = {
     channel:     "880550889256009768"
 }
 
+config.levelling = {
+    XPMessage: {
+        min: 3,
+        max: 6,
+        cooldown: 1000,
+        ignoreCommands: true,
+        excludedChannels: [
+            "802364859891187772", // bots
+        ]
+    },
+    LevelAnnounce: {
+        rewardRoleMessage: `Congrats {user}! You are now {role}!`,
+        levelMessage: `Congrats {user}! You are now **level {level}**!`
+    },
+    LevelRewards: {
+        5:   '867461762450325515',
+        10:  '867461758725914705',
+        20:  '867461756069347338',
+        40:  '867461752572477481',
+        60:  '867462054948110346',
+        80:  '867462052540317698',
+        100: '867462050602156082',
+    },
+    Limits: {
+        level: 100,
+        AboutLength: 255
+    },
+    GenderOptions: [
+        "Male",
+        "Female",
+        "Other"
+    ],
+    CountryAPI: "https://restcountries.com/v3.1/all"
+}
+
 config.eightball = {
     answers: [
         "It is certain", 
