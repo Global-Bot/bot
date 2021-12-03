@@ -70,7 +70,8 @@ config.clientOptions = {
         'ButtonHandler',
         'BoostReaction',
         'DropHandler',
-        'RoleManager'
+        'RoleManager',
+        'Levelling'
     ]
 }
 
