@@ -11,6 +11,7 @@ const CooldownManager = require('./classes/managers/CooldownManager');
 const BoostReactionManager = require('./classes/managers/BoostReactionManager');
 const DropManager = require('./classes/managers/DropManager');
 const LeaderboardManager = require('./classes/managers/LeaderboardManager');
+const axios = require('axios');
 
 
 class Global extends Base {
@@ -93,7 +94,7 @@ class Global extends Base {
         }
     }
 
-    ready() {
+    async ready() {
 		this.logger.info(`[${this.config.stateName}] ${this.config.name} ready with ${this.client.guilds.cache.size} guilds`);
         this.client.guilds.cache.map(guild => this.logger.trace('\tGuild: ' + guild.name));
         
@@ -103,6 +104,9 @@ class Global extends Base {
 
         this.user = this._client.user;
         this.userID = this._client.user.id;
+
+        this.countryData = await axios.get(this.config.levelling.CountryAPI)
+        .then(res => res.data.map(country => ({ name: country.name.common, flag: country.flags.png, code: country.cca2 })));
         
         this.isReady = true;
     }
