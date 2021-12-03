@@ -217,7 +217,7 @@ class Base {
     }
     
     createInteractionCollector(message,{filter, time = 60000, max = 0}) {
-        if(!message) return;
+        if(!message || message instanceof Error) return;
         return new Promise(res => {
             let interactionCollector = message.createMessageComponentCollector({filter, time, max});
             
