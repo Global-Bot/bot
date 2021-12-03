@@ -36,6 +36,16 @@ class EconomyProfile extends Base {
         this.save();
         return true;
     }
+
+    async set(amount) {
+        if(!amount || isNaN(amount) || !Number.isInteger(amount) || amount < 0 || amount > 1000000) return false;
+
+        this.stars = amount;
+        this.weeklyStars = amount;
+
+        this.save();
+        return true;
+    }
 }
 
 module.exports = EconomyProfile;
