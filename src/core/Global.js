@@ -66,6 +66,8 @@ class Global extends Base {
 
         this.dispatcher = new EventManager(this);
         global.globalEvents = new EventEmitter();
+        global.XPCooldowns = new Map();
+        global.client = this.client;
 
         // Collections
         this.commands = new CommandCollection(this);
