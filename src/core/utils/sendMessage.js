@@ -14,8 +14,6 @@ function sendMessage(channel, message, options) {
     message.disableEveryone = options.disableEveryone != undefined ? options.disableEveryone : true;
 
     if (message.embed) {
-        message.embed.title = `[${config.stateName}] ${message.embed.title || ""}`
-        
         message.embeds = message.embeds || [];
         message.embeds.push(message.embed);
 
