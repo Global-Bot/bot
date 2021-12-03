@@ -82,6 +82,8 @@ class CommandHandler extends Module {
     async messageCreate(event) {
         const { message, guild, isAdmin } = event;
         if (!message || message.author.bot || !guild) return;
+        
+        const handleXPMessage = this.global.modules.get("Levelling").handleXPMessage;
 
         let content = message.content,
             command = content,
@@ -92,7 +94,7 @@ class CommandHandler extends Module {
             ],
             startsWithPrefix = prefixes.filter(prefix => message.content.startsWith(prefix));
         
-        if (!startsWithPrefix.length) return;
+        if (!startsWithPrefix.length) return handleXPMessage(event);
 
         for (const prefix of prefixes) {
             command = command.replace(prefix, '');
@@ -100,21 +102,21 @@ class CommandHandler extends Module {
         }
         
         command = command.split(' ')[0].toLowerCase();
-        if (!command) return;
+        if (!command) return handleXPMessage(event);
 
-        if (this.isCooldown(message)) return;
+        if (this.isCooldown(message)) return handleXPMessage(event);
 
         const commands = this.global.commands;
 
-        if (!this.helpCommands.includes(command) && !commands.has(command)) return;
+        if (!this.helpCommands.includes(command) && !commands.has(command)) return handleXPMessage(event);
 
 		const args = content.replace(/ {2,}/g, ' ').split(' ').slice(1);
 
         if (this.helpCommands.includes(command)) {
             if (args.length && commands.has(args[0])) {
                 const cmd = commands.get(args[0]);
-                if (cmd.permissions == 'admin' && !event.isAdmin) return;
-                if (cmd.hide) return;
+                if (cmd.permissions == 'admin' && !event.isAdmin) return handleXPMessage(event);
+                if (cmd.hide) return handleXPMessage(event);
 
                 return cmd.help(message);
             }
@@ -125,6 +127,7 @@ class CommandHandler extends Module {
         const cmd = commands.get(command);
 
         if (!this.canExecute(cmd, event)) {
+            handleXPMessage(event)
             if (cmd.permissions == 'admin' && !event.isAdmin) return;
 
             return this.sendMessage(message.channel, 'author no perms');
