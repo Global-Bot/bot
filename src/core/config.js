@@ -154,7 +154,7 @@ config.levelling = {
     XPMessage: {
         min: 3,
         max: 6,
-        cooldown: 1000,
+        cooldown: 60000,
         ignoreCommands: true,
         excludedChannels: [
             "802364859891187772", // bots
