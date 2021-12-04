@@ -54,13 +54,18 @@ class Rank extends Command {
         const user = this.resolveUser(guild, args[0]) || message.member;
         if (!user) return this.error(message.channel, 'Failed to find that user');
 
+        const loadingMessage = await message.reply({
+            messageReference: message,
+            embeds: [{ description: `${this.config.emojis.get('loading')} Loading rank for ${user}`, color: 'PURPLE' }]
+        });
+        
         const levelling    = user.levelling;
 
         const economy      = await user.economy;
         if(economy.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
 
         const reputation   = await user.reputation;
-        if(reputation.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
+        if(reputation.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve reputation data");
 
         const gender       = user.gender;
         const userGender   = await gender.get();
@@ -101,9 +106,12 @@ class Rank extends Command {
 
 
         // Send
-        this.sendMessage(message.channel, { files: [
-            new MessageAttachment(canvas.toBuffer(), `${this.fullName(user)}_rank_card-${this.client.user.username}.png`)
-        ] })
+        loadingMessage.edit({
+            files: [
+                new MessageAttachment(canvas.toBuffer(), `${this.fullName(user)}_rank_card-${this.client.user.username}.png`)
+            ],
+            embeds: []
+        })
     }
 
     async drawBackgroundImage(ctx) {
