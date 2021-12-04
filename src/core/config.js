@@ -104,7 +104,8 @@ config.emojis = populateMap([
     { key: 'success',  value: '<:GlobalTick:898234247083618365>'   },
     { key: 'error',    value: '<:GlobalCross:898234247184253008>'  },
     { key: 'star',     value: '<:TestingGStar:890759402133544993>' },
-    { key: 'kipHeart', value: '<:KipHeart:897095652100685855>' },
+    { key: 'kipHeart', value: '<:KipHeart:897095652100685855>'     },
+    { key: 'loading',  value: '<a:loading:916486845561466900>'     },
 ])
 
 config.dropSettings = {
