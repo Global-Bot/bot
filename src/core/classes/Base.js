@@ -170,7 +170,8 @@ class Base {
     success(channel, content, options) {
         const embed = {
             color: 'GREEN',
-            description: `${this.config.emojis.get('success')} ${content}`
+            description: `${this.config.emojis.get('success')} ${content}`,
+            footer: options?.footer || undefined
         };
         
         return this.sendMessage(channel, { embed }, options);
