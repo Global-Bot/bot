@@ -82,7 +82,7 @@ class Global extends Base {
         this.leaderboard = new LeaderboardManager(this);
         
         this.client.once('ready', this.ready.bind(this));
-        this.client.on('messageUpdate', (oldMessage, newMessage) => {
+        this.client.on('messageUpdate', (_, newMessage) => {
             this.client.emit('messageCreate', newMessage)
         })
 
@@ -90,7 +90,7 @@ class Global extends Base {
     }
 
     cacheMembers() {
-        for (const [ id, guild ] of this.client.guilds.cache) {
+        for (const [ _, guild ] of this.client.guilds.cache) {
             guild.members.fetch()
             .catch(this.logger.error);
         }

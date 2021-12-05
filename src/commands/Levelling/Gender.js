@@ -14,7 +14,7 @@ class Gender extends Command {
         this.cooldown     = 5000;
     }
 
-    async execute({ message, guild, args }) {
+    async execute({ message }) {
         const customID = this.customID('gender_select', 'gender');
 
         const genderList = new MessageActionRow()

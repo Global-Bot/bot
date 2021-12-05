@@ -13,7 +13,7 @@ class Rep extends Command {
         this.cooldown     = 0;
     }
     
-    async execute({ message, args, command, guild, isAdmin }) {
+    async execute({ message, args, guild }) {
         const user = this.resolveUser(guild, args[0]) || message.member;
         if (!user) return this.error(message.channel, "Failed to find that user");
 

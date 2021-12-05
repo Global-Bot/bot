@@ -19,7 +19,7 @@ class Role extends Command {
         this.permissions = 'admin';
     }
     
-    async execute({ message, guild, args }) {
+    async execute({ message, args }) {
         switch (args[0]) {
             case 'list':
                 return this.sendMessage(message.channel, {
@@ -30,7 +30,6 @@ class Role extends Command {
                         .join('\n')
                     }
                 });
-                break;
 
             case 'create':
                 const [ _, id, role, displayName, price ] = args;
@@ -40,7 +39,6 @@ class Role extends Command {
                 if (!create || create instanceof Error) return this.error(message.channel, (create?.errors || [])[0]?.message || "Unable to create role item");
 
                 return this.sendMessage(message.channel, "**Created role:** " + `**${displayName}** (${id}) - ${this.utils.backTick(role)} - **${price}** ${this.config.emojis.get("star")}`);
-                break;
 
             case 'update':
                 const [ __, _id, newRoleID, newDisplayName, newPrice ] = args;
@@ -64,7 +62,6 @@ class Role extends Command {
                 if (!newDbItem) return this.error(message.channel, "Unable to find new role item");
 
                 return this.sendMessage(message.channel, "**Updated role:** " + `**${newDbItem.displayName}** (${newDbItem.id}) - ${this.utils.backTick(newDbItem.role)} - **${newDbItem.price}** ${this.config.emojis.get("star")}`);
-                break;
             
             case 'delete':
                 const [ ___, __id ] = args;
@@ -74,11 +71,9 @@ class Role extends Command {
                 if (!destroy || destroy instanceof Error) return this.error(message.channel, (destroy?.errors || [])[0]?.message || "Unable to destroy role item");
 
                 return this.sendMessage(message.channel, `**Deleted role:** ${__id}`);
-                break;
         
             default:
                 return this.error(message.channel, (`Invalid choice "${args[0]}"\n\n` + (Array.isArray(this.usage) ? this.usage.map(usage => this.utils.backTick(this.config.prefix + usage)).join(',\n') : this.utils.backTick(this.config.prefix + this.usage))));
-                break;
         }
     }
 }

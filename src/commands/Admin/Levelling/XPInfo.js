@@ -14,7 +14,7 @@ class XPInfo extends Command {
         this.permissions  = 'admin';
     }
     
-    async execute({ message, args, command, guild, isAdmin }) {
+    async execute({ message, args }) {
         const table = [
             [ 'Level', 'XPForLevel', 'XPForLevel -> LevelForXP', 'Correct?' ]
         ];

@@ -183,7 +183,7 @@ class Base {
             description: `${this.config.emojis.get('error')} ${content}`
         };
         
-        return new Promise((resolve, reject) => {
+        return new Promise((_, reject) => {
             return this.sendMessage(channel, { embed })
             .catch(e => e)
             .then(() => reject(err || content));

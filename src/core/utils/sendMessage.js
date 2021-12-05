@@ -1,5 +1,3 @@
-const config = require('../config');
-
 function sendMessage(channel, message, options) {
     options = options || {};
     if (!channel || !message) {

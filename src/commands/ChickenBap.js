@@ -17,7 +17,6 @@ class ChickenBap extends Command {
     async execute({ message }) {
         return this.sendMessage(message.channel, 'https://timlawrencedotme.files.wordpress.com/2014/05/chicken-roll-cut_sm.jpg');
     }
-
 }
 
 module.exports = ChickenBap;

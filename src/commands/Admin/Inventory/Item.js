@@ -19,7 +19,7 @@ class Item extends Command {
         this.permissions = 'admin';
     }
     
-    async execute({ message, guild, args }) {
+    async execute({ message,  args }) {
         switch (args[0]) {
             case 'list':
                 return this.sendMessage(message.channel, {
@@ -30,7 +30,6 @@ class Item extends Command {
                         .join('\n')
                     }
                 });
-                break;
 
             case 'create':
                 const [ _, id, displayName, price ] = args;
@@ -40,7 +39,6 @@ class Item extends Command {
                 if (!create || create instanceof Error) return this.error(message.channel, (create?.errors || [])[0]?.message || "Unable to create item");
 
                 return this.sendMessage(message.channel, "**Created item:** " + `**${displayName}** (${id}) - **${price}** ${this.config.emojis.get("star")}`);
-                break;
 
             case 'update':
                 const [ __, _id, newDisplayName, newPrice ] = args;
@@ -61,7 +59,6 @@ class Item extends Command {
                 if (!newDbItem) return this.error(message.channel, "Unable to find new item");
 
                 return this.sendMessage(message.channel, "**Updated item:** " + `**${newDbItem.displayName}** (${newDbItem.id}) - **${newDbItem.price}** ${this.config.emojis.get("star")}`);
-                break;
             
             case 'delete':
                 const [ ___, __id ] = args;
@@ -71,11 +68,9 @@ class Item extends Command {
                 if (!destroy || destroy instanceof Error) return this.error(message.channel, (destroy?.errors || [])[0]?.message || "Unable to destroy item");
 
                 return this.sendMessage(message.channel, `**Deleted item:** ${__id}`);
-                break;
         
             default:
                 return this.error(message.channel, (`Invalid choice "${args[0]}"\n\n` + (Array.isArray(this.usage) ? this.usage.map(usage => this.utils.backTick(this.config.prefix + usage)).join(',\n') : this.utils.backTick(this.config.prefix + this.usage))));
-                break;
         }
     }
 }

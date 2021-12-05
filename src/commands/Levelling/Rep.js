@@ -13,7 +13,7 @@ class Rep extends Command {
         this.cooldown     = 60000 * 60 * 24 * 1;
     }
     
-    async execute({ message, args, command, guild, isAdmin }) {
+    async execute({ message, args, guild }) {
         const user = this.resolveUser(guild, args[0]);
         if (!user) return this.error(message.channel, "Failed to find that user");
         if (user == message.member) return this.error(message.channel, "Your cannot rep yourself");

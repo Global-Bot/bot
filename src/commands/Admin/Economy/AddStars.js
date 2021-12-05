@@ -14,7 +14,7 @@ class AddStars extends Command {
         this.permissions  = 'admin';
     }
     
-    async execute({ message, args, command, guild, isAdmin }) {
+    async execute({ message, args, guild }) {
         const user = this.resolveUser(guild, args[0]);
         if (!user) return this.error(message.channel, "Failed to find that user");
 

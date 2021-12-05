@@ -13,7 +13,7 @@ class About extends Command {
         this.cooldown     = 5000;
     }
 
-    async execute({ message, guild, args }) {
+    async execute({ message }) {
         const about = await this.collectInput(message, "What is your about?");
         if (!about) return;
         
@@ -32,7 +32,7 @@ class About extends Command {
             
             collector.on('end', async (collected, reason) => {
                 if (reason == 'time') {
-                    message.delete().catch(e => {});
+                    message.delete().catch(e => e);
                     return resolve(false);
                 }
                 

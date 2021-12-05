@@ -13,7 +13,7 @@ class Country extends Command {
         this.cooldown     = 5000;
     }
 
-    async execute({ message, guild, args }) {
+    async execute({ message }) {
         const country = await this.collectInput(message, "What is your country?");
         if (!country) return;
         
@@ -35,7 +35,7 @@ class Country extends Command {
             
             collector.on('end', async (collected, reason) => {
                 if (reason == 'time') {
-                    message.delete().catch(e => {});
+                    message.delete().catch(e => e);
                     return resolve(false);
                 }
                 
