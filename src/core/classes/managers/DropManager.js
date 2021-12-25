@@ -65,7 +65,7 @@ class DropManager extends Base {
             if(!getMember) return;
 
             let economyProfile = await getMember.economy;
-            let getMultiplier = this.calculateMultiplier(getMember);
+            let getMultiplier = await this.calculateMultiplier(getMember);
             !loseStars ? starAmount = starAmount * getMultiplier : starAmount;
 
             loseStars ? economyProfile.remove(starAmount) : economyProfile.add(starAmount);
@@ -75,4 +75,4 @@ class DropManager extends Base {
     }
 }
 
-module.exports = DropManager
+module.exports = DropManager;

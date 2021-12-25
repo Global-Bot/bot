@@ -22,7 +22,7 @@ class Work extends Command {
 
         let starAmount = randomInt(starRange[0], starRange[1]);
 
-        let multiplier = this.calculateMultiplier(message.member);
+        let multiplier = await this.calculateMultiplier(message.member);
         let starAfterMultiplier = Math.floor((starAmount * multiplier))
         let difference = starAfterMultiplier - starAmount;
 
