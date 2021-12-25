@@ -229,10 +229,22 @@ class Base {
         })
     }
     
-    calculateMultiplier(member) {
+    async calculateMultiplier(member) {
         let multiplier = 1;
-        
-        if(member.isBooster) {multiplier = 1.5}
+
+        const upgrades = await Promise.all(
+            (await member.upgrades).map(
+                async upgrade => await this.models.upgrade.findOne(
+                    { where: { id: upgrade.itemID }, raw: true }
+                )
+            )
+        );
+        const starMultiplier = upgrades.reduce((prev, curr) => prev + curr.starMultiplier, 0);
+
+        multiplier *= starMultiplier;
+
+        if(member.isBooster) multiplier *= 0.5
+
         return multiplier;
     }
     
@@ -435,6 +447,18 @@ class Base {
         if (!dbItem || dbItem.displayName == undefined || dbItem.displayName == null) return id;
 
         return dbItem?.displayName || id;
+    }
+
+    async itemPrice(item) {
+        if (!item || !item?.itemID || item?.type == undefined) return NaN;
+
+        const model = db.models[item.type];
+        if (!model) return NaN;
+
+        const dbItem = await model.findOne({ where: { id: item?.itemID } });
+        if (!dbItem || dbItem.price == undefined || dbItem.price == null) return NaN;
+
+        return dbItem?.price;
     }
 }
 
