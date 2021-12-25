@@ -119,7 +119,7 @@ class Levelling extends Base {
 
         if (userLevel >= this.config.levelling.Limits.level) return;
 
-        await this.addXP(this.generateXP());
+        await this.addXP(this.generateXP() * (await this.XPBoost(message.member)));
 
         this.setXPCooldown();
 
@@ -191,8 +191,20 @@ class Levelling extends Base {
 
 
 
-    async XPBoost() {
-        return 0;
+    async XPBoost(member) {
+        let multiplier = 1;
+
+        const upgrades = await Promise.all(
+            (await member.upgrades).map(
+                async upgrade => await this.models.upgrade.findOne(
+                    { where: { id: upgrade.itemID }, raw: true }
+                )
+            )
+        );
+        const XPMultiplier = upgrades.reduce((prev, curr) => prev + curr.XPMultiplier, 0);
+        multiplier *= XPMultiplier;
+
+        return multiplier;
     }
 
 
