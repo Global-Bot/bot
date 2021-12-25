@@ -61,3 +61,12 @@ Object.defineProperty(GuildMember.prototype, 'blacklist', {
         return new Blacklist(this.id);
     }
 })
+
+Object.defineProperty(GuildMember.prototype, 'upgrades', {
+    async get() {
+        const inventory = await new Inventory(this.id);
+        if (inventory.errored) return [];
+        
+        return inventory.getItemsByType("upgrade").filter(item => item.inUse);
+    }
+})
