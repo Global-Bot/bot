@@ -204,6 +204,8 @@ class Levelling extends Base {
         const XPMultiplier = upgrades.reduce((prev, curr) => prev + curr.XPMultiplier, 0);
         multiplier *= XPMultiplier;
 
+        if(member.isBooster) multiplier *= 0.5
+
         return multiplier;
     }
 
