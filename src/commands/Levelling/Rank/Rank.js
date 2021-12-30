@@ -58,7 +58,6 @@ class Rank extends Command {
             messageReference: message,
             embeds: [{ description: `${this.config.emojis.get('loading')} Loading rank for ${user}`, color: 'PURPLE' }]
         });
-        
         const levelling    = user.levelling;
 
         const economy      = await user.economy;
@@ -95,8 +94,8 @@ class Rank extends Command {
 
         await this.drawAvatar(ctx, user);
 
-        await this.drawXPBoost(ctx, levelling);
-        await this.drawStarBoost(ctx, levelling);
+        await this.drawXPBoost(ctx, levelling, user);
+        await this.drawStarBoost(ctx, user);
         
         await this.drawStarCount(ctx, economy);
         
@@ -298,8 +297,8 @@ class Rank extends Command {
         ctx.closePath();
     }
 
-    async drawXPBoost(ctx, levelling) {
-        const XPBoost = await levelling.XPBoost();
+    async drawXPBoost(ctx, levelling, user) {
+        const XPBoost = await levelling.XPBoost(user);
 
         const text = `${XPBoost}x`;
         const pos = 674 - (7 * (XPBoost.toString().length));
@@ -311,8 +310,8 @@ class Rank extends Command {
         ctx.globalAlpha = 1;
     }
 
-    async drawStarBoost(ctx, levelling) {
-        const starBoost = await levelling.XPBoost();
+    async drawStarBoost(ctx, user) {
+        const starBoost = await this.calculateMultiplier(user)
 
         const text = `${starBoost}x`;
         const pos = 740 - (7 * (starBoost.toString().length));

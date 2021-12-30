@@ -232,16 +232,19 @@ class Base {
     async calculateMultiplier(member) {
         let multiplier = 1;
 
-        const upgrades = await Promise.all(
+        const upgrades = (await Promise.all(
             (await member.upgrades).map(
                 async upgrade => await this.models.upgrade.findOne(
                     { where: { id: upgrade.itemID }, raw: true }
                 )
             )
-        );
+        )).filter(u => u);
+
         const starMultiplier = upgrades.reduce((prev, curr) => prev + curr.starMultiplier, 0);
 
-        multiplier *= starMultiplier;
+        if (starMultiplier > 0) {
+            multiplier *= starMultiplier;
+        }
 
         if(member.isBooster) multiplier *= 0.5
 

@@ -194,15 +194,19 @@ class Levelling extends Base {
     async XPBoost(member) {
         let multiplier = 1;
 
-        const upgrades = await Promise.all(
+        const upgrades = (await Promise.all(
             (await member.upgrades).map(
                 async upgrade => await this.models.upgrade.findOne(
                     { where: { id: upgrade.itemID }, raw: true }
                 )
             )
-        );
+        )).filter(u => u);
+        
         const XPMultiplier = upgrades.reduce((prev, curr) => prev + curr.XPMultiplier, 0);
-        multiplier *= XPMultiplier;
+        
+        if (XPMultiplier > 0) {
+            multiplier *= XPMultiplier; 
+        }
 
         if(member.isBooster) multiplier *= 0.5
 
