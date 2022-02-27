@@ -1,4 +1,7 @@
 const Command = require('../core/classes/Command');
+const fs = require("fs");
+const path = require("path");
+const { MessageAttachment } = require("discord.js");
 
 class ChickenBap extends Command {
     constructor(global, ...args) {
@@ -12,12 +15,17 @@ class ChickenBap extends Command {
         this.expectedArgs = 0;
         this.cooldown     = 1000;
         this.hide         = true;
+
+        this.bapBuffer    = fs.readFileSync(path.join(__dirname, "..", "assets", "chicken-bap.jpg"));
     }
 
     async execute({ message }) {
-        return this.sendMessage(message.channel, 'https://timlawrencedotme.files.wordpress.com/2014/05/chicken-roll-cut_sm.jpg');
+        return this.sendMessage(message.channel, {
+            files: [
+                new MessageAttachment(this.bapBuffer, "chicken-bap.jpg")
+            ]
+        });
     }
-
 }
 
 module.exports = ChickenBap;

@@ -27,6 +27,10 @@ class Inventory extends Base {
         return this.contents.filter(item => item.itemID.toLowerCase() == name.toLowerCase());
     }
     
+    getItemsByType(type) {
+        return this.contents.filter(item => item.type == type);
+    }
+    
     getItemsByNameAndType(name, type) {
         let items = this.getItemsByName(name);
         if (type) {
@@ -186,6 +190,11 @@ class Inventory extends Base {
                 );
 
                 await this.take(item.itemID, item.type, 1);
+                break;
+
+            case 'upgrade':
+                const toggleUpgradeInUse = await this.toggleInUse(item);
+                if (!toggleUpgradeInUse) return false;
                 break;
         }
         

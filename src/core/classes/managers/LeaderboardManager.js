@@ -1,6 +1,6 @@
 const { MessageEmbed, Message } = require("discord.js");
 const Base = require("../Base");
-const TYPES = ['stars']
+const TYPES = ['stars', 'messages']
 
 class LeaderboardManager extends Base {
     constructor(global) {
@@ -34,6 +34,7 @@ class LeaderboardManager extends Base {
                 winner.roles.add(role).catch(() => {});
             }
             await this.models.economy.update({weeklyStars: 0})
+            await this.models.xp.update({weeklyMessages: 0})
         }
     }
     
@@ -84,34 +85,36 @@ class LeaderboardManager extends Base {
     format(type, leaderboard, typeData) {
         let topTen = leaderboard.splice(0, 10);
         
-        let wording = [`**__Global's Weekly ${this.utils.firstUppercase(type)} Leaderboard:__**`,
-        ``,
-        `**Current Member of the week!** - ${topTen[0] ? `<@${topTen[0].id}>` : "..."}`,
-        ``,
-        `**__\`Rankings:\`__** ${topTen.map((item,i) => `\n${i + 1}. <@${item.id}> **\`-\` ${typeData.emoji ? typeData.emoji : ""} ${this.utils.commas(item[typeData.order])}**`).join("")}`, 
-        ``,
-        `At the end of the week, the member top user on this leaderboard will receive <@&${typeData.role}>`,
-        ``,
-        `Last updated: <t:${Math.round(new Date().getTime()/1000)}:R>\nResets: <t:${Math.round(this.moment().set("day", 6).toDate().getTime()/1000)}:R>`
-    ]
-    
-    this.topUsers[type] = topTen[0] || "";
-    
-    let finalString = wording.join("\n")
-    
-    let embed = new MessageEmbed()
-    .setDescription(finalString)
-    .setThumbnail(this.client.user.avatarURL())
-    .setColor('PURPLE');
-    
-    return embed;
-}
-
-get DBS() {
-    return {
-        "stars": {table: "economy", order: "weeklyStars", role: "878760379587653653", emoji: this.config.emojis.get("star")}
+        let wording = [
+            `**__Global's Weekly ${this.utils.firstUppercase(type)} Leaderboard:__**`,
+            ``,
+            `**Current Member of the week!** - ${topTen[0] ? `<@${topTen[0].id}>` : "..."}`,
+            ``,
+            `**__\`Rankings:\`__** ${topTen.map((item,i) => `\n${i + 1}. <@${item.id}> **\`-\` ${typeData.emoji ? typeData.emoji : ""} ${this.utils.commas(item[typeData.order])}**`).join("")}`, 
+            ``,
+            `At the end of the week, the member top user on this leaderboard will receive <@&${typeData.role}>`,
+            ``,
+            `Last updated: <t:${Math.round(new Date().getTime()/1000)}:R>\nResets: <t:${Math.round(this.moment().set("day", 6).toDate().getTime()/1000)}:R>`
+        ]
+        
+        this.topUsers[type] = topTen[0] || "";
+        
+        let finalString = wording.join("\n")
+        
+        let embed = new MessageEmbed()
+        .setDescription(finalString)
+        .setThumbnail(this.client.user.avatarURL())
+        .setColor('PURPLE');
+        
+        return embed;
     }
-}
+    
+    get DBS() {
+        return {
+            "stars":    {table: "economy", order: "weeklyStars",    role: "916406700767064064", emoji: this.config.emojis.get("star")},
+            "messages": {table: "xp",      order: "weeklyMessages", role: "916406797659680839", emoji: null},
+        }
+    }
 }
 
 module.exports = LeaderboardManager;

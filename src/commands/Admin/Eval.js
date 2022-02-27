@@ -16,18 +16,7 @@ class Eval extends Command {
         this.hide         = true;
     }
     
-    async execute({ message, args, command, guild, isAdmin }) {
-        let msg      = message,
-            global   = this.global,
-            client   = this.client,
-            config   = this.config,
-            db       = this.db,
-            models   = this.models,
-            utils    = this.utils,
-            users    = this.client.users.cache,
-            guilds   = this.client.guilds.cache,
-            channels = this.client.channels.cache
-        
+    async execute({ message, args }) {        
         let result;
         try {
             result = eval(args.join(' '));

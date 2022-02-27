@@ -18,7 +18,7 @@ class Weekly extends Command {
         if(economyData.errored) return this.error(message.channel, "A system error has occured", "Unable to retrieve economy data");
 
         let starAmount = this.config.economySettings.weeklyBonus;
-        let multiplier = this.calculateMultiplier(message.member);
+        let multiplier = await this.calculateMultiplier(message.member);
         let starAfterMultiplier = Math.floor((starAmount * multiplier))
         let difference = starAfterMultiplier - starAmount;
 

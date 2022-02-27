@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow } = require('discord.js');
+const { MessageActionRow } = require('discord.js');
 const Command = require('../../core/classes/Command');
 const expandedSideChoices = ["rock", "paper", "scissors"]
 
@@ -16,7 +16,11 @@ class RPS extends Command {
     }
     
     emojis(user_id) {
-        return new MessageActionRow().addComponents([this.makeButton({name: "Rock", user_id, emoji: "🪨"}), this.makeButton({name: "Paper", user_id, emoji: "📰"}), this.makeButton({name: "Scissors", user_id, emoji: "✂️"})])
+        return new MessageActionRow().addComponents([
+            this.makeButton({ name: "Rock",     user_id, emoji: "🪨"   }),
+            this.makeButton({ name: "Paper",    user_id, emoji: "📰" }),
+            this.makeButton({ name: "Scissors", user_id, emoji: "✂️" })
+        ])
     }  
     
     decisionEmbed(choice) {

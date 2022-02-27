@@ -14,7 +14,7 @@ class ManageInventory extends Command {
         this.permissions = 'admin';
     }
     
-    async execute({ message, guild, args }) {
+    async execute({ message, args }) {
         let user = this.resolveUser(message.guild, args[0]);
         if(!user) return this.error(message.channel, "No valid user detected!");
         
@@ -27,16 +27,13 @@ class ManageInventory extends Command {
             case 'add':
                 await inventory.add(args[2], args[3], args[4]);
                 return await this.sendMessage(message.channel, `Added item ${args[2]}. Type ${args[3]}. Quantity ${args[4]}. To user ${user}`);
-                break;
             
             case 'take':
                 await inventory.take(args[2], args[3], args[4]);
                 return await this.sendMessage(message.channel, `Took item ${args[2]}. Type ${args[3]}. Quantity ${args[4]}. From user ${user}`);
-                break;
         
             default:
                 return this.sendMessage(message.channel, 'Invalid action ' + args[0] + '. Must be either add or take.');
-                break;
         }
     }    
 }

@@ -28,7 +28,7 @@ class Crate extends Command {
             
             collector.on('end', async (collected, reason) => {
                 if (reason == 'time') {
-                    message.delete().catch(e => {});
+                    message.delete().catch(e => e);
                     return resolve(false);
                 }
                 
@@ -41,13 +41,13 @@ class Crate extends Command {
     }
 
     YoN(message) {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             const filter = m => m.author.id == message.author.id;
             const collector = message.channel.createMessageCollector({ filter, max: 1, time: 60000 });
             
             collector.on('end', async (collected, reason) => {
                 if (reason == 'time') {
-                    message.delete().catch(e => {});
+                    message.delete().catch(e => e);
                     return resolve(false);
                 }
                 
@@ -64,7 +64,7 @@ class Crate extends Command {
         });
     }
     
-    async execute({ message, guild, args }) {
+    async execute({ message, args }) {
         switch (args[0]) {
             case 'list':
                 if (args[1]) {
@@ -96,7 +96,6 @@ class Crate extends Command {
                         .join('\n')
                     }
                 });
-                break;
 
             case 'create':
                 const [ _, id, displayName, price ] = args;
@@ -164,7 +163,6 @@ class Crate extends Command {
                 if (!create || create instanceof Error) return this.error(message.channel, (create?.errors || [])[0]?.message || "Unable to create crate item");
 
                 return this.sendMessage(message.channel, "**Created crate:** " + `**${displayName}** (${id}) - **${price}** ${this.config.emojis.get("star")}`);
-                break;
 
             case 'update':
                 const [ __, _id, newDisplayName, newPrice ] = args;
@@ -248,7 +246,6 @@ class Crate extends Command {
                 }
                 
                 return this.sendMessage(message.channel, "**Updated crate:** " + `**${newDbItem.displayName}** (${newDbItem.id}) - **${newDbItem.price}** ${this.config.emojis.get("star")}`);
-                break;
             
             case 'delete':
                 const [ ___, __id ] = args;
@@ -258,11 +255,9 @@ class Crate extends Command {
                 if (!destroy || destroy instanceof Error) return this.error(message.channel, (destroy?.errors || [])[0]?.message || "Unable to destroy crate item");
 
                 return this.sendMessage(message.channel, `**Deleted crate:** ${__id}`);
-                break;
         
             default:
                 return this.error(message.channel, (`Invalid choice "${args[0]}"\n\n` + (Array.isArray(this.usage) ? this.usage.map(usage => this.utils.backTick(this.config.prefix + usage)).join(',\n') : this.utils.backTick(this.config.prefix + this.usage))));
-                break;
         }
     }
 

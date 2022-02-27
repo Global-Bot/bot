@@ -26,7 +26,7 @@ class Inventory extends Command {
         return this.sendMessage(message.channel, await this.inventoryEmbed(user, null, message.author.id, true));
     }
     
-    async buttonClick({ interaction, identifier, data, isAdmin }) {
+    async buttonClick({ interaction, identifier, data }) {
         if (interaction.user.id != data?.author) return;
         if (interaction.user.id != data?.user) return this.sendMessage(interaction.message.channel, `${interaction.user}, This is not your inventory!`, { deleteAfter: 10000 });
         
@@ -106,7 +106,7 @@ class Inventory extends Command {
         });
         
         function collectUser(message) {
-            return new Promise((resolve, reject) => {
+            return new Promise(resolve => {
                 const filter = m => m.author.id == data?.author;
                 const collector = message.channel.createMessageCollector({ filter, max: 1, time: 60000 });
                 
@@ -157,13 +157,13 @@ class Inventory extends Command {
             }
             
             function YoN(_m) {
-                return new Promise((resolve, reject) => {
+                return new Promise(resolve => {
                     const filter = m => m.author.id == data?.author;
                     const collector = message.channel.createMessageCollector({ filter, max: 1, time: 60000 });
                     
                     collector.on('end', async (collected, reason) => {
                         if (reason == 'time') {
-                            message.delete().catch(e => {});
+                            message.delete().catch(e => e);
                             return resolve(false);
                         }
                         
@@ -196,7 +196,7 @@ class Inventory extends Command {
                 const confirmation = await YoN(message);
                 if (!confirmation) {
                     return message.edit(`<@!${data?.author}>, Cancelled`)
-                    .then(_msg => setTimeout(() => _msg.delete().catch(e => {}), 10000))
+                    .then(_msg => setTimeout(() => _msg.delete().catch(e => e), 10000))
                 }
 
                 let use = await inventory.use(item);
@@ -236,7 +236,7 @@ class Inventory extends Command {
                 const confirmation = await YoN(message);
                 if (!confirmation) {
                     return message.edit(`<@!${data?.author}>, Cancelled`)
-                    .then(_msg => setTimeout(() => _msg.delete().catch(e => {}), 10000))
+                    .then(_msg => setTimeout(() => _msg.delete().catch(e => e), 10000))
                 }
 
                 let give = await inventory.give(item, user);
@@ -261,7 +261,7 @@ class Inventory extends Command {
                 const confirmation = await YoN(message);
                 if (!confirmation) {
                     return message.edit(`<@!${data?.author}>, Cancelled`)
-                    .then(_msg => setTimeout(() => _msg.delete().catch(e => {}), 10000))
+                    .then(_msg => setTimeout(() => _msg.delete().catch(e => e), 10000))
                 }
 
                 let sell = await inventory.sell(item);
@@ -281,7 +281,7 @@ class Inventory extends Command {
         }
     }
     
-    async dropdownChange({ interaction, isAdmin }) {
+    async dropdownChange({ interaction }) {
         if (!this.validate(interaction, 'dropdown')) return;
         const { identifier, data, command } = await this.resolve(interaction, 'dropdown');
         if (!(identifier == 'category_select' && command == this.name)) return;

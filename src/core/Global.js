@@ -11,6 +11,8 @@ const CooldownManager = require('./classes/managers/CooldownManager');
 const BoostReactionManager = require('./classes/managers/BoostReactionManager');
 const DropManager = require('./classes/managers/DropManager');
 const LeaderboardManager = require('./classes/managers/LeaderboardManager');
+const ShopManager = require('./classes/managers/ShopManager');
+const axios = require('axios');
 
 
 class Global extends Base {
@@ -65,6 +67,8 @@ class Global extends Base {
 
         this.dispatcher = new EventManager(this);
         global.globalEvents = new EventEmitter();
+        global.XPCooldowns = new Map();
+        global.client = this.client;
 
         // Collections
         this.commands = new CommandCollection(this);
@@ -77,9 +81,10 @@ class Global extends Base {
         this.cooldown = new CooldownManager(this);
         this.boostReact = new BoostReactionManager(this);
         this.leaderboard = new LeaderboardManager(this);
+        this.shop = new ShopManager(this);
         
         this.client.once('ready', this.ready.bind(this));
-        this.client.on('messageUpdate', (oldMessage, newMessage) => {
+        this.client.on('messageUpdate', (_, newMessage) => {
             this.client.emit('messageCreate', newMessage)
         })
 
@@ -87,13 +92,13 @@ class Global extends Base {
     }
 
     cacheMembers() {
-        for (const [ id, guild ] of this.client.guilds.cache) {
+        for (const [ _, guild ] of this.client.guilds.cache) {
             guild.members.fetch()
             .catch(this.logger.error);
         }
     }
 
-    ready() {
+    async ready() {
 		this.logger.info(`[${this.config.stateName}] ${this.config.name} ready with ${this.client.guilds.cache.size} guilds`);
         this.client.guilds.cache.map(guild => this.logger.trace('\tGuild: ' + guild.name));
         
@@ -103,6 +108,35 @@ class Global extends Base {
 
         this.user = this._client.user;
         this.userID = this._client.user.id;
+
+        this.countryData = await axios.get(this.config.levelling.CountryAPI)
+        .then(res => res.data.map(country => ({ name: country.name.common, flag: country.flags.png, code: country.cca2 })));
+
+        for (const [type, items] of Object.entries(this.config.shopDefaults))
+        {
+            const model = this.models[type];
+            if (!model) throw new Error(`${type} is not a valid item type`);
+
+            for (const item of items)
+            {
+                const requiredLevel = item.requiredLevel || 0 + 0;
+                
+                if (!await model.findOne({ where: { id: item.id } }))
+                {
+                    if (Object.hasOwnProperty.call(item, "requiredLevel"))
+                    {
+                        delete item.requiredLevel;
+                    }
+                    await model.create(item)
+                }
+
+                if (!await this.models.shop.findOne({ where: { itemID: item.id, type } }))
+                {
+                    await this.models.shop.create({ itemID: item.id, type, requiredLevel });
+                }
+            }
+            
+        }
         
         this.isReady = true;
     }

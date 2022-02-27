@@ -70,7 +70,8 @@ config.clientOptions = {
         'ButtonHandler',
         'BoostReaction',
         'DropHandler',
-        'RoleManager'
+        'RoleManager',
+        'Levelling'
     ]
 }
 
@@ -100,9 +101,11 @@ config.paths = {
 }
 
 config.emojis = populateMap([
-    { key: 'success', value: '<:GlobalTick:898234247083618365>'   },
-    { key: 'error',   value: '<:GlobalCross:898234247184253008>'  },
-    { key: 'star',    value: '<:TestingGStar:890759402133544993>' },
+    { key: 'success',  value: '<:GlobalTick:898234247083618365>'   },
+    { key: 'error',    value: '<:GlobalCross:898234247184253008>'  },
+    { key: 'star',     value: '<:TestingGStar:890759402133544993>' },
+    { key: 'kipHeart', value: '<:KipHeart:897095652100685855>'     },
+    { key: 'loading',  value: '<a:loading:916486845561466900>'     },
 ])
 
 config.dropSettings = {
@@ -145,6 +148,41 @@ config.rollMultipliers = {
 config.lottery = {
     ticketPrice: 250,
     channel:     "880550889256009768"
+}
+
+config.levelling = {
+    XPMessage: {
+        min: 3,
+        max: 6,
+        cooldown: 60000,
+        ignoreCommands: true,
+        excludedChannels: [
+            "802364859891187772", // bots
+        ]
+    },
+    LevelAnnounce: {
+        rewardRoleMessage: `Congrats {user}! You are now {role}!`,
+        levelMessage: `Congrats {user}! You are now **level {level}**!`
+    },
+    LevelRewards: {
+        5:   '867461762450325515',
+        10:  '867461758725914705',
+        20:  '867461756069347338',
+        40:  '867461752572477481',
+        60:  '867462054948110346',
+        80:  '867462052540317698',
+        100: '867462050602156082',
+    },
+    Limits: {
+        level: 100,
+        AboutLength: 255
+    },
+    GenderOptions: [
+        "Male",
+        "Female",
+        "Other"
+    ],
+    CountryAPI: "https://restcountries.com/v3.1/all"
 }
 
 config.eightball = {
@@ -346,6 +384,146 @@ config.topics = {
         "Do you remember the last dream you had?",
         "How have you changed since you were a kid?",
         "Do you untie your sneakers before taking them off?"
+    ]
+}
+
+// Creates if not exists and puts them into the shop
+config.shopDefaults = {
+    upgrade: [
+        {
+            id: "SENIOR_WORKER",
+            displayName: "Senior Worker",
+            XPMultiplier: 0,
+            starMultiplier: 0.02,
+            price: 5000
+        },
+        {
+            id: "WORK_SUPERVISOR",
+            displayName: "Work Supervisor",
+            XPMultiplier: 0,
+            starMultiplier: 0.04,
+            price: 10000,
+            requiredLevel: 20
+        },
+        {
+            id: "WORK_MANAGER",
+            displayName: "Work Manager",
+            XPMultiplier: 0,
+            starMultiplier: 0.06,
+            price: 20000,
+            requiredLevel: 40
+        }
+    ],
+    role: [
+        {
+            id: "INTERN",
+            role: "810277574495174686",
+            displayName: "Intern",
+            price: 5000
+        },
+        {
+            id: "FLEX",
+            role: "810277882898677801",
+            displayName: "Flex",
+            price: 10000
+        },
+        {
+            id: "BIG_FLEX",
+            role: "810278147849191424",
+            displayName: "Big Flex",
+            price: 20000
+        },
+        {
+            id: "BUSINESSMAN",
+            role: "810278373750210580",
+            displayName: "Businessman",
+            price: 50000
+        },
+        {
+            id: "ASTRONAUT",
+            role: "810278584592891924",
+            displayName: "Astronaut",
+            price: 75000
+        },
+        {
+            id: "SPECIALIST",
+            role: "810278862708670484",
+            displayName: "Specialist",
+            price: 125000
+        },
+        {
+            id: "PAYLOAD_SPECIALIST",
+            role: "810279059299893308",
+            displayName: "Payload Specialist",
+            price: 500000
+        },
+        {
+            id: "COMMAND_PILOT",
+            role: "810279411261767801",
+            displayName: "Command Pilot",
+            price: 750000
+        },
+        {
+            id: "MILLIONAIRE",
+            role: "810279590425526292",
+            displayName: "Millionaire",
+            price: 1000000
+        },
+        {
+            id: "SENIOR_WORKER",
+            role: "810275802893647872",
+            displayName: "Senior Worker",
+            price: 5000
+        },
+        {
+            id: "WORK_SUPERVISOR",
+            role: "810276675631710249",
+            displayName: "Work Supervisor",
+            price: 10000
+        },
+        {
+            id: "WORK_MANAGER",
+            role: "810276955789983785",
+            displayName: "Work Manager",
+            price: 20000
+        },
+
+        {
+            id: "EMOJI_MOON",
+            role: "880631049930043422",
+            displayName: "🌙 (moon)",
+            price: 150
+        },
+        {
+            id: "EMOJI_ROCKET",
+            role: "880631476885000202",
+            displayName: "🚀 (rocket)",
+            price: 250
+        },
+        {
+            id: "EMOJI_UFO",
+            role: "880631731374395413",
+            displayName: "🛸 (ufo)",
+            price: 460
+        },
+        {
+            id: "EMOJI_SATELLITE",
+            role: "889868171153145856",
+            displayName: "📡 (satellite)",
+            price: 1240
+        },
+        {
+            id: "EMOJI_COMET",
+            role: "880632042377863188",
+            displayName: "☄️ (comet)",
+            price: 3350
+        },
+        {
+            id: "EMOJI_GALAXY",
+            role: "880632346360053762",
+            displayName: "🌌 (galaxy)",
+            price: 5000
+        }
     ]
 }
 

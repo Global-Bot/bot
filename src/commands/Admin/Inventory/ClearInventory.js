@@ -57,13 +57,13 @@ class ClearInventory extends Command {
     }
     
     YoN(message) {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             const filter = m => m.author.id == message.author.id;
             const collector = message.channel.createMessageCollector({ filter, max: 1, time: 60000 });
             
             collector.on('end', async (collected, reason) => {
                 if (reason == 'time') {
-                    message.delete().catch(e => {});
+                    message.delete().catch(e => e);
                     return resolve(false);
                 }
                 

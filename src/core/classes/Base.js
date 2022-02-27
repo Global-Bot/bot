@@ -170,7 +170,8 @@ class Base {
     success(channel, content, options) {
         const embed = {
             color: 'GREEN',
-            description: `${this.config.emojis.get('success')} ${content}`
+            description: `${this.config.emojis.get('success')} ${content}`,
+            footer: options?.footer || undefined
         };
         
         return this.sendMessage(channel, { embed }, options);
@@ -182,7 +183,7 @@ class Base {
             description: `${this.config.emojis.get('error')} ${content}`
         };
         
-        return new Promise((resolve, reject) => {
+        return new Promise((_, reject) => {
             return this.sendMessage(channel, { embed })
             .catch(e => e)
             .then(() => reject(err || content));
@@ -217,7 +218,7 @@ class Base {
     }
     
     createInteractionCollector(message,{filter, time = 60000, max = 0}) {
-        if(!message) return;
+        if(!message || message instanceof Error) return;
         return new Promise(res => {
             let interactionCollector = message.createMessageComponentCollector({filter, time, max});
             
@@ -228,10 +229,25 @@ class Base {
         })
     }
     
-    calculateMultiplier(member) {
+    async calculateMultiplier(member) {
         let multiplier = 1;
-        
-        if(member.isBooster) {multiplier = 1.5}
+
+        const upgrades = (await Promise.all(
+            (await member.upgrades).map(
+                async upgrade => await this.models.upgrade.findOne(
+                    { where: { id: upgrade.itemID }, raw: true }
+                )
+            )
+        )).filter(u => u);
+
+        const starMultiplier = upgrades.reduce((prev, curr) => prev + curr.starMultiplier, 0);
+
+        if (starMultiplier > 0) {
+            multiplier *= starMultiplier;
+        }
+
+        if(member.isBooster) multiplier *= 0.5
+
         return multiplier;
     }
     
@@ -434,6 +450,18 @@ class Base {
         if (!dbItem || dbItem.displayName == undefined || dbItem.displayName == null) return id;
 
         return dbItem?.displayName || id;
+    }
+
+    async itemPrice(item) {
+        if (!item || !item?.itemID || item?.type == undefined) return NaN;
+
+        const model = db.models[item.type];
+        if (!model) return NaN;
+
+        const dbItem = await model.findOne({ where: { id: item?.itemID } });
+        if (!dbItem || dbItem.price == undefined || dbItem.price == null) return NaN;
+
+        return dbItem?.price;
     }
 }
 
