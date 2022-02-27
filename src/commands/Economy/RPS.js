@@ -113,6 +113,7 @@ class RPS extends Command {
             embed = {
                 title: `${isDraw ? "Draw!" : userWon ? "Congratulations!" : "Bad Luck!"}`,
                 description: `**You chose**: ${this.firstUpperCase(userChoice)}\n**Bot chose**: ${this.firstUpperCase(botChoice)}\n\n${userWon ? `You've won **${bet * 2}** ${this.config.emojis.get("star")}!` : ""}`,
+                color: userWon ? "00ff00" : "ff0000",
             }
         }
         return this.sendMessage(message.channel, {embed})

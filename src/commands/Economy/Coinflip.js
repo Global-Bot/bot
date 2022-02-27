@@ -40,7 +40,8 @@ class Coinflip extends Command {
 
         const embed = {
             title: "CoinFlip",
-            description: `Coin lands on **${botChoice}**\nYou have ${hasWon ? "won" : "lost"} **${bet}** ${this.config.emojis.get("star")}`
+            description: `Coin lands on **${botChoice}**\nYou have ${hasWon ? "won" : "lost"} **${bet}** ${this.config.emojis.get("star")}`,
+            color: hasWon ? "00ff00" : "ff0000",
         }
 
         return this.sendMessage(message.channel, {embed}, {replyTo: message})
